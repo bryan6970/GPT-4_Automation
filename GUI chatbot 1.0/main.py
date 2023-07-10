@@ -9,16 +9,31 @@ import threading
 import subprocess
 import signal
 import json
+import logging
 
 import repository_utils
+import Bot
+
+# Configure logging level
+logging.basicConfig(filename="logs.log",level=logging.DEBUG)
 
 PATH_TO_IMAGE: str = os.path.join(repository_utils.get_repo_dir(), r"Images\GPT.png")
 
+with open("hyperparameters.json", "r") as file:
+    hyperparameters = json.load(file)
 
-def bot_response(message: str, loading_message: tk.Text) -> None:
+
+def bot_response(loading_message: tk.Text, chat_history) -> None:
     # Get bot response
-    time.sleep(3)
-    bot_reply = "hello"
+    chat_history = chat_history[-hyperparameters["messages_in_memory"]:]
+
+    if hyperparameters["chat_selection"] == "Chat with function calls":
+        bot_reply = Bot.run_convo_with_function_calls(chat_history, hyperparameters["model"],
+                                                      hyperparameters["max_tokens"],
+                                                      hyperparameters["temperature"])
+    else:
+        bot_reply = Bot.run_convo_pure_chat((chat_history, hyperparameters["model"], hyperparameters["max_tokens"],
+                                             hyperparameters["temperature"]))
 
     # Remove the "Loading..." message
     remove_message(loading_message)
@@ -28,31 +43,25 @@ def bot_response(message: str, loading_message: tk.Text) -> None:
 
 
 def open_hyperparameters_window() -> None:
-    subprocess.Popen(['python', 'hyper_params.py'])
+    # Convert the hyperparameters to a string representation
+    hyperparameters_string = "||".join([f"{key}={value}" for key, value in hyperparameters.items()])
+
+    # Run the subprocess and capture the output
+
+    details = subprocess.Popen(['python', 'hyper_params.py'] + hyperparameters_string.split("||"), stdout=subprocess.PIPE)
+    output, _ = details.communicate()
+
+    output = output.decode()
+    output = output.replace("\'", "\"")
+
+    logging.debug(output)
+
+    load_hyperparameters(json.loads(output))
 
 
-def load_hyperparameters() -> None:
-    if os.path.exists("hyperparameters.signal"):
-        with open("hyperparameters.json", "r") as file:
-            hyperparameters = json.load(file)
-
-        print(f"Hyperparameters loaded \nParameters:\n{hyperparameters}")
-
-        # Process the loaded hyperparameters
-        selected_model: str = hyperparameters["model"]
-        max_tokens: int = hyperparameters["max_tokens"]
-        temperature: float = hyperparameters["temperature"]
-
-        # Perform further actions with the hyperparameters
-        # ...
-
-        # Remove the signal file
-        os.remove("hyperparameters.signal")
-
-
-def handle_signal(signum: int, frame) -> None:
-    if signum == signal.SIGUSR1:
-        load_hyperparameters()
+def load_hyperparameters(output: dict) -> None:
+    global hyperparameters
+    hyperparameters = output
 
 
 def send_message(event: tk.Event = None) -> None:
@@ -61,11 +70,25 @@ def send_message(event: tk.Event = None) -> None:
         # Display the user message in the chat area
         display_message(f"You: {message}")
 
+        # Get chat history
+        chat_history = chat_area.get("1.0", tk.END).strip().split("\n")
+
+        chat_history_ = [{"role": "system",
+                          "content": "You are a helpful assistant."}]
+
+        for message in chat_history:
+            if message[:3] == "Bot":
+                chat_history_.append({"role": "assistant", "content": message[5:]})
+            elif message[:3] == "You":
+                chat_history_.append({"role": "user",
+                                      "content": hyperparameters["pre_text"] + message[5:] + hyperparameters[
+                                          "post_text"]})
+
         # Display "Loading..." message
         loading_message = display_message("Bot: Loading...")
 
         # Get bot response in a separate thread
-        threading.Thread(target=bot_response, args=(message, loading_message)).start()
+        threading.Thread(target=bot_response, args=(loading_message, chat_history_)).start()
 
         input_text.delete("1.0", tk.END)  # Clear the input text
 
@@ -130,7 +153,7 @@ send_button: tk.Button = tk.Button(input_frame, text="Send", command=send_messag
 send_button.grid(row=0, column=1, padx=(5, 0))
 
 # Create the "hyper params" button
-hyper_button: tk.Button = tk.Button(root, text="hyper params", command=open_hyperparameters_window, bg="#282828",
+hyper_button: tk.Button = tk.Button(root, text="Edit hyperparameters", command=open_hyperparameters_window, bg="#282828",
                                     fg="#FFFFFF", activebackground="#1C1C1C", activeforeground="#FFFFFF")
 hyper_button.place(relx=1, rely=0, anchor="ne", x=-10, y=10)
 
