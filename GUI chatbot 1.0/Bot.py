@@ -48,16 +48,21 @@ def run_convo_with_function_calls(chat_history, model, max_tokens, temperature):
 
     model_engine = model
 
-    response = openai.ChatCompletion.create(
-        model=model_engine,
-        messages=chat_history,
-        max_tokens=max_tokens,
-        n=1,
-        stop=None,
-        temperature=temperature,
-        functions=functions,
-        function_call="auto"
-    )
+    try:
+        response = openai.ChatCompletion.create(
+            model=model_engine,
+            messages=chat_history,
+            max_tokens=max_tokens,
+            n=1,
+            stop=None,
+            temperature=temperature,
+            functions=functions,
+            function_call="auto"
+        )
+    except Exception as e:
+        logging.error(f"Error with OpenAI API key: {e}")
+        messagebox.showerror("Error", e)
+        sys.exit()
 
     response_message = response["choices"][0]["message"]
 

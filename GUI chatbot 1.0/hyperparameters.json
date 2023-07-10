@@ -1,1 +1,1 @@
-{"model": "gpt-3.5-turbo", "chat_selection": "Pure chat", "max_tokens": 4000, "messages_in_memory": 8, "temperature": 1.0, "pre_text": "\n\n\n\n", "post_text": "\n\n\n\n"}
+{"model": "gpt-3.5-turbo", "chat_selection": "Chat with function calls", "max_tokens": 4000, "messages_in_memory": 8, "temperature": 1.0, "pre_text": "\n\n\n\n\n", "post_text": "\n\n\n\n\n"}

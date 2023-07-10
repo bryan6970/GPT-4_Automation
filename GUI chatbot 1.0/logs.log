@@ -1,0 +1,34 @@
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:{"model": "gpt-3.5-turbo", "chat_selection": "Chat with function calls", "max_tokens": 4000, "messages_in_memory": 8, "temperature": 1.0, "pre_text": "\n\n\n\n\n", "post_text": "\n\n\n\n\n"}
+
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": "\\n\\n\\n\\n\\nCreate a file called test.txt in my desktop\\n\\n\\n\\n\\n"}], "max_tokens": 4000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 401 298
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=None request_id=45a5ae2d42d9939dfac0e6568ccd4f4c response_code=401
+INFO:openai:error_code=invalid_api_key error_message='Incorrect API key provided: aZNGPO7H************************************1ebf. You can find your API key at https://platform.openai.com/account/api-keys.' error_param=None error_type=invalid_request_error message='OpenAI API error received' stream_error=False
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": "\\n\\n\\n\\n\\n;kj\\n\\n\\n\\n\\n"}], "max_tokens": 4000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 401 298
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=None request_id=7c6975aa25ed782a22075f159ce3a5ae response_code=401
+INFO:openai:error_code=invalid_api_key error_message='Incorrect API key provided: aZNGPO7H************************************1ebf. You can find your API key at https://platform.openai.com/account/api-keys.' error_param=None error_type=invalid_request_error message='OpenAI API error received' stream_error=False
+ERROR:root:Error setting OpenAI API key: Incorrect API key provided: aZNGPO7H************************************1ebf. You can find your API key at https://platform.openai.com/account/api-keys.
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": "\\n\\n\\n\\n\\ntshaeo\\n\\n\\n\\n\\n"}], "max_tokens": 4000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 401 298
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=None request_id=e5606c24a509451b945028a0e3c42adb response_code=401
+INFO:openai:error_code=invalid_api_key error_message='Incorrect API key provided: aZNGPO7H************************************1ebf. You can find your API key at https://platform.openai.com/account/api-keys.' error_param=None error_type=invalid_request_error message='OpenAI API error received' stream_error=False
+ERROR:root:Error with OpenAI API key: Incorrect API key provided: aZNGPO7H************************************1ebf. You can find your API key at https://platform.openai.com/account/api-keys.
