@@ -111,14 +111,14 @@ temperature_entry.grid(row=4, column=1, padx=(10, 0), sticky="w")
 pre_text_label = ttk.Label(frame, text="Pre-text:")
 pre_text_label.grid(row=5, column=0, sticky="w")
 pre_text_text: tk.Text = tk.Text(frame, height=1)
-pre_text_text.insert("1.0", hyperparameters["pre_text"])
+pre_text_text.insert("1.0", hyperparameters["pre_text"][:-1])
 pre_text_text.grid(row=5, column=1, padx=(10, 0), sticky="w")
 
 # Post text
 post_text_label = ttk.Label(frame, text="Post-text:")
 post_text_label.grid(row=6, column=0, sticky="w")
 post_text_text: tk.Text = tk.Text(frame, height=1)
-post_text_text.insert("1.0", hyperparameters["post_text"])
+post_text_text.insert("1.0", hyperparameters["post_text"][-1])
 post_text_text.grid(row=6, column=1, padx=(10, 0), sticky="w")
 
 # Save button

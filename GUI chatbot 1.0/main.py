@@ -10,14 +10,12 @@ import subprocess
 import signal
 import json
 import logging
-
-import repository_utils
 import Bot
 
 # Configure logging level
 logging.basicConfig(filename="logs.log",level=logging.DEBUG)
 
-PATH_TO_IMAGE: str = os.path.join(repository_utils.get_repo_dir(), r"Images\GPT.png")
+PATH_TO_IMAGE: str = r"../Images/GPT.png"
 
 with open("hyperparameters.json", "r") as file:
     hyperparameters = json.load(file)
@@ -162,5 +160,3 @@ root.grid_columnconfigure(0, weight=1)
 root.grid_rowconfigure(0, weight=1)
 
 root.mainloop()
-
-repository_utils.auto_import(pyforest.active_imports(), __file__)
