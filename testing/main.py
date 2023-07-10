@@ -61,17 +61,21 @@ functions = {
     "return_type": {"type": "null"},
 }
 
-model_engine = 'text-davinci-002'
-prompt = input("Prompt: \n")
-completions = openai.Completion.create(
-    engine=model_engine,
-    prompt=prompt,
-    max_tokens=1024,
+model_engine = 'gpt-3.5-turbo'
+prompt = "Using python,\n" + input("Prompt: \n") + "\nBracket the python code with ||"
+input(prompt)
+completions = openai.ChatCompletion.create(
+    model=model_engine,
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant. You can return code enclosed in ||, and I will run it on my system."},
+        {"role": "user", "content": prompt}
+    ],
+    max_tokens=100,
     n=1,
     stop=None,
-    temperature=0.5,
-    # function_parameters=functions
+    temperature=0.5
 )
 
-message = completions.choices[0].text
-run_code_frm_AI(message, retry_times=2)
+response = completions.choices[0].message.get('content')
+print(response.split("||"))
+run_code_frm_AI(response.split("||")[1])
