@@ -93,14 +93,37 @@ functions = [{
         "return_type": {"type": "str"}
     }]
 
+functions_without_python = [{
+    "name": "extract_text_from_website",
+    "description": "Get text content from site",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "url": {
+                "type": "string",
+                "description": "Site's full URL (with https)",
+            },
+        },
+        "required": ["url"],
+    },
+    "return_type": {"type": "str"}
+}]
+
 available_functions = {
     "run_python_code": run_python_code,
     "extract_text_from_website": extract_text_from_website,
 }
 
+available_functions_without_python = {"extract_text_from_website": extract_text_from_website, }
 
-def run_convo_with_function_calls(chat_history, model, max_tokens, temperature):
+
+def run_convo_with_function_calls(chat_history, model, max_tokens, temperature, use_python):
     try:
+        if use_python.lower() == "yes":
+            pass
+        else:
+            available_functions = available_functions_without_python
+            functions = functions_without_python
 
         model_engine = model
 
@@ -162,8 +185,13 @@ def run_convo_with_function_calls(chat_history, model, max_tokens, temperature):
         return e
 
 
-def run_convo_with_function_calls_and_explanation(chat_history, model, max_tokens, temperature):
+def run_convo_with_function_calls_and_explanation(chat_history, model, max_tokens, temperature, use_python):
     try:
+        if use_python.lower() == "yes":
+            pass
+        else:
+            available_functions = available_functions_without_python
+            functions = functions_without_python
 
         model_engine = model
 
@@ -180,10 +208,6 @@ def run_convo_with_function_calls_and_explanation(chat_history, model, max_token
 
         response_message = response["choices"][0]["message"]
 
-        print(response)
-
-        print(response_message)
-
         # Step 2: check if GPT wanted to call a function
         if response_message.get("function_call"):
             try:
@@ -195,20 +219,10 @@ def run_convo_with_function_calls_and_explanation(chat_history, model, max_token
                 function_to_call = available_functions[function_name]
                 function_args = json.loads(response_message["function_call"]["arguments"])
 
-                if function_name == "run_python_code":
-                    function_response = function_to_call(code=function_args.get("code"))
-                elif function_name == "extract_text_from_website":
+                if function_name == "extract_text_from_website":
                     function_response = function_to_call(url=function_args.get("url"))
                 else:
                     return "(Developer) No function name has been declared, unable to pass args"
-
-
-                if ERROR:
-                    logging.debug(
-                        f"""Something went wrong, the code provided was {response_message.get('function_call').get('arguments')}
-                The error was {ERROR}""")
-                    return f"""Something went wrong, the code provided was {response_message.get('function_call').get('arguments')}
-                The error was {ERROR}"""
 
                 # Step 4: send the info on the function call and function response to GPT
                 chat_history.append(response_message)  # extend conversation with assistant's reply

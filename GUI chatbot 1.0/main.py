@@ -9,10 +9,8 @@ import Bot
 from tkinter import Tk, Label, Entry
 from tkinter.font import Font
 
-
 # Configure logging level
 logging.basicConfig(filename="logs.log", level=logging.DEBUG)
-
 
 PATH_TO_IMAGE: str = r"../Images/GPT.png"
 
@@ -31,11 +29,13 @@ def bot_response(loading_message: tk.Text, chat_history) -> None:
     if hyperparameters["chat_selection"] == "Chat with function calls":
         bot_reply = Bot.run_convo_with_function_calls(chat_history, hyperparameters["model"],
                                                       hyperparameters["max_tokens"],
-                                                      hyperparameters["temperature"])
+                                                      hyperparameters["temperature"],
+                                                      hyperparameters["use_python"])
     elif hyperparameters["chat_selection"] == "function calls with explanation":
         bot_reply = Bot.run_convo_with_function_calls_and_explanation(chat_history, hyperparameters["model"],
                                                                       hyperparameters["max_tokens"],
-                                                                      hyperparameters["temperature"])
+                                                                      hyperparameters["temperature"],
+                                                                      hyperparameters["use_python"])
     else:
         bot_reply = Bot.run_convo_pure_chat(chat_history, hyperparameters["model"], hyperparameters["max_tokens"],
                                             hyperparameters["temperature"])
@@ -134,7 +134,7 @@ root: tk.Tk = tk.Tk()
 root.title("Chat App")
 root.configure(background="#1C1C1C")
 
-roboto_font = Font(family="Roboto",size=10)
+roboto_font = Font(family="Roboto", size=10)
 segoe_UI_font = Font(family="Segoe UI", size=10)
 
 # Set the window logo
@@ -146,7 +146,8 @@ chat_frame: tk.Frame = tk.Frame(root, bg="#1C1C1C")
 chat_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
 # Create a scrolled text widget for the chat area
-chat_area: scrolledtext.ScrolledText = scrolledtext.ScrolledText(chat_frame, wrap=tk.WORD, font=segoe_UI_font, bg="#1C1C1C", fg="#EFEFEF",
+chat_area: scrolledtext.ScrolledText = scrolledtext.ScrolledText(chat_frame, wrap=tk.WORD, font=segoe_UI_font,
+                                                                 bg="#1C1C1C", fg="#EFEFEF",
                                                                  width=50,
                                                                  height=20)
 
@@ -158,7 +159,8 @@ input_frame: tk.Frame = tk.Frame(root, bg="#282828")
 input_frame.grid(row=1, column=0, sticky="ew", padx=10, pady=10)
 
 # Create an input text widget
-input_text: tk.Text = tk.Text(input_frame, wrap=tk.WORD,font=segoe_UI_font, bg="#282828", fg="#FFFFFF", highlightbackground="#1C1C1C",
+input_text: tk.Text = tk.Text(input_frame, wrap=tk.WORD, font=segoe_UI_font, bg="#282828", fg="#FFFFFF",
+                              highlightbackground="#1C1C1C",
                               insertbackground="#FFFFFF",
                               height=2)
 input_text.bind("<FocusIn>", set_border_color)  # Set border color on focus
@@ -167,14 +169,15 @@ input_text.bind("<Return>", send_message)  # Send message on Enter key
 input_text.grid(row=0, column=0, sticky="ew")
 
 # Create a send button
-send_button: tk.Button = tk.Button(input_frame,font=roboto_font, text="Send", command=send_message)
+send_button: tk.Button = tk.Button(input_frame, font=roboto_font, text="Send", command=send_message)
 send_button.grid(row=0, column=1, padx=(5, 0), sticky="ew")
 
 # Configure column weight to make it scale with window size
 input_frame.grid_columnconfigure(0, weight=1)
 
 # Create the "hyper params" button
-hyper_button: tk.Button = tk.Button(root,font=roboto_font, text="Edit hyperparameters", command=open_hyperparameters_window,
+hyper_button: tk.Button = tk.Button(root, font=roboto_font, text="Edit hyperparameters",
+                                    command=open_hyperparameters_window,
                                     bg="#282828",
                                     fg="#FFFFFF", activebackground="#1C1C1C", activeforeground="#FFFFFF")
 hyper_button.place(relx=1, rely=0, anchor="ne", x=-10, y=10)
