@@ -80,7 +80,7 @@ model_combobox.grid(row=0, column=1, padx=(10, 0), sticky="w")
 # Chat selection
 chat_selection_label = ttk.Label(frame, text="Chat type:")
 chat_selection_label.grid(row=1, column=0, sticky="w")
-chat_selections = ["Pure chat", "Chat with function calls"]
+chat_selections = ["Pure chat", "Chat with function calls", "function calls with explanation"]
 chat_selection_combobox = ttk.Combobox(frame, values=chat_selections, state="readonly")
 chat_selection_combobox.current(chat_selections.index(hyperparameters["chat_selection"]))
 chat_selection_combobox.grid(row=1, column=1, padx=(10, 0), sticky="w")

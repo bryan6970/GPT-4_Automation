@@ -8,7 +8,7 @@ import logging
 import Bot
 
 # Configure logging level
-logging.basicConfig(filename="logs.log",level=logging.DEBUG)
+logging.basicConfig(filename="logs.log", level=logging.DEBUG)
 
 PATH_TO_IMAGE: str = r"../Images/GPT.png"
 
@@ -28,9 +28,13 @@ def bot_response(loading_message: tk.Text, chat_history) -> None:
         bot_reply = Bot.run_convo_with_function_calls(chat_history, hyperparameters["model"],
                                                       hyperparameters["max_tokens"],
                                                       hyperparameters["temperature"])
+    elif hyperparameters["chat_selection"] == "function calls with explanation":
+        bot_reply = Bot.run_convo_with_function_calls_and_explanation(chat_history, hyperparameters["model"],
+                                                                      hyperparameters["max_tokens"],
+                                                                      hyperparameters["temperature"])
     else:
         bot_reply = Bot.run_convo_pure_chat(chat_history, hyperparameters["model"], hyperparameters["max_tokens"],
-                                             hyperparameters["temperature"])
+                                            hyperparameters["temperature"])
 
     # Remove the "Loading..." message
     remove_message(loading_message)
@@ -45,7 +49,8 @@ def open_hyperparameters_window() -> None:
 
     # Run the subprocess and capture the output
 
-    details = subprocess.Popen(['python', 'hyper_params.py'] + hyperparameters_string.split("||"), stdout=subprocess.PIPE)
+    details = subprocess.Popen(['python', 'hyper_params.py'] + hyperparameters_string.split("||"),
+                               stdout=subprocess.PIPE)
 
     with open("hyperparameters.json", "r") as file:
         load_hyperparameters(json.load(file))
@@ -132,7 +137,8 @@ chat_frame: tk.Frame = tk.Frame(root, bg="#1C1C1C")
 chat_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
 # Create a scrolled text widget for the chat area
-chat_area: scrolledtext.ScrolledText = scrolledtext.ScrolledText(chat_frame, wrap=tk.WORD, bg="#1C1C1C", fg="#EFEFEF", width=50,
+chat_area: scrolledtext.ScrolledText = scrolledtext.ScrolledText(chat_frame, wrap=tk.WORD, bg="#1C1C1C", fg="#EFEFEF",
+                                                                 width=50,
                                                                  height=20)
 
 chat_area.configure(state='disabled')  # Make the chat area read-only
@@ -159,7 +165,8 @@ send_button.grid(row=0, column=1, padx=(5, 0), sticky="ew")
 input_frame.grid_columnconfigure(0, weight=1)
 
 # Create the "hyper params" button
-hyper_button: tk.Button = tk.Button(root, text="Edit hyperparameters", command=open_hyperparameters_window, bg="#282828",
+hyper_button: tk.Button = tk.Button(root, text="Edit hyperparameters", command=open_hyperparameters_window,
+                                    bg="#282828",
                                     fg="#FFFFFF", activebackground="#1C1C1C", activeforeground="#FFFFFF")
 hyper_button.place(relx=1, rely=0, anchor="ne", x=-10, y=10)
 
