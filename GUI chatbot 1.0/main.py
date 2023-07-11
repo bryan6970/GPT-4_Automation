@@ -1,13 +1,8 @@
-import os.path
-import time
-
-import pyforest
 import tkinter as tk
 from tkinter import scrolledtext
 from PIL import ImageTk, Image
 import threading
 import subprocess
-import signal
 import json
 import logging
 import Bot
@@ -20,18 +15,22 @@ PATH_TO_IMAGE: str = r"../Images/GPT.png"
 with open("hyperparameters.json", "r") as file:
     hyperparameters = json.load(file)
 
+print(hyperparameters)
+
 
 def bot_response(loading_message: tk.Text, chat_history) -> None:
     # Get bot response
     chat_history = chat_history[-hyperparameters["messages_in_memory"]:]
+
+    logging.debug(f"{hyperparameters['chat_selection']} is being used")
 
     if hyperparameters["chat_selection"] == "Chat with function calls":
         bot_reply = Bot.run_convo_with_function_calls(chat_history, hyperparameters["model"],
                                                       hyperparameters["max_tokens"],
                                                       hyperparameters["temperature"])
     else:
-        bot_reply = Bot.run_convo_pure_chat((chat_history, hyperparameters["model"], hyperparameters["max_tokens"],
-                                             hyperparameters["temperature"]))
+        bot_reply = Bot.run_convo_pure_chat(chat_history, hyperparameters["model"], hyperparameters["max_tokens"],
+                                             hyperparameters["temperature"])
 
     # Remove the "Loading..." message
     remove_message(loading_message)
@@ -47,14 +46,19 @@ def open_hyperparameters_window() -> None:
     # Run the subprocess and capture the output
 
     details = subprocess.Popen(['python', 'hyper_params.py'] + hyperparameters_string.split("||"), stdout=subprocess.PIPE)
-    output, _ = details.communicate()
 
-    output = output.decode()
-    output = output.replace("\'", "\"")
+    with open("hyperparameters.json", "r") as file:
+        load_hyperparameters(json.load(file))
 
-    logging.debug(output)
-
-    load_hyperparameters(json.loads(output))
+    # Old format
+    # output, _ = details.communicate()
+    #
+    # output = output.decode()
+    # output = output.replace("\'", "\"")
+    #
+    # logging.debug(output)
+    #
+    # load_hyperparameters(json.loads(output))
 
 
 def load_hyperparameters(output: dict) -> None:
@@ -72,7 +76,7 @@ def send_message(event: tk.Event = None) -> None:
         chat_history = chat_area.get("1.0", tk.END).strip().split("\n")
 
         chat_history_ = [{"role": "system",
-                          "content": "You are a helpful assistant."}]
+                          "content": hyperparameters["system_message"]}]
 
         for message in chat_history:
             if message[:3] == "Bot":
@@ -128,8 +132,9 @@ chat_frame: tk.Frame = tk.Frame(root, bg="#1C1C1C")
 chat_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
 # Create a scrolled text widget for the chat area
-chat_area: scrolledtext.ScrolledText = scrolledtext.ScrolledText(chat_frame, bg="#1C1C1C", fg="#EFEFEF", width=50,
+chat_area: scrolledtext.ScrolledText = scrolledtext.ScrolledText(chat_frame, wrap=tk.WORD, bg="#1C1C1C", fg="#EFEFEF", width=50,
                                                                  height=20)
+
 chat_area.configure(state='disabled')  # Make the chat area read-only
 chat_area.pack(fill="both", expand=True)
 
@@ -138,7 +143,7 @@ input_frame: tk.Frame = tk.Frame(root, bg="#282828")
 input_frame.grid(row=1, column=0, sticky="ew", padx=10, pady=10)
 
 # Create an input text widget
-input_text: tk.Text = tk.Text(input_frame, bg="#282828", fg="#FFFFFF", highlightbackground="#1C1C1C",
+input_text: tk.Text = tk.Text(input_frame, wrap=tk.WORD, bg="#282828", fg="#FFFFFF", highlightbackground="#1C1C1C",
                               insertbackground="#FFFFFF",
                               height=2)
 input_text.bind("<FocusIn>", set_border_color)  # Set border color on focus
@@ -148,7 +153,10 @@ input_text.grid(row=0, column=0, sticky="ew")
 
 # Create a send button
 send_button: tk.Button = tk.Button(input_frame, text="Send", command=send_message)
-send_button.grid(row=0, column=1, padx=(5, 0))
+send_button.grid(row=0, column=1, padx=(5, 0), sticky="ew")
+
+# Configure column weight to make it scale with window size
+input_frame.grid_columnconfigure(0, weight=1)
 
 # Create the "hyper params" button
 hyper_button: tk.Button = tk.Button(root, text="Edit hyperparameters", command=open_hyperparameters_window, bg="#282828",

@@ -2,7 +2,6 @@ import sys
 import tkinter as tk
 from tkinter import ttk
 import json
-import signal
 
 hyperparameters: dict = {}
 
@@ -17,6 +16,7 @@ def save_hyperparameters() -> None:
     temperature: float = float(temperature_entry.get())
     pre_text: str = pre_text_text.get("1.0", tk.END)
     post_text: str = post_text_text.get("1.0", tk.END)
+    system_message :str = system_message_text.get("1.0", tk.END)
 
     # Save the hyperparameters
     hyperparameters["model"] = selected_model
@@ -26,10 +26,9 @@ def save_hyperparameters() -> None:
     hyperparameters["temperature"] = temperature
     hyperparameters["pre_text"] = pre_text
     hyperparameters["post_text"] = post_text
+    hyperparameters["system_message"] = system_message
 
-    print("Hyperparameters saved!", file=sys.stderr)
-
-    print(hyperparameters)
+    print(f"Hyperparameters saved! \n {hyperparameters}", file=sys.stderr)
 
     with open("hyperparameters.json", "w") as f:
         json.dump(hyperparameters, f)
@@ -44,11 +43,11 @@ def set_appropriate_max_token(event: tk.Event) -> None:
 
     # Set max tokens based on the selected model
     if model_combobox.get() == "gpt-3.5-16k":
-        max_tokens_entry.insert(0, "16000")
+        max_tokens_entry.insert(0, "6000")
     elif model_combobox.get() == "gpt-4":
-        max_tokens_entry.insert(0, "8000")
+        max_tokens_entry.insert(0, "3000")
     elif model_combobox.get() == "gpt-3.5-turbo":
-        max_tokens_entry.insert(0, "4000")
+        max_tokens_entry.insert(0, "2000")
     else:
         max_tokens_entry.insert(0, hyperparameters["max_tokens"])
 
@@ -112,17 +111,29 @@ pre_text_label = ttk.Label(frame, text="Pre-text:")
 pre_text_label.grid(row=5, column=0, sticky="w")
 pre_text_text: tk.Text = tk.Text(frame, height=1)
 pre_text_text.insert("1.0", hyperparameters["pre_text"][:-1])
-pre_text_text.grid(row=5, column=1, padx=(10, 0), sticky="w")
+pre_text_text.grid(row=5, column=1, padx=(10, 0), sticky="news")
 
 # Post text
 post_text_label = ttk.Label(frame, text="Post-text:")
 post_text_label.grid(row=6, column=0, sticky="w")
 post_text_text: tk.Text = tk.Text(frame, height=1)
-post_text_text.insert("1.0", hyperparameters["post_text"][-1])
-post_text_text.grid(row=6, column=1, padx=(10, 0), sticky="w")
+post_text_text.insert("1.0", hyperparameters["post_text"][:-1])
+post_text_text.grid(row=6, column=1, padx=(10, 0), sticky="news")
+
+# System message
+system_message_label = ttk.Label(frame, text="System message:")
+system_message_label.grid(row=7, column=0, sticky="w")
+system_message_text: tk.Text = tk.Text(frame, height=1)
+system_message_text.insert("1.0", hyperparameters["system_message"][:-1])
+system_message_text.grid(row=7, column=1, padx=(10, 0), sticky="news")
 
 # Save button
 save_button = ttk.Button(frame, text="Save", command=save_hyperparameters)
-save_button.grid(row=7, column=0, columnspan=2, pady=(20, 0))
+save_button.grid(row=8, column=0, columnspan=2, pady=(20, 0))
+
+
+# Configure row and column weight to make text boxes expand
+frame.grid_rowconfigure(10, weight=1)
+frame.grid_columnconfigure(1, weight=1)
 
 root.mainloop()

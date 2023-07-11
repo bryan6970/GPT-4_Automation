@@ -91,27 +91,35 @@ def run_convo_with_function_calls(chat_history, model, max_tokens, temperature):
         return e
 
     if ERROR:
+        logging.debug(f"""Something went wrong, the code provided was {response_message.get('function_call').get('arguments').get('code')}
+The error was {ERROR}""")
         return f"""Something went wrong, the code provided was {response_message.get('function_call').get('arguments').get('code')}
 The error was {ERROR}"""
     else:
-            return "Success!"
+        logging.debug(f"Success! The code provided was  {response_message.get('function_call').get('arguments').get('code')}")
+        return f"Success! The code provided was  {response_message.get('function_call').get('arguments').get('code')}"
 
 
 def run_convo_pure_chat(chat_history, model, max_tokens, temperature):
-    model_engine = model
 
-    response = openai.ChatCompletion.create(
-        model=model_engine,
-        messages=chat_history,
-        max_tokens=max_tokens,
-        n=1,
-        stop=None,
-        temperature=temperature,
-        function_call="auto"
-    )
+    try:
+        model_engine = model
 
-    response_message = response["choices"][0]["message"]
+        response = openai.ChatCompletion.create(
+            model=model_engine,
+            messages=chat_history,
+            max_tokens=max_tokens,
+            n=1,
+            stop=None,
+            temperature=temperature,
+        )
 
-    logging.debug(response_message)
+        response_message = response["choices"][0]["message"]
+
+        logging.debug(response_message)
+    except Exception as e:
+        logging.error(f"Error with OpenAI API key: {e}")
+        messagebox.showerror("Error", e)
+        return e
 
     return response_message.get('content')

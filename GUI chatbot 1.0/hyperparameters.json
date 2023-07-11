@@ -1,1 +1,1 @@
-{"model": "gpt-4", "chat_selection": "Pure chat", "max_tokens": 8000, "messages_in_memory": 8, "temperature": 1.0, "pre_text": "Using only the functions provided\n", "post_text": "\n\n"}
+{"model": "gpt-3.5-turbo", "chat_selection": "Pure chat", "system_message": "You are a helpful assistant\nheauhasou\n\n", "max_tokens": 2000, "messages_in_memory": 4, "temperature": 1.0, "pre_text": "\n", "post_text": "\n\n"}
