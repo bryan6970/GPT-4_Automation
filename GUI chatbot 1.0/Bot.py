@@ -65,39 +65,50 @@ def run_convo_with_function_calls(chat_history, model, max_tokens, temperature):
 
         # Step 2: check if GPT wanted to call a function
         if response_message.get("function_call"):
-            # Step 3: call the function
-            # Note: the JSON response may not always be valid; be sure to handle errors
+            try:
+                # Step 3: call the function
+                # Note: the JSON response may not always be valid; be sure to handle errors
 
-            available_functions = {
-                "run_python_code": run_python_code,
-            }
-            # only one function in this example, but you can have multiple
+                available_functions = {
+                    "run_python_code": run_python_code,
+                }
+                # only one function in this example, but you can have multiple
 
-            function_name = response_message["function_call"]["name"]
-            function_to_call = available_functions[function_name]
-            function_args = json.loads(response_message["function_call"]["arguments"])
-            function_response = function_to_call(
-                code=function_args.get("code")
-            )
+                function_name = response_message["function_call"]["name"]
+                function_to_call = available_functions[function_name]
+                function_args = json.loads(response_message["function_call"]["arguments"])
+                function_response = function_to_call(
+                    code=function_args.get("code")
+                )
 
-            # Step 4: send the info on the function call and function response to GPT
-            # messages.append(response_message)  # extend conversation with assistant's reply
+                # Step 4: send the info on the function call and function response to GPT
+                # messages.append(response_message)  # extend conversation with assistant's reply
 
-        logging.debug(response_message)
+            except Exception as e:
+                logging.error(f"Error with OpenAI API key: {e}")
+                messagebox.showerror("Error", e)
+                return e
+
+            if ERROR:
+                logging.debug(
+                    f"""Something went wrong, the code provided was {response_message.get('function_call').get('arguments').get('code')}
+            The error was {ERROR}""")
+                return f"""Something went wrong, the code provided was {response_message.get('function_call').get('arguments').get('code')}
+            The error was {ERROR}"""
+            else:
+                logging.debug(
+                    f"Success! The code provided was  {response_message.get('function_call').get('arguments').get('code')}")
+                return f"Success! The code provided was  {response_message.get('function_call').get('arguments').get('code')}"
+
+        else:
+            logging.debug(response_message)
+            return response_message.get("choices")[0].get("message").get("content")
+
 
     except Exception as e:
         logging.error(f"Error with OpenAI API key: {e}")
         messagebox.showerror("Error", e)
         return e
-
-    if ERROR:
-        logging.debug(f"""Something went wrong, the code provided was {response_message.get('function_call').get('arguments').get('code')}
-The error was {ERROR}""")
-        return f"""Something went wrong, the code provided was {response_message.get('function_call').get('arguments').get('code')}
-The error was {ERROR}"""
-    else:
-        logging.debug(f"Success! The code provided was  {response_message.get('function_call').get('arguments').get('code')}")
-        return f"Success! The code provided was  {response_message.get('function_call').get('arguments').get('code')}"
 
 
 def run_convo_pure_chat(chat_history, model, max_tokens, temperature):
