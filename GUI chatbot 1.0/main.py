@@ -52,8 +52,8 @@ def open_hyperparameters_window() -> None:
     details = subprocess.Popen(['python', 'hyper_params.py'] + hyperparameters_string.split("||"),
                                stdout=subprocess.PIPE)
 
-    with open("hyperparameters.json", "r") as file:
-        load_hyperparameters(json.load(file))
+    with open("hyperparameters.json", "r") as f:
+        load_hyperparameters(json.load(f))
 
     # Old format
     # output, _ = details.communicate()
