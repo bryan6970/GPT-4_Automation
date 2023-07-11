@@ -223,6 +223,9 @@ def run_convo_with_function_calls_and_explanation(chat_history, model, max_token
                     model=model,
                     messages=chat_history,
                 )  # get a new response from GPT where it can see the function response
+
+                logging.log(second_response)
+
                 return second_response["choices"][0]["message"].get("content")
 
             except Exception as e:
