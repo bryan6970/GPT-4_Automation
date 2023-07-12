@@ -22,15 +22,18 @@ def save_hyperparameters() -> None:
     system_message: str = system_message_text.get("1.0", tk.END)
 
     # Save the hyperparameters
-    hyperparameters["model"] = selected_model
-    hyperparameters["chat_selection"] = chat_selection
-    hyperparameters["use_python"] = use_python
-    hyperparameters['max_tokens'] = max_tokens
-    hyperparameters["messages_in_memory"] = messages_in_memory
-    hyperparameters["temperature"] = temperature
-    hyperparameters["pre_text"] = pre_text
-    hyperparameters["post_text"] = post_text
-    hyperparameters["system_message"] = system_message
+    hyperparameters = {
+        "model": selected_model,
+        "chat_selection": chat_selection,
+        "use_python": use_python,
+        "max_tokens": max_tokens,
+        "messages_in_memory": messages_in_memory,
+        "temperature": temperature,
+        "pre_text": pre_text,
+        "post_text": post_text,
+        "system_message": system_message,
+        "saved": True
+    }
 
     print(f"Hyperparameters saved! \n {hyperparameters}", file=sys.stderr)
 

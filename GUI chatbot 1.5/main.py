@@ -48,6 +48,7 @@ def bot_response(loading_message: tk.Text, chat_history) -> None:
 
 
 def open_hyperparameters_window() -> None:
+    global hyperparameters
     # Convert the hyperparameters to a string representation
     hyperparameters_string = "||".join([f"{key}={value}" for key, value in hyperparameters.items()])
 
@@ -57,24 +58,23 @@ def open_hyperparameters_window() -> None:
                                stdout=subprocess.PIPE)
     output, _ = details.communicate()
 
+    logging.debug(output.decode())
+
     with open("hyperparameters.json", "r") as f:
-        load_hyperparameters(json.load(f))
+        hyperparameters = json.load(f)
 
-    # Old format
+    print(hyperparameters["saved"])
 
-    #
-    # output = output.decode()
-    # output = output.replace("\'", "\"")
-    #
-    # logging.debug(output)
-    #
-    # load_hyperparameters(json.loads(output))
+    if hyperparameters["saved"]:
+        display_message("Bot: Hyperparameters loaded!")
+    else:
+        display_message("Bot: Hyperparameters were not saved!")
+
+    hyperparameters["saved"] = False
 
 
-def load_hyperparameters(output: dict) -> None:
-    global hyperparameters
-    hyperparameters = output
-    display_message("Bot: Hyperparameters saved!")
+    with open("hyperparameters.json", "w") as f:
+        json.dump(hyperparameters, f)
 
 
 def send_message(event: tk.Event = None) -> None:

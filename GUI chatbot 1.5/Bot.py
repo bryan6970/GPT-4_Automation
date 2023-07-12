@@ -224,6 +224,9 @@ def run_convo_with_function_calls_and_explanation(chat_history, model, max_token
                 else:
                     return "(Developer) No function name has been declared, unable to pass args"
 
+                if function_name == "run_python_code":
+                    return f"Success! The code provided was  {response_message.get('function_call').get('arguments')}"
+
                 # Step 4: send the info on the function call and function response to GPT
                 chat_history.append(response_message)  # extend conversation with assistant's reply
                 chat_history.append(
