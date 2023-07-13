@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 import logging
@@ -26,14 +27,16 @@ ERROR = False
 
 def run_python_code(code):
     global ERROR
-    ERROR = False
     try:
         exec(code)
     except Exception as e:
+        logging.debug(e)
         ERROR = e
+        return e
 
 
 def extract_text_from_website(url):
+    global ERROR
     try:
         # Send a GET request to the URL
         response = requests.get(url)
@@ -59,6 +62,17 @@ def extract_text_from_website(url):
             return f"Error: Failed to retrieve content from {url}"
     except Exception as e:
         logging.debug(e)
+        ERROR = e
+        return e
+
+
+def get_datetime():
+    try:
+        time_ = datetime.datetime.now()
+        return time_
+    except Exception as e:
+        logging.debug(e)
+        ERROR = e
         return e
 
 
@@ -91,23 +105,17 @@ functions = [{
             "required": ["url"],
         },
         "return_type": {"type": "str"}
-    }]
-
-functions_without_python = [{
-    "name": "extract_text_from_website",
-    "description": "Get text content from site",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "url": {
-                "type": "string",
-                "description": "Site's full URL (with https)",
+    }, {"name": "get_datetime",
+        "description": "Get current datetime",
+        "parameters": {
+            "type": "object",
+            "properties": {
             },
         },
-        "required": ["url"],
-    },
-    "return_type": {"type": "str"}
-}]
+
+        "return_type": {"type": "str"}}]
+
+functions_without_python = functions[1:]
 
 available_functions = {
     "run_python_code": run_python_code,
@@ -115,6 +123,29 @@ available_functions = {
 }
 
 available_functions_without_python = {"extract_text_from_website": extract_text_from_website, }
+
+
+def _call_func(function_name, function_to_call, function_args, response_message):
+    if function_name == "run_python_code":
+        return f"Success! The code provided was  {response_message.get('function_call').get('arguments')}"
+    elif function_name == "extract_text_from_website":
+        function_response = function_to_call(url=function_args.get("url"))
+        return function_response
+    else:
+        return "(Developer) No function name has been declared, unable to pass args"
+
+
+def _check_error(response_message):
+    if ERROR:
+        logging.debug(
+            f"""Something went wrong, the code provided was {response_message.get('function_call').get('arguments')}
+      The error was {ERROR}""")
+        return f"""Something went wrong, the code provided was {response_message.get('function_call').get('arguments')}
+      The error was {ERROR}"""
+    else:
+        logging.debug(
+            f"Success! The input for the parameter provided was  {response_message.get('function_call').get('arguments')}")
+        return f"Success! The input for the parameter provided was  {response_message.get('function_call').get('arguments')}"
 
 
 def run_convo_with_function_calls(chat_history, model, max_tokens, temperature, use_python):
@@ -150,30 +181,22 @@ def run_convo_with_function_calls(chat_history, model, max_tokens, temperature, 
                 function_to_call = available_functions[function_name]
                 function_args = json.loads(response_message["function_call"]["arguments"])
 
-                if function_name == "run_python_code":
-                    function_response = function_to_call(code=function_args.get("code"))
-                elif function_name == "extract_text_from_website":
-                    function_response = function_to_call(url=function_args.get("url"))
+                # Call the function that the AI wants to call
+                function_response = _call_func(function_name, function_to_call, function_args, response_message)
+
+                # if function response was a message to be returned to chat, return it
+                if type(function_response) is str:
+                    return function_response
 
                 # Step 4: send the info on the function call and function response to GPT
                 # messages.append(response_message)  # extend conversation with assistant's reply
 
             except Exception as e:
-                logging.error(f"Error with OpenAI API key: {e}")
+                logging.error(f"Error: {e}")
                 # messagebox.showerror("Error", e)
                 return e
 
-            if ERROR:
-                logging.debug(
-                    f"""Something went wrong, the code provided was {response_message.get('function_call').get('arguments')}
-            The error was {ERROR}""")
-                return f"""Something went wrong, the code provided was {response_message.get('function_call').get('arguments')}
-            The error was {ERROR}"""
-            else:
-                logging.debug(
-                    f"Success! The code provided was  {response_message.get('function_call').get('arguments')}")
-                return f"Success! The code provided was  {response_message.get('function_call').get('arguments')}"
-
+            return _check_error(response_message)
         else:
             logging.debug(response_message)
             return response_message.get("content")
@@ -219,13 +242,12 @@ def run_convo_with_function_calls_and_explanation(chat_history, model, max_token
                 function_to_call = available_functions[function_name]
                 function_args = json.loads(response_message["function_call"]["arguments"])
 
-                if function_name == "extract_text_from_website":
-                    function_response = function_to_call(url=function_args.get("url"))
-                else:
-                    return "(Developer) No function name has been declared, unable to pass args"
+                # Call the function that the AI wants to call
+                function_response = _call_func(function_name, function_to_call, function_args, response_message)
 
-                if function_name == "run_python_code":
-                    return f"Success! The code provided was  {response_message.get('function_call').get('arguments')}"
+                # if function response was a message to be returned to chat, return it
+                if type(function_response) is str:
+                    return function_response
 
                 # Step 4: send the info on the function call and function response to GPT
                 chat_history.append(response_message)  # extend conversation with assistant's reply
@@ -251,6 +273,8 @@ def run_convo_with_function_calls_and_explanation(chat_history, model, max_token
 
         else:
             logging.debug(response_message)
+            if ERROR:
+                return response_message.get("content") + _check_error(response_message)
             return response_message.get("content")
 
 
