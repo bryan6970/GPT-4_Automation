@@ -106,7 +106,7 @@ use_python_combobox.current(use_python_options.index(hyperparameters["use_python
 use_python_combobox.grid(row=2, column=1, padx=(10, 0), sticky="w")
 
 # Maximum tokens
-max_tokens_label = ttk.Label(frame, font=roboto_font, text="Max Response Tokens:")
+max_tokens_label = ttk.Label(frame, font=roboto_font, text="Max Tokens:")
 max_tokens_label.grid(row=3, column=0, sticky="w")
 max_tokens_entry = ttk.Entry(frame, font=roboto_font, )
 max_tokens_entry.insert(0, hyperparameters["max_tokens"])
