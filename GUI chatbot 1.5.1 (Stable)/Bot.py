@@ -246,7 +246,7 @@ def run_convo_with_function_calls_and_explanation(chat_history, model, max_token
                 function_response = _call_func(function_name, function_to_call, function_args, response_message)
 
                 # if function response was a message to be returned to chat, return it
-                if type(function_response) is str:
+                if function_response == "(Developer) No function name has been declared, unable to pass args":
                     return function_response
 
                 # Step 4: send the info on the function call and function response to GPT
@@ -263,7 +263,7 @@ def run_convo_with_function_calls_and_explanation(chat_history, model, max_token
                     messages=chat_history,
                 )  # get a new response from GPT where it can see the function response
 
-                logging.log(second_response)
+                logging.debug(second_response)
 
                 return second_response["choices"][0]["message"].get("content")
 
