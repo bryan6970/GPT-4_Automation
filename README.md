@@ -7,4 +7,4 @@ Using GPT-4 to do automation!!
 ```shell
 pip install -r requirements.txt
 ```
-3. Run the main.py script
+3. Run the main.py script (in the stable version)
