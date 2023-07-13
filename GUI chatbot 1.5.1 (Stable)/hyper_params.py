@@ -83,7 +83,7 @@ frame.pack()
 # Model selection
 model_label = ttk.Label(frame, font=roboto_font, text="Model:")
 model_label.grid(row=0, column=0, sticky="w")
-models = ["gpt-3.5-turbo", "gpt-3.5-16k", "gpt-4", "gpt-4-32k"]
+models = ["gpt-3.5-turbo", "gpt-3.5-turbo-16k", "gpt-4", "gpt-4-32k"]
 model_combobox = ttk.Combobox(frame, font=roboto_font, values=models, state="readonly")
 model_combobox.current(models.index(hyperparameters["model"]))
 model_combobox.bind("<<ComboboxSelected>>", set_appropriate_max_token)

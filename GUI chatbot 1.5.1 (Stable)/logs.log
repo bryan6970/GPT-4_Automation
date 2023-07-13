@@ -14695,3 +14695,53 @@ DEBUG:root:{
   }
 }
 DEBUG:root:
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo-16k", "messages": [{"role": "system", "content": "You are a helpful assistant\\n"}, {"role": "assistant", "content": "Hyperparameters loaded!"}, {"role": "user", "content": "\\nexplain this article https://platform.openai.com/docs/models/gpt-3-5\\n"}], "max_tokens": 3000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=884 request_id=4f4c149ae87fe25aa521a4b8ca85566e response_code=200
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): platform.openai.com:443
+DEBUG:urllib3.connectionpool:https://platform.openai.com:443 "GET /docs/models/gpt-3-5 HTTP/1.1" 200 None
+DEBUG:root:html OpenAI Platform You need to enable JavaScript to run this app.
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo-16k", "messages": [{"role": "system", "content": "You are a helpful assistant\\n"}, {"role": "assistant", "content": "Hyperparameters loaded!"}, {"role": "user", "content": "\\nexplain this article https://platform.openai.com/docs/models/gpt-3-5\\n"}, {"role": "assistant", "content": null, "function_call": {"name": "extract_text_from_website", "arguments": "{\\n  \\"url\\": \\"https://platform.openai.com/docs/models/gpt-3-5\\"\\n}"}}, {"role": "function", "name": "extract_text_from_website", "content": "html OpenAI Platform You need to enable JavaScript to run this app."}]}' message='Post details'
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=834 request_id=4dc31941e0f39442ba023c6104488486 response_code=200
+DEBUG:root:{
+  "id": "chatcmpl-7bi0r6kYBt0gb5wzwuLM08NMxmOMr",
+  "object": "chat.completion",
+  "created": 1689221677,
+  "model": "gpt-3.5-turbo-16k-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I apologize, but it seems that I am unable to access and extract the content of the article from the given URL. However, I can still provide you with a general explanation of GPT-3.5, if you'd like."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 98,
+    "completion_tokens": 48,
+    "total_tokens": 146
+  }
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo-16k", "messages": [{"role": "assistant", "content": "Hyperparameters loaded!"}, {"role": "user", "content": "\\nexplain this article https://platform.openai.com/docs/models/gpt-3-5\\n"}, {"role": "assistant", "content": "I apologize, but it seems that I am unable to access and extract the content of the article from the given URL. However, I can still provide you with a general explanation of GPT-3.5, if you\'d like."}, {"role": "user", "content": "\\nSure, go ahead\\n"}], "max_tokens": 3000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=4419 request_id=86fe8b4951630515beaad7ce06a31721 response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "GPT-3.5, which stands for \"Generative Pre-trained Transformer 3.5,\" is a language model developed by OpenAI. It is an advanced version of the GPT series, which aims to generate human-like text based on a given prompt.\n\nThe GPT-3.5 model utilizes a deep learning architecture called a transformer, which is particularly effective in handling sequential data like text. This architecture allows the model to understand and generate coherent and contextually relevant responses.\n\nGPT-3.5 is trained on a vast amount of text data from the internet and can perform a variety of language tasks, including language translation, text completion, question-answering, and more. It has been trained on a diverse range of topics and can generate high-quality text that is often indistinguishable from human-generated text.\n\nThe model has 175 billion parameters, making it one of the largest language models ever created. This large parameter size gives GPT-3.5 a remarkable ability to understand and generate text across various domains and tasks.\n\nThrough the OpenAI API, developers can access GPT-3.5 to integrate its capabilities into their own applications, services, or products. This allows them to leverage the power of the language model in their own projects, providing more advanced natural language processing capabilities.\n\nOverall, GPT-3.5 represents a significant advancement in the field of natural language processing and opens up new possibilities for generating human-like text and improving language-related applications."
+}
