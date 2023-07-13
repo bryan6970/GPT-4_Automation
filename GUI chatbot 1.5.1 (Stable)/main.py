@@ -66,9 +66,9 @@ def open_hyperparameters_window() -> None:
     print(hyperparameters["saved"])
 
     if hyperparameters["saved"]:
-        display_message("Bot: Hyperparameters loaded!")
+        display_message("System: Hyperparameters loaded!")
     else:
-        display_message("Bot: Hyperparameters were not saved!")
+        display_message("System: Hyperparameters were not saved!")
 
     hyperparameters["saved"] = False
 

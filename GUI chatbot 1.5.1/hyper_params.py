@@ -5,8 +5,6 @@ import json
 from tkinter import Tk, Label, Entry
 from tkinter.font import Font
 
-hyperparameters: dict = {}
-
 
 def save_hyperparameters() -> None:
     global hyperparameters
@@ -64,10 +62,8 @@ def set_appropriate_max_token(event: tk.Event) -> None:
 
 
 # load hyperparams
-for argument in sys.argv[1:]:
-    print(argument, file=sys.stderr)
-    key, value = argument.split("=")
-    hyperparameters[key] = value
+with open("hyperparameters.json", "r") as f:
+    hyperparameters = json.load(f)
 
 # Create the hyperparameters window
 root = tk.Tk()
@@ -106,7 +102,7 @@ use_python_combobox.current(use_python_options.index(hyperparameters["use_python
 use_python_combobox.grid(row=2, column=1, padx=(10, 0), sticky="w")
 
 # Maximum tokens
-max_tokens_label = ttk.Label(frame, font=roboto_font, text="Max Tokens:")
+max_tokens_label = ttk.Label(frame, font=roboto_font, text="Max response Tokens:")
 max_tokens_label.grid(row=3, column=0, sticky="w")
 max_tokens_entry = ttk.Entry(frame, font=roboto_font, )
 max_tokens_entry.insert(0, hyperparameters["max_tokens"])
@@ -156,3 +152,6 @@ frame.grid_rowconfigure(11, weight=1)
 frame.grid_columnconfigure(1, weight=1)
 
 root.mainloop()
+
+
+print('hi')

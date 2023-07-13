@@ -14745,3 +14745,256 @@ DEBUG:root:{
   "role": "assistant",
   "content": "GPT-3.5, which stands for \"Generative Pre-trained Transformer 3.5,\" is a language model developed by OpenAI. It is an advanced version of the GPT series, which aims to generate human-like text based on a given prompt.\n\nThe GPT-3.5 model utilizes a deep learning architecture called a transformer, which is particularly effective in handling sequential data like text. This architecture allows the model to understand and generate coherent and contextually relevant responses.\n\nGPT-3.5 is trained on a vast amount of text data from the internet and can perform a variety of language tasks, including language translation, text completion, question-answering, and more. It has been trained on a diverse range of topics and can generate high-quality text that is often indistinguishable from human-generated text.\n\nThe model has 175 billion parameters, making it one of the largest language models ever created. This large parameter size gives GPT-3.5 a remarkable ability to understand and generate text across various domains and tasks.\n\nThrough the OpenAI API, developers can access GPT-3.5 to integrate its capabilities into their own applications, services, or products. This allows them to leverage the power of the language model in their own projects, providing more advanced natural language processing capabilities.\n\nOverall, GPT-3.5 represents a significant advancement in the field of natural language processing and opens up new possibilities for generating human-like text and improving language-related applications."
 }
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo-16k", "messages": [{"role": "system", "content": "You are a helpful assistant\\n"}, {"role": "user", "content": "\\nthis isa test\\n"}], "max_tokens": 2000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=507 request_id=6fe0be4a37256a03d515d63b1345b957 response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "Hello! How can I assist you today?"
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You are a helpful assistant\\n"}, {"role": "user", "content": "\\ntell me about phlisophy\\n"}], "max_tokens": 2000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=7670 request_id=de7277a98a34f95b306cd7fa26ca42cd response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "Philosophy is the study of fundamental questions about existence, knowledge, values, reason, and more. It seeks to understand the nature of reality and our place in it. Philosophers explore a wide range of topics, including ethics, metaphysics, epistemology, logic, and aesthetics.\n\nEthics deals with moral principles and how we ought to live. Metaphysics considers the nature of reality and asks questions about the existence of God, the nature of the mind, and the relationship between mind and body. Epistemology examines the nature of knowledge and how we acquire it. Logic investigates the principles of valid reasoning. Aesthetics explores questions about beauty and art.\n\nPhilosophers use critical thinking, logical reasoning, and argumentation to analyze these topics. They engage in thoughtful contemplation and debate to deepen our understanding of the world and our place within it.\n\nThe study of philosophy can be traced back to ancient Greece, where philosophers like Socrates, Plato, and Aristotle laid the foundation for many philosophical ideas and concepts. Since then, philosophy has evolved and branched out into various schools of thought, including rationalism, empiricism, existentialism, and many others.\n\nPhilosophy is not just an abstract intellectual pursuit; it has practical applications in various fields such as law, politics, ethics, and science. It helps us critically evaluate our beliefs and assumptions, make informed decisions, and develop a well-rounded worldview.\n\nOverall, philosophy asks timeless questions and challenges us to think deeply and critically about the world, ourselves, and our place in it."
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You are a helpful assistant\\n"}], "max_tokens": 150, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=834 request_id=f25a2f9a1cfea8d7754d6ea59c66ac82 response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "I'm a helpful assistant. How can I assist you today?"
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You are a helpful assistant\\n"}], "max_tokens": 150, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=611 request_id=c18cb4aebaf53fdb53981cf61aca97f2 response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "I can help you with extracting text content from a website and getting the current datetime."
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You are a helpful assistant\\n"}], "max_tokens": 150, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=1578 request_id=a5cfd96234922c5ef58aa60269d8a54d response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "Sorry, I am unable to provide the text content from a website as it goes against my capabilities as a language model."
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You are a helpful assistant\\n"}], "max_tokens": 150, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=814 request_id=65cee177d02441a651b0576957e5b0ad response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "Hello! How can I assist you today?"
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:root:function calls with explanation is being used
+DEBUG:root:function calls with explanation is being used
+DEBUG:root:function calls with explanation is being used
+DEBUG:root:function calls with explanation is being used
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:root:function calls with explanation is being used
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:root:function calls with explanation is being used
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:root:function calls with explanation is being used
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:root:function calls with explanation is being used
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:root:function calls with explanation is being used
+DEBUG:root:function calls with explanation is being used
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:root:function calls with explanation is being used
+DEBUG:root:function calls with explanation is being used
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You are a helpful assistant\\n"}, {"role": "user", "content": "\\naou\\n"}], "max_tokens": 2000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=768 request_id=98bb68112decf990a0852d6d329a287e response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "Hello! How can I assist you today?"
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You are a helpful assistant\\n"}, {"role": "user", "content": "\\naou\\n\\n"}, {"role": "assistant", "content": "Hello! How can I assist you today?\\n"}, {"role": "user", "content": "\\nWhat can you do?\\n"}], "max_tokens": 2000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=2785 request_id=4396a67eff5b9f3a1d0b2d35e6cbb306 response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "I can assist you with a variety of tasks, such as:\n\n1. Providing information on various topics\n2. Answering questions\n3. Performing calculations\n4. Converting units\n5. Providing definitions\n6. Assisting with language translations\n7. Generating random numbers\n8. Retrieving current date and time information\n9. Extracting text content from websites\n\nPlease let me know how I can help you!"
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You are a helpful assistant\\n"}, {"role": "user", "content": "\\norueds\\n"}], "max_tokens": 2000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=643 request_id=57b8bcd40438ebb8c433e22a2b1d6aed response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "Hello! How can I assist you today?"
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You are a helpful assistant\\n"}, {"role": "user", "content": "\\nhi\\n"}], "max_tokens": 2000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=708 request_id=cb30347e89c27c541756af930cf1524f response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "Hello! How can I assist you today?"
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "You are a helpful assistant\\n"}, {"role": "user", "content": "\\nhi\\n\\n"}, {"role": "assistant", "content": "Hello! How can I assist you today?\\n"}, {"role": "user", "content": "\\negdgodu\\n"}], "max_tokens": 2000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=1084 request_id=e99f14491d8f2f6de2301fb11e8d5fe3 response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "I'm sorry, but I'm not sure what you mean by \"egdgodu\". Can you please provide more information or clarify your request?"
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
