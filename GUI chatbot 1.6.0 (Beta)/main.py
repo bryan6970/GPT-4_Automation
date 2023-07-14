@@ -123,7 +123,7 @@ def open_hyperparameters_window() -> None:
     root_.title("Hyperparameters")
     root_.configure(background="#1C1C1C")
 
-    roboto_font_ = Font(family="Roboto", size=15)
+    roboto_font_ = Font(family="Roboto", size=10)
 
     # Create a frame to hold the hyperparameters
     frame = ttk.Frame(root_, padding=20)
@@ -272,12 +272,24 @@ def remove_message(text_widget: tk.Text) -> None:
     text_widget.configure(state='disabled')  # Disable editing
 
 
+def delete_word(event):
+    # Get the current cursor position
+    cursor_position = input_text.index(tk.INSERT)
+
+    if event.keysym == "BackSpace":
+        # Delete the word before the cursor
+        input_text.delete("insert-1c wordstart", cursor_position)
+    elif event.keysym == "Delete":
+        # Delete the word before the cursor
+        input_text.delete(cursor_position, "insert-1c wordend")
+
+
 # Create the main window
 root: tk.Tk = tk.Tk()
 root.title("Chat App")
 root.configure(background="#1C1C1C")
 
-roboto_font = Font(family="Roboto", size=10)
+arial_font = Font(family="Arial", size=8)
 segoe_UI_font = Font(family="Segoe UI", size=10)
 
 # Set the window logo
@@ -304,30 +316,40 @@ input_frame.grid(row=1, column=0, sticky="ew", padx=10, pady=10)
 # Create an input text widget
 input_text: tk.Text = tk.Text(input_frame, wrap=tk.WORD, font=segoe_UI_font, bg="#282828", fg="#FFFFFF",
                               height=2)
-input_text.bind("<Key>", lambda event: input_text.configure(
-    height=int(input_text.index('end-1c').split('.')[0])))  # Make the textbox size increase with input
-input_text.bind("<Return>", lambda event: input_text.configure(
-    height=int(input_text.index('end-1c').split('.')[0])))  # Make the textbox size increase with input
 
-input_text.grid(row=0, column=0, sticky="ew")
+# Add a vertical scrollbar
+scrollbar = tk.Scrollbar(input_frame, command=input_text.yview)
+scrollbar.grid(row=0, column=1, sticky="ns")
+
+# Configure the Text widget to use the scrollbar
+input_text.configure(yscrollcommand=scrollbar.set)
 
 input_text.bind("<FocusIn>", set_border_color)  # Set border color on focus
 input_text.bind("<FocusOut>", unset_border_color)  # Unset border color when focus is lost
 input_text.bind("<Return>", send_message)  # Send message on Enter key
+
+# Bind Ctrl + Backspace and Ctrl + Delete to delete the whole word
+input_text.bind("<Control-BackSpace>", delete_word)
+input_text.bind("<Control-Delete>", delete_word)
+
+max_lines = 20  # max lines that the text box can go to
+# Increase textbox size with text
+input_text.bind("<Key>", lambda event: input_text.configure(
+    height=min(max(2, int(input_text.index('end-1c').split('.')[0])), max_lines)))
 
 # Change the color of the text indicator to white
 input_text.configure(insertbackground="#FFFFFF", highlightthickness=0)
 input_text.grid(row=0, column=0, sticky="ew")
 
 # Create a send button
-send_button: tk.Button = tk.Button(input_frame, font=roboto_font, text="Send", command=send_message)
-send_button.grid(row=0, column=1, padx=(5, 0), sticky="ew")
+send_button: tk.Button = tk.Button(input_frame, font=arial_font, text="Send", command=send_message)
+send_button.grid(row=0, column=2, padx=(5, 0), sticky="ew")
 
 # Configure column weight to make it scale with window size
 input_frame.grid_columnconfigure(0, weight=1)
 
 # Create the "hyper params" button
-hyper_button: tk.Button = tk.Button(root, font=roboto_font, text="Edit hyperparameters",
+hyper_button: tk.Button = tk.Button(root, font=arial_font, text="Edit hyperparameters",
                                     command=open_hyperparameters_window,
                                     bg="#282828",
                                     fg="#FFFFFF", activebackground="#1C1C1C", activeforeground="#FFFFFF")

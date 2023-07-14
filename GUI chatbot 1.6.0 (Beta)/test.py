@@ -61,6 +61,12 @@ root.grid_rowconfigure(0, weight=1)
 root.mainloop()
 """
 
+string = """input_text.bind("<Key>", lambda event: input_text.configure(
+    height=int(input_text.index('end-1c').split('.')[0])))  # Make the textbox size increase with input
+input_text.bind("<Return>", lambda event: input_text.configure(
+    height=int(input_text.index('end-1c').split('.')[0]) + 1))  # Make the textbox size increase with input
+"""
+
 string = string.replace("\n", ";")
 
 print(string)
