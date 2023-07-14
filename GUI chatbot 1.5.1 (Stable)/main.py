@@ -10,6 +10,7 @@ from tkinter import Tk, Label, Entry
 from tkinter.font import Font
 
 # Configure logging level
+
 logging.basicConfig(filename="logs.log", level=logging.DEBUG)
 
 PATH_TO_IMAGE: str = r"../Images/GPT.png"
