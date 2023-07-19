@@ -211,7 +211,7 @@ def open_hyperparameters_window() -> None:
 
 
 def send_message(event: tk.Event = None) -> None:
-    # 8 is when the the enter key is being pressed
+    # 8 is when the enter key is being pressed
     if event.state != 8:
         return None
 
