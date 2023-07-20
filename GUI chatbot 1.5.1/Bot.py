@@ -13,12 +13,13 @@ from bs4 import BeautifulSoup
 # Configure logging level
 logging.basicConfig(filename="logs.log", level=logging.DEBUG)
 
+
 try:
-    openai.api_key = os.environ.get("OPEN_AI_API_TOKEN")
+    openai.api_key = os.environ.get("OPEN_AI_API_KEY")
 except Exception as e:
     logging.error(f"Error setting OpenAI API key: {e}")
     messagebox.showerror("Error", "Failed to set OpenAI API key. Ensure that the OpenAI API key is under "
-                                  "OPEN_AI_API_TOKEN in your system environment variables, "
+                                  "OPEN_AI_API_KEY in your system environment variables, "
                                   "and then restart your computer")
     sys.exit()
 
