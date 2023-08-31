@@ -15085,3 +15085,1873 @@ DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
 DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
 DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
 DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:Pure chat is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-4", "messages": [{"role": "user", "content": "\\nfor the element with xpath \\"//*[@id=\\"body\\"]/div/div/div[1]/shade/div/div[3]/div/div/detail/div/div[2]/calculated-fields/div/div[2]/auto-complete/div/div/div[6]/div[1]/div/div/div/div[5]/div/pre/span\\"\\n\\nI need to create 4 elements\\n\\nElement 1\\n\\n{\\n<span class=\\" cm-metric-text\\">SUM</span>\\n}\\n\\nAnd then \\"(\\"\\n\\nAnd Element 2 {\\n<div class=\\"cm-field-name cm-dimension\\"><span>Link Clicks</span></div>}\\n\\nAnd then \\")/\\"\\n\\nElement 3{<span class=\\" cm-metric-text\\">SUM</span>}\\n\\nAnd then \\"(\\"\\n\\nElement 4{<span class=\\"CodeMirror-widget\\" role=\\"presentation\\"><div class=\\"cm-field-name cm-dimension\\"><span>Impressions</span></div></span>}\\n\\nAnd then \\")\\"\\n}\\n\\n\\nThe text that was inputted for this result is \\"SUM(Link Clicks)/SUM(Impressions)\\". Write a function that takes in the xpath and the text, and then runs Javascript code in order to append all of these elements inside\\n"}], "max_tokens": 3000, "n": 1, "stop": null, "temperature": 1.0}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=68550 request_id=8e336f471defaa0cfe6b15d3cc41fee8 response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "To accomplish this, we will first need to create a new script tag, then create a function inside that script tag which will select the parent element using the xpath provided, and then append the new HTML elements to the parent element.\n\nHere is a simple solution in JavaScript where the parent element is referenced as `parentElement`.\n\n```\n// Define a function\nfunction createElements(xpath, text) {\n  // Select the parent element\n  let parentElement = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;  \n  \n  // Split the text into an array\n  let textArr = text.split('/');\n\n  // Create Element 1\n  let elem1 = document.createElement('span');\n  elem1.className = 'cm-metric-text';\n  elem1.textContent = textArr[0].split('(')[0]; // SUM\n\n  // Create \"(\"\n  let openBracket = document.createTextNode('(');\n  \n  // Create Element 2\n  let elem2 = document.createElement('div');\n  elem2.className = 'cm-field-name cm-dimension';\n  elem2.innerHTML = `<span>${textArr[0].split('(')[1]}</span>`; // 'Link Clicks'\n  \n  // Create \")/\"\n  let slash = document.createTextNode(')/');\n  \n  // Create Element 3\n  let elem3 = document.createElement('span');\n  elem3.className = 'cm-metric-text';\n  elem3.textContent = textArr[1].split('(')[0]; // 'SUM'\n\n  // Create \"(\"\n  let openBracket2 = document.createTextNode('(');\n  \n  // Create Element 4\n  let elem4 = document.createElement('span');\n  elem4.className = 'CodeMirror-widget';\n  elem4.setAttribute('role', 'presentation');\n  elem4.innerHTML = `<div class=\"cm-field-name cm-dimension\">\n                      <span>${textArr[1].split('(')[1].replace(')', '')}</span>\n                     </div>`; // Impressions'\n                     \n  // Create \")\"\n  let closeBracket = document.createTextNode(')');\n  \n  // Append the elements\n  parentElement.append(elem1, openBracket, elem2, slash, elem3, openBracket2, elem4, closeBracket);\n}\n\nlet xpath = \"your xpath goes here\";\nlet text = \"SUM(Link Clicks)/SUM(Impressions)\";\ncreateElements(xpath, text);\n```\n\nPlease note that this solution does not cover all the edge cases since the text input is assumed to always follow the \"SUM(Link Clicks)/SUM(Impressions)\" pattern. It might not work as expected if the input varies."
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\ngive me the code to install this pakage from the website. https://pypi.org/project/codetext/\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=2157 request_id=94c063ab1e700223621fc039b4083d9b response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "To install the \"codetext\" package from the website https://pypi.org/project/codetext/, you can use the following code:\n\n```bash\npip install codetext\n```\n\nMake sure you have Python and pip installed on your system before running this command."
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\ngive me the code to install this pakage from the website. https://pypi.org/project/codetext/\\n\\n"}, {"role": "assistant", "content": "To install the \\"codetext\\" package from the website https://pypi.org/project/codetext/, you can use the following code:\\n\\n```bash\\npip install codetext\\n```\\n\\nMake sure you have Python and pip installed on your system before running this command.\\n"}, {"role": "user", "content": "\\nuse the -i flag. i\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=3874 request_id=e4435db47ebd66c46a797149bb0ca630 response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "To install the \"codetext\" package from the website https://pypi.org/project/codetext/ using a specific package index URL, you can use the following code:\n\n```bash\npip install -i <package-index-url> codetext\n```\n\nReplace `<package-index-url>` with the URL of the package index you want to use. For example, if you want to use the PyPI package index, the command would be:\n\n```bash\npip install -i https://pypi.org/simple/ codetext\n```\n\nMake sure you have Python and pip installed on your system before running this command."
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "assistant", "content": "To install the \\"codetext\\" package from the website https://pypi.org/project/codetext/, you can use the following code:\\n\\n```bash\\npip install codetext\\n```\\n\\nMake sure you have Python and pip installed on your system before running this command.\\n"}, {"role": "user", "content": "\\nuse the -i flag. i\\n\\n"}, {"role": "assistant", "content": "To install the \\"codetext\\" package from the website https://pypi.org/project/codetext/ using a specific package index URL, you can use the following code:\\n\\n```bash\\npip install -i <package-index-url> codetext\\n```\\n\\nReplace `<package-index-url>` with the URL of the package index you want to use. For example, if you want to use the PyPI package index, the command would be:\\n\\n```bash\\npip install -i https://pypi.org/simple/ codetext\\n```\\n\\nMake sure you have Python and pip installed on your system before running this command.\\n"}, {"role": "user", "content": "\\n(venv) PS C:\\\\Users\\\\thacu\\\\PycharmProjects\\\\GPT-4_Automation> pip install -i \\\\n https://pypi.org/project/codetext CodeText \\\\n Looking in indexes: \\\\n  https://pypi.org/project/codetext \\\\n ERROR: Could not find a version that satisfies the requirement CodeText (from versions: none) \\\\n ERROR: No matching distribution found for CodeText\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=4092 request_id=8b1ec92d28be06ca227da4f0219b4c43 response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "To install the \"codetext\" package from the website https://pypi.org/project/codetext using a specific package index URL, you can use the following command:\n\n```bash\npip install -i https://pypi.org/simple/ codetext\n```\n\nMake sure to remove the line breaks (`\\n`) and extra spaces in the command. The command should be a single line without any line breaks or unnecessary spaces. Here's the corrected command:\n\n```bash\npip install -i https://pypi.org/simple/ codetext\n```\n\nMake sure you have Python and pip installed on your system before running this command."
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\n(venv) PS C:\\\\Users\\\\thacu\\\\PycharmProjects\\\\GPT-4_Automation> pip install -i https://pypi.org/project/codetext CodeText\\nLooking in indexes: https://pypi.org/project/codetext\\nERROR: Could not find a version that satisfies the requirement CodeText (from versions: none)\\nERROR: No matching distribution found for CodeText\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=1526 request_id=88fce6803e06f61f881ba53167c812b8 response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "It seems that there is no package called \"CodeText\" available on the Python Package Index (PyPI). Please make sure you have spelled the package name correctly or try searching for an alternative package."
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\n(venv) PS C:\\\\Users\\\\thacu\\\\PycharmProjects\\\\GPT-4_Automation> pip install -i https://pypi.org/project/codetext CodeText\\nLooking in indexes: https://pypi.org/project/codetext\\nERROR: Could not find a version that satisfies the requirement CodeText (from versions: none)\\nERROR: No matching distribution found for CodeText\\n\\n"}, {"role": "assistant", "content": "It seems that there is no package called \\"CodeText\\" available on the Python Package Index (PyPI). Please make sure you have spelled the package name correctly or try searching for an alternative package.\\n"}, {"role": "user", "content": "\\ncan you check the link to the project and confirm if it\'s there?\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=2108 request_id=cceedb8053aadea2dcb1958184b5f727 response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "Apologies for the confusion. I cannot browse the internet or directly access external websites. However, you can check the link to the project yourself by visiting the PyPI website (https://pypi.org/project/codetext) and searching for \"codetext\". If the package exists, you will be able to find it there."
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "assistant", "content": "It seems that there is no package called \\"CodeText\\" available on the Python Package Index (PyPI). Please make sure you have spelled the package name correctly or try searching for an alternative package.\\n"}, {"role": "user", "content": "\\ncan you check the link to the project and confirm if it\'s there?\\n\\n"}, {"role": "assistant", "content": "Apologies for the confusion. I cannot browse the internet or directly access external websites. However, you can check the link to the project yourself by visiting the PyPI website (https://pypi.org/project/codetext) and searching for \\"codetext\\". If the package exists, you will be able to find it there.\\n"}, {"role": "user", "content": "\\nyou can use the extract text from website function\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=990 request_id=c90a494c8cf3f3140753c29d9aacaeba response_code=200
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): pypi.org:443
+DEBUG:urllib3.connectionpool:https://pypi.org:443 "GET /project/codetext HTTP/1.1" 301 215
+DEBUG:urllib3.connectionpool:https://pypi.org:443 "GET /project/codetext/ HTTP/1.1" 200 12001
+DEBUG:root:
+ html 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ codetext · PyPI 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  Accessibility: this link should always be the first piece of content inside the body 
+ Skip to main content 
+ 
+      Switch to mobile version
+     
+ 
+  Add browser warning. Will show for ie9 and below  
+ [if IE]>
+      <div class="notification-bar notification-bar--warning" role="status">
+        <span class="notification-bar__icon">
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+          <span class="sr-only">Warning</span>
+        </span>
+        <span class="notification-bar__message">You are using an unsupported browser, upgrade to a newer version.</span>
+      </div>
+      <![endif] 
+ 
+ 
+ 
+ 
+ Warning 
+ 
+ Some features may not work without JavaScript. Please try enabling it if you encounter problems. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Search PyPI 
+ 
+ 
+ 
+ Search 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Help 
+ Sponsors 
+ Log in 
+ Register 
+ 
+ 
+ 
+ 
+      Menu
+       
+ 
+ 
+ 
+ 
+ Help 
+ Sponsors 
+ Log in 
+ Register 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Search PyPI 
+ 
+ 
+ 
+ Search 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+        codetext 0.0.8
+       
+ 
+ 
+ pip install codetext 
+ 
+ 
+ Copy PIP instructions 
+ 
+ 
+ 
+ 
+ 
+ 
+ Latest version 
+ 
+ 
+        Released:  
+  Aug 17, 2023
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Multilingual programming language parsers for the extract from raw source code into multiple levels of pair data 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Navigation 
+ 
+ 
+ 
+ 
+ 
+                  Project description
+                 
+ 
+ 
+ 
+ 
+                  Release history
+                 
+ 
+ 
+ 
+ 
+                  Download files
+                 
+ 
+ 
+ 
+ 
+ 
+ Project links 
+ 
+ 
+ 
+ Bug Tracker
+       
+ 
+ 
+ 
+ Homepage
+       
+ 
+ 
+ 
+ 
+ Statistics 
+ 
+    GitHub statistics:
+     
+ 
+ 
+ 
+ Stars: 
+ 
+ 
+ 
+ 
+ 
+ 
+ Forks: 
+ 
+ 
+ 
+ 
+ 
+ 
+ Open issues: 
+ 
+ 
+ 
+ 
+ 
+ 
+ Open PRs: 
+ 
+ 
+ 
+ 
+ 
+ 
+    View statistics for this project via  Libraries.io , or by using  our public dataset on Google BigQuery 
+ 
+ 
+ 
+ Meta 
+ License:  MIT License 
+ Author:   Dung Manh Nguyen 
+ 
+ Requires:  Python >=3.6
+   
+ 
+ 
+ Maintainers 
+ 
+ 
+ 
+ 
+ 
+ 
+            manhdung20112000
+           
+ 
+ 
+ 
+ 
+ Classifiers 
+ 
+ 
+ License 
+ 
+ 
+ 
+            OSI Approved :: MIT License
+           
+ 
+ 
+ 
+ 
+ Operating System 
+ 
+ 
+ 
+            OS Independent
+           
+ 
+ 
+ 
+ 
+ Programming Language 
+ 
+ 
+ 
+            Python :: 3
+           
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  mobile menu  
+ 
+ 
+ 
+ 
+ 
+                Project description
+               
+ 
+ 
+ 
+ 
+                Project details
+               
+ 
+ 
+ 
+ 
+              Release history
+             
+ 
+ 
+ 
+ 
+                Download files
+               
+ 
+ 
+ 
+ 
+ Project description 
+ 
+ 
+ 
+ 
+ 
+______________________________________________________________________
+
+ 
+ 
+ 
+ Branch 
+ Build 
+ Unittest 
+ Release 
+ License 
+ 
+ 
+ 
+ 
+ main 
+ 
+ 
+   
+ 
+ 
+ 
+ 
+ 
+ 
+ Code-Text parser  is a custom  tree-sitter 's grammar parser for extract raw source code into class and function level. We support 10 common programming languages: 
+ 
+ Python 
+ Java 
+ JavaScript 
+ PHP 
+ Ruby 
+ Rust 
+ C 
+ C++ 
+ C# 
+ Go 
+ 
+ Installation 
+ codetext  package require python 3.7 or above and tree-sitter. Setup environment and install dependencies manually from source: 
+ git   https://github.com/FSoft-AI4Code/CodeText-parser.git ;   cd   CodeText-parser
+pip   install   -r   requirement.txt
+pip   install   -e   .
+ 
+ Or install via  pypi  package: 
+ pip   install   codetext
+ 
+ Getting started 
+ codetext  CLI Usage 
+ codetext   [ options ]   [ PATH   or   FILE ]   ...
+ 
+ For example extract any python file in  src/  folder: 
+ codetext   src/   --language   Python
+ 
+ If you want to store extracted class and function, use flag  --json  and give a path to destination file: 
+ codetext   src/   --language   Python   --output_file   ./python_report.json   --json
+ 
+ Options 
+ positional   arguments:
+    paths                   list   of   the   filename/paths.
+
+optional   arguments:
+    -h,   --help              show   this   help   message   and   exit 
+    --version               show   program ' s   version   number   and   exit 
+    -l   LANGUAGE,   --language   LANGUAGE
+                          Target   the   programming   languages   you   want   to   analyze.
+    -o   OUTPUT_FILE,   --output_file   OUTPUT_FILE
+                          Output   file   ( e.g   report.json ) .
+    --json                  Generate   json   output   as   a   transform   of   the   default
+                          output
+    --verbose               Print   progress   bar
+ 
+ Example 
+ File circle_linkedlist.py analyzed:
+==================================================
+Number of class    : 1
+Number of function : 2
+--------------------------------------------------
+
+Class summary:
++-----+---------+-------------+
+|   # | Class   | Arguments   |
++=====+=========+=============+
+|   0 | Node    |             |
++-----+---------+-------------+
+
+Class analyse: Node
++-----+---------------+-------------+--------+---------------+
+| #   | Method name   | Paramters   | Type   | Return type   |
++=====+===============+=============+========+===============+
+| 0   | __init__      | self        |        |               |
+|     |               | data        |        |               |
++-----+---------------+-------------+--------+---------------+
+
+Function analyse:
++-----+-----------------+-------------+--------+---------------+
+| #   | Function name   | Paramters   | Type   | Return type   |
++=====+=================+=============+========+===============+
+| 0   | push            | head_ref    |        | Node          |
+|     |                 | data        | Any    | Node          |
+| 1   | countNodes      | head        | Node   |               |
++-----+-----------------+-------------+--------+---------------+
+ 
+ Using  codetext  as Python module 
+ Build your language 
+ codetext  need tree-sitter language file (i.e  .so  file) to work properly. You can manually compile language ( see more ) or automatically build use our pre-defined function (the  <language>.so  will saved in a folder name  /tree-sitter/ ): 
+ from   codetext.utils   import   build_language 
+
+ language   =   'rust' 
+ build_language ( language ) 
+
+ # INFO:utils:Not found tree-sitter-rust, attempt clone from github 
+ # Cloning into 'tree-sitter-rust'... 
+ # remote: Enumerating objects: 2835, done. ... 
+ # INFO:utils:Attempt to build Tree-sitter Language for rust and store in .../tree-sitter/rust.so 
+ 
+ Using Language Parser 
+ Each programming language we supported are correspond to a custome  language_parser . (e.g Python is  PythonParser() ).  language_parser  take input as raw source code and use breadth-first search to traveser through all syntax node. The class, method or stand-alone function will then be collected: 
+ from   codetext.utils   import   parse_code 
+
+ raw_code   =   """ 
+     /** 
+     * Sum of 2 number 
+     * @param a int number 
+     * @param b int number 
+     */ 
+     double sum2num(int a, int b) { 
+         return a + b; 
+     }  
+ """ 
+
+ # Auto parse code into tree-sitter.Tree 
+ root   =   parse_code ( raw_code ,   'cpp' ) 
+ root_node   =   root . root_node 
+ 
+ Get all function nodes inside a specific node: 
+ from   codetext.utils.parser   import   CppParser 
+
+ function_list   =   CppParser . get_function_list ( root_node ) 
+ print ( function_list ) 
+
+ # [<Node type=function_definition, start_point=(6, 0), end_point=(8, 1)>] 
+ 
+ Get function metadata (e.g. function's name, parameters, (optional) return type) 
+ function   =   function_list [ 0 ] 
+
+ metadata   =   CppParser . get_function_metadata ( function ,   raw_code ) 
+
+ # {'identifier': 'sum2num', 'parameters': {'a': 'int', 'b': 'int'}, 'type': 'double'} 
+ 
+ Get docstring (documentation) of a function 
+ docstring   =   CppParser . get_docstring ( function ,   code_sample ) 
+
+ # ['Sum of 2 number \n@param a int number \n@param b int number'] 
+ 
+ We also provide 2 command for extract class object 
+ class_list   =   CppParser . get_class_list ( root_node ) 
+ # and 
+ metadata   =   CppParser . get_metadata_list ( root_node ) 
+ 
+ Limitations 
+ codetext  heavly depends on tree-sitter syntax: 
+ 
+ 
+ Since we use tree-sitter grammar to extract desire node like function, class, function's name (identifier) or class's argument list, etc.  codetext  is easily vulnerable by tree-sitter update patch or syntax change in future. 
+ 
+ 
+ While we try our best to capture all possiblity, there are still plenty out there. We open for community to contribute into this project. 
+ 
+ 
+ 
+ 
+ 
+ Project details 
+ 
+ Project links 
+ 
+ 
+ 
+ Bug Tracker
+       
+ 
+ 
+ 
+ Homepage
+       
+ 
+ 
+ 
+ 
+ Statistics 
+ 
+    GitHub statistics:
+     
+ 
+ 
+ 
+ Stars: 
+ 
+ 
+ 
+ 
+ 
+ 
+ Forks: 
+ 
+ 
+ 
+ 
+ 
+ 
+ Open issues: 
+ 
+ 
+ 
+ 
+ 
+ 
+ Open PRs: 
+ 
+ 
+ 
+ 
+ 
+ 
+    View statistics for this project via  Libraries.io , or by using  our public dataset on Google BigQuery 
+ 
+ 
+ 
+ Meta 
+ License:  MIT License 
+ Author:   Dung Manh Nguyen 
+ 
+ Requires:  Python >=3.6
+   
+ 
+ 
+ Maintainers 
+ 
+ 
+ 
+ 
+ 
+ 
+            manhdung20112000
+           
+ 
+ 
+ 
+ 
+ Classifiers 
+ 
+ 
+ License 
+ 
+ 
+ 
+            OSI Approved :: MIT License
+           
+ 
+ 
+ 
+ 
+ Operating System 
+ 
+ 
+ 
+            OS Independent
+           
+ 
+ 
+ 
+ 
+ Programming Language 
+ 
+ 
+ 
+            Python :: 3
+           
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Release history 
+ 
+ Release notifications  |
+               RSS feed  
+ 
+ 
+ 
+ 
+ 
+ This version 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+                  0.0.8
+                  
+                  
+                 
+ 
+ 
+  Aug 17, 2023
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+                  0.0.7
+                  
+                  
+                 
+ 
+ 
+  Jul 5, 2023
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+                  0.0.6
+                  
+                  
+                 
+ 
+ 
+  Feb 9, 2023
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+                  0.0.5
+                  
+                  
+                 
+ 
+ 
+  Jan 9, 2023
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+                  0.0.4
+                  
+                  
+                 
+ 
+ 
+  Dec 2, 2022
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+                  0.0.3
+                  
+                  
+                 
+ 
+ 
+  Dec 2, 2022
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+                  0.0.2
+                  
+                  
+                 
+ 
+ 
+  Nov 25, 2022
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+                  0.0.1
+                  
+                  
+                 
+ 
+ 
+  Nov 9, 2022
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Download files 
+ Download the file for your platform. If you're not sure which to choose, learn more about  installing packages . 
+ 
+              Source Distribution
+             
+ 
+ 
+ 
+ 
+ 
+ 
+          codetext-0.0.8.tar.gz
+         
+        (60.0 kB
+         view hashes )
+         
+          Uploaded  
+  Aug 17, 2023
+ 
+ source 
+ 
+ 
+ 
+ 
+              Built Distribution
+             
+ 
+ 
+ 
+ 
+ 
+ 
+          codetext-0.0.8-py3-none-any.whl
+         
+        (85.2 kB
+         view hashes )
+         
+          Uploaded  
+  Aug 17, 2023
+ 
+ py3 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Close 
+ 
+ 
+ 
+ Hashes  for codetext-0.0.8.tar.gz
+       
+ 
+ Hashes for codetext-0.0.8.tar.gz 
+ 
+ 
+ Algorithm 
+ Hash digest 
+ 
+ 
+ 
+ 
+ 
+ SHA256 
+ 2f3687bdff900e437446e77893f67b042ef3b324003eddcd0c3ad2aefc7cc87b 
+ 
+ 
+                Copy
+               
+ 
+ 
+ 
+ MD5 
+ caade4e09fe032c2bb58e91adeb10d6b 
+ 
+ 
+                Copy
+               
+ 
+ 
+ 
+ BLAKE2b-256 
+ 45342c3173ef23bd90394d6754095e03feb515ce296ba330a0de84805541a614 
+ 
+ 
+                Copy
+               
+ 
+ 
+ 
+ 
+ 
+ 
+ Close 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Close 
+ 
+ 
+ 
+ Hashes  for codetext-0.0.8-py3-none-any.whl
+       
+ 
+ Hashes for codetext-0.0.8-py3-none-any.whl 
+ 
+ 
+ Algorithm 
+ Hash digest 
+ 
+ 
+ 
+ 
+ 
+ SHA256 
+ 6d1fd637e89dab8fa01830a161d3f210dc872230e747086f808d1361b426528b 
+ 
+ 
+                Copy
+               
+ 
+ 
+ 
+ MD5 
+ 67392f6117c975185f77ade0dd856ec6 
+ 
+ 
+                Copy
+               
+ 
+ 
+ 
+ BLAKE2b-256 
+ 1358eb757c5cbf26a8d979aa595c02eb3640373b2f15df0a7f347bed182d0909 
+ 
+ 
+                Copy
+               
+ 
+ 
+ 
+ 
+ 
+ 
+ Close 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Help 
+ 
+ 
+ Installing packages 
+ Uploading packages 
+ User guide 
+ Project name retention 
+ FAQs 
+ 
+ 
+ 
+ 
+ About PyPI 
+ 
+ 
+ PyPI on Twitter 
+ Infrastructure dashboard 
+ Statistics 
+ Logos & trademarks 
+ Our sponsors 
+ 
+ 
+ 
+ 
+ Contributing to PyPI 
+ 
+ 
+ Bugs and feedback 
+ Contribute on GitHub 
+ Translate PyPI 
+ Sponsor PyPI 
+ Development credits 
+ 
+ 
+ 
+ 
+ Using PyPI 
+ 
+ 
+ Code of conduct 
+ Report security issue 
+ Privacy policy 
+ Terms of use 
+ Acceptable Use Policy 
+ 
+ 
+ 
+ 
+ 
+ 
+ Status: 
+ all systems operational 
+ 
+ 
+          Developed and maintained by the Python community, for the Python community.
+           
+ Donate today! 
+ 
+ 
+          
+"PyPI", "Python Package Index", and the blocks logos are registered  trademarks  of the  Python Software Foundation .
+ 
+ 
+ 
+          © 2023  Python Software Foundation 
+ Site map 
+ 
+ 
+ 
+ 
+          Switch to desktop version
+         
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+              English
+             
+ 
+ 
+ 
+              español
+             
+ 
+ 
+ 
+              français
+             
+ 
+ 
+ 
+              \u65e5\u672c\u8a9e
+             
+ 
+ 
+ 
+              português (Brasil)
+             
+ 
+ 
+ 
+              \u0443\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430
+             
+ 
+ 
+ 
+              \u0395\u03bb\u03bb\u03b7\u03bd\u03b9\u03ba\u03ac
+             
+ 
+ 
+ 
+              Deutsch
+             
+ 
+ 
+ 
+              \u4e2d\u6587 (\u7b80\u4f53)
+             
+ 
+ 
+ 
+              \u4e2d\u6587 (\u7e41\u9ad4)
+             
+ 
+ 
+ 
+              \u0440\u0443\u0441\u0441\u043a\u0438\u0439
+             
+ 
+ 
+ 
+              \u05e2\u05d1\u05e8\u05d9\u05ea
+             
+ 
+ 
+ 
+              esperanto
+             
+ 
+ 
+ 
+ 
+ 
+ Supported by 
+ 
+ 
+ 
+ AWS 
+ 
+          
+          
+            Cloud computing and Security Sponsor
+          
+           
+ 
+ 
+ 
+ Datadog 
+ 
+          
+          
+            Monitoring
+          
+           
+ 
+ 
+ 
+ Fastly 
+ 
+          
+          
+            CDN
+          
+           
+ 
+ 
+ 
+ Google 
+ 
+          
+          
+            Download Analytics
+          
+           
+ 
+ 
+ 
+ Microsoft 
+ 
+          
+          
+            PSF Sponsor
+          
+           
+ 
+ 
+ 
+ Pingdom 
+ 
+          
+          
+            Monitoring
+          
+           
+ 
+ 
+ 
+ Sentry 
+ 
+          
+          
+            Error logging
+          
+           
+ 
+ 
+ 
+ StatusPage 
+ 
+          
+          
+            Status page
+          
+           
+ 
+ 
+ 
+
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "assistant", "content": "It seems that there is no package called \\"CodeText\\" available on the Python Package Index (PyPI). Please make sure you have spelled the package name correctly or try searching for an alternative package.\\n"}, {"role": "user", "content": "\\ncan you check the link to the project and confirm if it\'s there?\\n\\n"}, {"role": "assistant", "content": "Apologies for the confusion. I cannot browse the internet or directly access external websites. However, you can check the link to the project yourself by visiting the PyPI website (https://pypi.org/project/codetext) and searching for \\"codetext\\". If the package exists, you will be able to find it there.\\n"}, {"role": "user", "content": "\\nyou can use the extract text from website function\\n"}, {"role": "assistant", "content": null, "function_call": {"name": "extract_text_from_website", "arguments": "{\\n  \\"url\\": \\"https://pypi.org/project/codetext\\"\\n}"}}, {"role": "function", "name": "extract_text_from_website", "content": "\\n html \\n \\n \\n \\n \\n \\n \\n \\n codetext \\u00b7 PyPI \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n  Accessibility: this link should always be the first piece of content inside the body \\n Skip to main content \\n \\n      Switch to mobile version\\n     \\n \\n  Add browser warning. Will show for ie9 and below  \\n [if IE]>\\n      <div class=\\"notification-bar notification-bar--warning\\" role=\\"status\\">\\n        <span class=\\"notification-bar__icon\\">\\n          <i class=\\"fa fa-exclamation-triangle\\" aria-hidden=\\"true\\"></i>\\n          <span class=\\"sr-only\\">Warning</span>\\n        </span>\\n        <span class=\\"notification-bar__message\\">You are using an unsupported browser, upgrade to a newer version.</span>\\n      </div>\\n      <![endif] \\n \\n \\n \\n \\n Warning \\n \\n Some features may not work without JavaScript. Please try enabling it if you encounter problems. \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n Search PyPI \\n \\n \\n \\n Search \\n \\n \\n \\n \\n \\n \\n \\n Help \\n Sponsors \\n Log in \\n Register \\n \\n \\n \\n \\n      Menu\\n       \\n \\n \\n \\n \\n Help \\n Sponsors \\n Log in \\n Register \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n Search PyPI \\n \\n \\n \\n Search \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n        codetext 0.0.8\\n       \\n \\n \\n pip install codetext \\n \\n \\n Copy PIP instructions \\n \\n \\n \\n \\n \\n \\n Latest version \\n \\n \\n        Released:  \\n  Aug 17, 2023\\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n Multilingual programming language parsers for the extract from raw source code into multiple levels of pair data \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n Navigation \\n \\n \\n \\n \\n \\n                  Project description\\n                 \\n \\n \\n \\n \\n                  Release history\\n                 \\n \\n \\n \\n \\n                  Download files\\n                 \\n \\n \\n \\n \\n \\n Project links \\n \\n \\n \\n Bug Tracker\\n       \\n \\n \\n \\n Homepage\\n       \\n \\n \\n \\n \\n Statistics \\n \\n    GitHub statistics:\\n     \\n \\n \\n \\n Stars: \\n \\n \\n \\n \\n \\n \\n Forks: \\n \\n \\n \\n \\n \\n \\n Open issues: \\n \\n \\n \\n \\n \\n \\n Open PRs: \\n \\n \\n \\n \\n \\n \\n    View statistics for this project via  Libraries.io , or by using  our public dataset on Google BigQuery \\n \\n \\n \\n Meta \\n License:  MIT License \\n Author:   Dung Manh Nguyen \\n \\n Requires:  Python >=3.6\\n   \\n \\n \\n Maintainers \\n \\n \\n \\n \\n \\n \\n            manhdung20112000\\n           \\n \\n \\n \\n \\n Classifiers \\n \\n \\n License \\n \\n \\n \\n            OSI Approved :: MIT License\\n           \\n \\n \\n \\n \\n Operating System \\n \\n \\n \\n            OS Independent\\n           \\n \\n \\n \\n \\n Programming Language \\n \\n \\n \\n            Python :: 3\\n           \\n \\n \\n \\n \\n \\n \\n \\n \\n  mobile menu  \\n \\n \\n \\n \\n \\n                Project description\\n               \\n \\n \\n \\n \\n                Project details\\n               \\n \\n \\n \\n \\n              Release history\\n             \\n \\n \\n \\n \\n                Download files\\n               \\n \\n \\n \\n \\n Project description \\n \\n \\n \\n \\n \\n______________________________________________________________________\\n\\n \\n \\n \\n Branch \\n Build \\n Unittest \\n Release \\n License \\n \\n \\n \\n \\n main \\n \\n \\n   \\n \\n \\n \\n \\n \\n \\n Code-Text parser  is a custom  tree-sitter \'s grammar parser for extract raw source code into class and function level. We support 10 common programming languages: \\n \\n Python \\n Java \\n JavaScript \\n PHP \\n Ruby \\n Rust \\n C \\n C++ \\n C# \\n Go \\n \\n Installation \\n codetext  package require python 3.7 or above and tree-sitter. Setup environment and install dependencies manually from source: \\n git   https://github.com/FSoft-AI4Code/CodeText-parser.git ;   cd   CodeText-parser\\npip   install   -r   requirement.txt\\npip   install   -e   .\\n \\n Or install via  pypi  package: \\n pip   install   codetext\\n \\n Getting started \\n codetext  CLI Usage \\n codetext   [ options ]   [ PATH   or   FILE ]   ...\\n \\n For example extract any python file in  src/  folder: \\n codetext   src/   --language   Python\\n \\n If you want to store extracted class and function, use flag  --json  and give a path to destination file: \\n codetext   src/   --language   Python   --output_file   ./python_report.json   --json\\n \\n Options \\n positional   arguments:\\n    paths                   list   of   the   filename/paths.\\n\\noptional   arguments:\\n    -h,   --help              show   this   help   message   and   exit \\n    --version               show   program \' s   version   number   and   exit \\n    -l   LANGUAGE,   --language   LANGUAGE\\n                          Target   the   programming   languages   you   want   to   analyze.\\n    -o   OUTPUT_FILE,   --output_file   OUTPUT_FILE\\n                          Output   file   ( e.g   report.json ) .\\n    --json                  Generate   json   output   as   a   transform   of   the   default\\n                          output\\n    --verbose               Print   progress   bar\\n \\n Example \\n File circle_linkedlist.py analyzed:\\n==================================================\\nNumber of class    : 1\\nNumber of function : 2\\n--------------------------------------------------\\n\\nClass summary:\\n+-----+---------+-------------+\\n|   # | Class   | Arguments   |\\n+=====+=========+=============+\\n|   0 | Node    |             |\\n+-----+---------+-------------+\\n\\nClass analyse: Node\\n+-----+---------------+-------------+--------+---------------+\\n| #   | Method name   | Paramters   | Type   | Return type   |\\n+=====+===============+=============+========+===============+\\n| 0   | __init__      | self        |        |               |\\n|     |               | data        |        |               |\\n+-----+---------------+-------------+--------+---------------+\\n\\nFunction analyse:\\n+-----+-----------------+-------------+--------+---------------+\\n| #   | Function name   | Paramters   | Type   | Return type   |\\n+=====+=================+=============+========+===============+\\n| 0   | push            | head_ref    |        | Node          |\\n|     |                 | data        | Any    | Node          |\\n| 1   | countNodes      | head        | Node   |               |\\n+-----+-----------------+-------------+--------+---------------+\\n \\n Using  codetext  as Python module \\n Build your language \\n codetext  need tree-sitter language file (i.e  .so  file) to work properly. You can manually compile language ( see more ) or automatically build use our pre-defined function (the  <language>.so  will saved in a folder name  /tree-sitter/ ): \\n from   codetext.utils   import   build_language \\n\\n language   =   \'rust\' \\n build_language ( language ) \\n\\n # INFO:utils:Not found tree-sitter-rust, attempt clone from github \\n # Cloning into \'tree-sitter-rust\'... \\n # remote: Enumerating objects: 2835, done. ... \\n # INFO:utils:Attempt to build Tree-sitter Language for rust and store in .../tree-sitter/rust.so \\n \\n Using Language Parser \\n Each programming language we supported are correspond to a custome  language_parser . (e.g Python is  PythonParser() ).  language_parser  take input as raw source code and use breadth-first search to traveser through all syntax node. The class, method or stand-alone function will then be collected: \\n from   codetext.utils   import   parse_code \\n\\n raw_code   =   \\"\\"\\" \\n     /** \\n     * Sum of 2 number \\n     * @param a int number \\n     * @param b int number \\n     */ \\n     double sum2num(int a, int b) { \\n         return a + b; \\n     }  \\n \\"\\"\\" \\n\\n # Auto parse code into tree-sitter.Tree \\n root   =   parse_code ( raw_code ,   \'cpp\' ) \\n root_node   =   root . root_node \\n \\n Get all function nodes inside a specific node: \\n from   codetext.utils.parser   import   CppParser \\n\\n function_list   =   CppParser . get_function_list ( root_node ) \\n print ( function_list ) \\n\\n # [<Node type=function_definition, start_point=(6, 0), end_point=(8, 1)>] \\n \\n Get function metadata (e.g. function\'s name, parameters, (optional) return type) \\n function   =   function_list [ 0 ] \\n\\n metadata   =   CppParser . get_function_metadata ( function ,   raw_code ) \\n\\n # {\'identifier\': \'sum2num\', \'parameters\': {\'a\': \'int\', \'b\': \'int\'}, \'type\': \'double\'} \\n \\n Get docstring (documentation) of a function \\n docstring   =   CppParser . get_docstring ( function ,   code_sample ) \\n\\n # [\'Sum of 2 number \\\\n@param a int number \\\\n@param b int number\'] \\n \\n We also provide 2 command for extract class object \\n class_list   =   CppParser . get_class_list ( root_node ) \\n # and \\n metadata   =   CppParser . get_metadata_list ( root_node ) \\n \\n Limitations \\n codetext  heavly depends on tree-sitter syntax: \\n \\n \\n Since we use tree-sitter grammar to extract desire node like function, class, function\'s name (identifier) or class\'s argument list, etc.  codetext  is easily vulnerable by tree-sitter update patch or syntax change in future. \\n \\n \\n While we try our best to capture all possiblity, there are still plenty out there. We open for community to contribute into this project. \\n \\n \\n \\n \\n \\n Project details \\n \\n Project links \\n \\n \\n \\n Bug Tracker\\n       \\n \\n \\n \\n Homepage\\n       \\n \\n \\n \\n \\n Statistics \\n \\n    GitHub statistics:\\n     \\n \\n \\n \\n Stars: \\n \\n \\n \\n \\n \\n \\n Forks: \\n \\n \\n \\n \\n \\n \\n Open issues: \\n \\n \\n \\n \\n \\n \\n Open PRs: \\n \\n \\n \\n \\n \\n \\n    View statistics for this project via  Libraries.io , or by using  our public dataset on Google BigQuery \\n \\n \\n \\n Meta \\n License:  MIT License \\n Author:   Dung Manh Nguyen \\n \\n Requires:  Python >=3.6\\n   \\n \\n \\n Maintainers \\n \\n \\n \\n \\n \\n \\n            manhdung20112000\\n           \\n \\n \\n \\n \\n Classifiers \\n \\n \\n License \\n \\n \\n \\n            OSI Approved :: MIT License\\n           \\n \\n \\n \\n \\n Operating System \\n \\n \\n \\n            OS Independent\\n           \\n \\n \\n \\n \\n Programming Language \\n \\n \\n \\n            Python :: 3\\n           \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n Release history \\n \\n Release notifications  |\\n               RSS feed  \\n \\n \\n \\n \\n \\n This version \\n \\n \\n \\n \\n \\n \\n \\n                  0.0.8\\n                  \\n                  \\n                 \\n \\n \\n  Aug 17, 2023\\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n                  0.0.7\\n                  \\n                  \\n                 \\n \\n \\n  Jul 5, 2023\\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n                  0.0.6\\n                  \\n                  \\n                 \\n \\n \\n  Feb 9, 2023\\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n                  0.0.5\\n                  \\n                  \\n                 \\n \\n \\n  Jan 9, 2023\\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n                  0.0.4\\n                  \\n                  \\n                 \\n \\n \\n  Dec 2, 2022\\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n                  0.0.3\\n                  \\n                  \\n                 \\n \\n \\n  Dec 2, 2022\\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n                  0.0.2\\n                  \\n                  \\n                 \\n \\n \\n  Nov 25, 2022\\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n                  0.0.1\\n                  \\n                  \\n                 \\n \\n \\n  Nov 9, 2022\\n \\n \\n \\n \\n \\n \\n \\n Download files \\n Download the file for your platform. If you\'re not sure which to choose, learn more about  installing packages . \\n \\n              Source Distribution\\n             \\n \\n \\n \\n \\n \\n \\n          codetext-0.0.8.tar.gz\\n         \\n        (60.0 kB\\n         view hashes )\\n         \\n          Uploaded  \\n  Aug 17, 2023\\n \\n source \\n \\n \\n \\n \\n              Built Distribution\\n             \\n \\n \\n \\n \\n \\n \\n          codetext-0.0.8-py3-none-any.whl\\n         \\n        (85.2 kB\\n         view hashes )\\n         \\n          Uploaded  \\n  Aug 17, 2023\\n \\n py3 \\n \\n \\n \\n \\n \\n \\n \\n \\n Close \\n \\n \\n \\n Hashes  for codetext-0.0.8.tar.gz\\n       \\n \\n Hashes for codetext-0.0.8.tar.gz \\n \\n \\n Algorithm \\n Hash digest \\n \\n \\n \\n \\n \\n SHA256 \\n 2f3687bdff900e437446e77893f67b042ef3b324003eddcd0c3ad2aefc7cc87b \\n \\n \\n                Copy\\n               \\n \\n \\n \\n MD5 \\n caade4e09fe032c2bb58e91adeb10d6b \\n \\n \\n                Copy\\n               \\n \\n \\n \\n BLAKE2b-256 \\n 45342c3173ef23bd90394d6754095e03feb515ce296ba330a0de84805541a614 \\n \\n \\n                Copy\\n               \\n \\n \\n \\n \\n \\n \\n Close \\n \\n \\n \\n \\n \\n \\n \\n Close \\n \\n \\n \\n Hashes  for codetext-0.0.8-py3-none-any.whl\\n       \\n \\n Hashes for codetext-0.0.8-py3-none-any.whl \\n \\n \\n Algorithm \\n Hash digest \\n \\n \\n \\n \\n \\n SHA256 \\n 6d1fd637e89dab8fa01830a161d3f210dc872230e747086f808d1361b426528b \\n \\n \\n                Copy\\n               \\n \\n \\n \\n MD5 \\n 67392f6117c975185f77ade0dd856ec6 \\n \\n \\n                Copy\\n               \\n \\n \\n \\n BLAKE2b-256 \\n 1358eb757c5cbf26a8d979aa595c02eb3640373b2f15df0a7f347bed182d0909 \\n \\n \\n                Copy\\n               \\n \\n \\n \\n \\n \\n \\n Close \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n Help \\n \\n \\n Installing packages \\n Uploading packages \\n User guide \\n Project name retention \\n FAQs \\n \\n \\n \\n \\n About PyPI \\n \\n \\n PyPI on Twitter \\n Infrastructure dashboard \\n Statistics \\n Logos & trademarks \\n Our sponsors \\n \\n \\n \\n \\n Contributing to PyPI \\n \\n \\n Bugs and feedback \\n Contribute on GitHub \\n Translate PyPI \\n Sponsor PyPI \\n Development credits \\n \\n \\n \\n \\n Using PyPI \\n \\n \\n Code of conduct \\n Report security issue \\n Privacy policy \\n Terms of use \\n Acceptable Use Policy \\n \\n \\n \\n \\n \\n \\n Status: \\n all systems operational \\n \\n \\n          Developed and maintained by the Python community, for the Python community.\\n           \\n Donate today! \\n \\n \\n          \\n\\"PyPI\\", \\"Python Package Index\\", and the blocks logos are registered  trademarks  of the  Python Software Foundation .\\n \\n \\n \\n          \\u00a9 2023  Python Software Foundation \\n Site map \\n \\n \\n \\n \\n          Switch to desktop version\\n         \\n \\n \\n \\n \\n \\n \\n \\n              English\\n             \\n \\n \\n \\n              espa\\u00f1ol\\n             \\n \\n \\n \\n              fran\\u00e7ais\\n             \\n \\n \\n \\n              \\u65e5\\u672c\\u8a9e\\n             \\n \\n \\n \\n              portugu\\u00eas (Brasil)\\n             \\n \\n \\n \\n              \\u0443\\u043a\\u0440\\u0430\\u0457\\u043d\\u0441\\u044c\\u043a\\u0430\\n             \\n \\n \\n \\n              \\u0395\\u03bb\\u03bb\\u03b7\\u03bd\\u03b9\\u03ba\\u03ac\\n             \\n \\n \\n \\n              Deutsch\\n             \\n \\n \\n \\n              \\u4e2d\\u6587 (\\u7b80\\u4f53)\\n             \\n \\n \\n \\n              \\u4e2d\\u6587 (\\u7e41\\u9ad4)\\n             \\n \\n \\n \\n              \\u0440\\u0443\\u0441\\u0441\\u043a\\u0438\\u0439\\n             \\n \\n \\n \\n              \\u05e2\\u05d1\\u05e8\\u05d9\\u05ea\\n             \\n \\n \\n \\n              esperanto\\n             \\n \\n \\n \\n \\n \\n Supported by \\n \\n \\n \\n AWS \\n \\n          \\n          \\n            Cloud computing and Security Sponsor\\n          \\n           \\n \\n \\n \\n Datadog \\n \\n          \\n          \\n            Monitoring\\n          \\n           \\n \\n \\n \\n Fastly \\n \\n          \\n          \\n            CDN\\n          \\n           \\n \\n \\n \\n Google \\n \\n          \\n          \\n            Download Analytics\\n          \\n           \\n \\n \\n \\n Microsoft \\n \\n          \\n          \\n            PSF Sponsor\\n          \\n           \\n \\n \\n \\n Pingdom \\n \\n          \\n          \\n            Monitoring\\n          \\n           \\n \\n \\n \\n Sentry \\n \\n          \\n          \\n            Error logging\\n          \\n           \\n \\n \\n \\n StatusPage \\n \\n          \\n          \\n            Status page\\n          \\n           \\n \\n \\n \\n"}]}' message='Post details'
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=2445 request_id=844ffceac3ec0f2e105d8058d9274616 response_code=200
+DEBUG:root:{
+  "id": "chatcmpl-7talAwkmAJ0JUxYsht0qhwq5zNDxO",
+  "object": "chat.completion",
+  "created": 1693483700,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Based on the text extracted from the project link, it appears that the \"codetext\" package does exist on PyPI. The latest version is 0.0.8, released on August 17, 2023. You can install it using the command \"pip install codetext\"."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3475,
+    "completion_tokens": 61,
+    "total_tokens": 3536
+  }
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "assistant", "content": "Apologies for the confusion. I cannot browse the internet or directly access external websites. However, you can check the link to the project yourself by visiting the PyPI website (https://pypi.org/project/codetext) and searching for \\"codetext\\". If the package exists, you will be able to find it there.\\n"}, {"role": "user", "content": "\\nyou can use the extract text from website function\\n\\n"}, {"role": "assistant", "content": "Based on the text extracted from the project link, it appears that the \\"codetext\\" package does exist on PyPI. The latest version is 0.0.8, released on August 17, 2023. You can install it using the command \\"pip install codetext\\".\\n"}, {"role": "user", "content": "\\nI got this errror. (venv) PS C:\\\\Users\\\\thacu\\\\PycharmProjects\\\\GPT-4_Automation> pip install -i https://pypi.org/project/codetext CodeText\\nLooking in indexes: https://pypi.org/project/codetext\\nERROR: Could not find a version that satisfies the requirement CodeText (from versions: none)\\nERROR: No matching distribution found for CodeText\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=2893 request_id=4431a86b8ebc021d45b6cd6dd4e53f7c response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "I apologize for the confusion earlier. It seems that there is no package named \"CodeText\" available on PyPI. Make sure you have entered the package name correctly. If you are trying to install the \"codetext\" package, you can use the following command:\n\n```\npip install codetext\n```\n\nPlease note that the package name is case-sensitive. Make sure to use lowercase letters for the package name."
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+INFO:googleapiclient.discovery_cache:file_cache is only supported with oauth2client<4.0.0
+DEBUG:googleapiclient.discovery:URL being requested: GET https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=2023-08-31T14%3A00%3A00%2B00%3A00&timeMax=2023-08-31T17%3A00%3A00%2B00%3A00&singleEvents=true&orderBy=startTime&alt=json
+DEBUG:google_auth_httplib2:Making request: POST https://oauth2.googleapis.com/token
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\ncheck what events I have on my gcalendar from 930 today to 10pm today.\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "bool", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 400 223
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=5 request_id=5206320940064dd622fd02a1ab01211e response_code=400
+INFO:openai:error_code=None error_message="Invalid schema for function 'create_google_calendar_event': 'bool' is not valid under any of the given schemas" error_param=None error_type=invalid_request_error message='OpenAI API error received' stream_error=False
+ERROR:root:Error with OpenAI API key: Invalid schema for function 'create_google_calendar_event': 'bool' is not valid under any of the given schemas
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\ncheck what events i have in my gcalander from 9 30 to 10pm\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=1816 request_id=a61f302ef9093cbb9a12c6e802facec8 response_code=200
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:Pure chat is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\nfunction_response = function_to_call(function_args). The function args is a dictionary. I want to unpack the dictionary, so the first value in the dictionary will be the first arg\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=4829 request_id=9ce475773ea14e18369f6b3826a9fb5f response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "To unpack the dictionary and pass its values as arguments to a function, you can use the double asterisk operator (**). Here's an example:\n\n```python\nfunction_response = function_to_call(**function_args)\n```\n\nThis will unpack the dictionary `function_args` and pass its values as keyword arguments to the `function_to_call` function. The keys in the dictionary will be used as argument names.\n\nFor example, if `function_args` is `{\"arg1\": 5, \"arg2\": \"hello\"}`, the function call will be equivalent to:\n\n```python\nfunction_response = function_to_call(arg1=5, arg2=\"hello\")\n```\n\nMake sure that the keys in the dictionary match the argument names expected by the `function_to_call` function."
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\ntell me what\'s on this page https://rocketleague.tracker.network/rocket-league/profile/epic/weird%20finnish/overview\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=1396 request_id=12488535d80dfb24304695463504cfac response_code=200
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): rocketleague.tracker.network:443
+DEBUG:urllib3.connectionpool:https://rocketleague.tracker.network:443 "GET /rocket-league/profile/epic/weird%20finnish/overview HTTP/1.1" 200 None
+DEBUG:root:html 
+ 
+ 
+ 
+ 
+ 
+ weird finnish's Rocket League Stats - Rocket League Tracker 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+   
+ 
+ Fortnite Valorant Apex Legends Destiny 2 Call of Duty Rainbow Six League of Legends Teamfight Tactics Battlefield PUBG Rocket League Soul Arena CS:GO Halo Infinite Bloodhunt MultiVersus Splitgate Brawlhalla For Honor Rocket Arena Overwatch V Rising Rainbow Six Mobile XDefiant Realm Royale The Division 2 Fall Guys  Get Premium   Sign In   Search  Home  My Profile  Leaderboards  Performance Leaderboards  Live Tracker Favorites Distribution Premium OBS Overlay More  Get the Apps   iOS & Android   Rocket League Tracker   Tracker Live  Loading Stats Sit tight, we're fetching the stats. Get the Mobile App We've rebuilt our mobile app from the ground up with your favorite features and games. Get Info  2023 ©  Tracker Network Advertise Privacy Policy Terms of Service Support Developer API Press Kit Rocket League is a registered trademark of Psyonix. Trademarks are the property of their respective owners. Game materials copyright Psyonix. Psyonix has not endorsed and is not responsible for this site or its content. b06f547 
+ 
+ 
+ 
+
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\ntell me what\'s on this page https://rocketleague.tracker.network/rocket-league/profile/epic/weird%20finnish/overview\\n"}, {"role": "assistant", "content": null, "function_call": {"name": "extract_text_from_website", "arguments": "{\\n  \\"url\\": \\"https://rocketleague.tracker.network/rocket-league/profile/epic/weird%20finnish/overview\\"\\n}"}}, {"role": "function", "name": "extract_text_from_website", "content": "html \\n \\n \\n \\n \\n \\n weird finnish\'s Rocket League Stats - Rocket League Tracker \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n \\n   \\n \\n Fortnite Valorant Apex Legends Destiny 2 Call of Duty Rainbow Six League of Legends Teamfight Tactics Battlefield PUBG Rocket League Soul Arena CS:GO Halo Infinite Bloodhunt MultiVersus Splitgate Brawlhalla For Honor Rocket Arena Overwatch V Rising Rainbow Six Mobile XDefiant Realm Royale The Division 2 Fall Guys  Get Premium   Sign In   Search  Home  My Profile  Leaderboards  Performance Leaderboards  Live Tracker Favorites Distribution Premium OBS Overlay More  Get the Apps   iOS & Android   Rocket League Tracker   Tracker Live  Loading Stats Sit tight, we\'re fetching the stats. Get the Mobile App We\'ve rebuilt our mobile app from the ground up with your favorite features and games. Get Info  2023 \\u00a9  Tracker Network Advertise Privacy Policy Terms of Service Support Developer API Press Kit Rocket League is a registered trademark of Psyonix. Trademarks are the property of their respective owners. Game materials copyright Psyonix. Psyonix has not endorsed and is not responsible for this site or its content. b06f547 \\n \\n \\n \\n"}]}' message='Post details'
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=2211 request_id=bb20d4c1a0e386cf06f9a8857206073a response_code=200
+DEBUG:root:{
+  "id": "chatcmpl-7tcGLTF2hyGyC7hjwzLXBsNfEPMZ3",
+  "object": "chat.completion",
+  "created": 1693489477,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The page you provided is the overview page of a player named \"weird finnish\" on Rocket League Tracker. The page seems to contain information about this player's Rocket League statistics. However, without further access to the website or a specific breakdown of the information on the page, it is not possible to provide a more detailed analysis."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 335,
+    "completion_tokens": 67,
+    "total_tokens": 402
+  }
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\ntell me what\'s on this page https://rocketleague.tracker.network/rocket-league/profile/epic/weird%20finnish/overview\\n\\n"}, {"role": "assistant", "content": "The page you provided is the overview page of a player named \\"weird finnish\\" on Rocket League Tracker. The page seems to contain information about this player\'s Rocket League statistics. However, without further access to the website or a specific breakdown of the information on the page, it is not possible to provide a more detailed analysis.\\n"}, {"role": "user", "content": "\\nwhat\'s on my google calender from 9 30 till 10pm?\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=823 request_id=3f3286d681eb9e134b4137e7fbc548f3 response_code=200
+DEBUG:root:type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:root:Error Object of type AttributeError is not JSON serializable
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\nwhtat\'s on my calender from 9 to 10pm\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=440 request_id=6e5fdad2a3f23fcd3e9e4eeef9eaaff0 response_code=200
+DEBUG:root:type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:root:Error Object of type AttributeError is not JSON serializable
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\nwhtat\'s on my calender from 9 to 10pm\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=435 request_id=64e356df60a40589a2cb3e963695f3e1 response_code=200
+DEBUG:root:type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:root:Error Object of type AttributeError is not JSON serializable
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\nwhtat\'s on my calender from 9 to 10pm\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=348 request_id=c8d0b3d62d59971d5ba3e4f74c2730ea response_code=200
+DEBUG:root:type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:root:Error with OpenAI API key: Object of type AttributeError is not JSON serializable
+DEBUG:root:function calls with explanation is being used
+ERROR:root:Error with OpenAI API key: cannot access local variable 'functions' where it is not associated with a value
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\nwhtat\'s on my calender from 9 to 10pm\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=538 request_id=f8c4499597ca54dc272f645f3aaf3604 response_code=200
+DEBUG:root:type object 'datetime.datetime' has no attribute 'datetime'
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\nwhtat\'s on my calender from 9 to 10pm\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=541 request_id=18b6b6b0b274b09c4753818004ee9fa3 response_code=200
+DEBUG:root:type object 'datetime.datetime' has no attribute 'datetime'
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\nwhtat\'s on my calender from 9 to 10pm\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=774 request_id=109c95852392ac137e3de0ae8e4af69e response_code=200
+DEBUG:root:type object 'datetime.datetime' has no attribute 'datetime'
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\nea\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=512 request_id=60c2b9a30d34df8eb451af59607192f2 response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "What can I assist you with?"
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\nea\\n\\n"}, {"role": "assistant", "content": "What can I assist you with?\\n"}, {"role": "user", "content": "\\nwhtat\'s on my calender from 9 to 10pm\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=572 request_id=16c0c4d19fabd562474ff7955da800b2 response_code=200
+DEBUG:root:type object 'datetime.datetime' has no attribute 'datetime'
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"content": "\\n", "role": "system"}, {"content": "\\nwhtat\'s on my calender from 9 to 10pm\\n", "role": "user"}]}' message='Post details'
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=1440 request_id=e161f35877817e2ae11fa45a21e8e5a6 response_code=200
+DEBUG:root:{
+  "id": "chatcmpl-7tcZ3nuBHsrsbFVowuERHr3ecJ1HO",
+  "object": "chat.completion",
+  "created": 1693490637,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I'm sorry, but I am an AI language model and I don't have access to your personal calendar. As a result, I'm unable to provide you with information about events on your specific calendar."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 29,
+    "completion_tokens": 41,
+    "total_tokens": 70
+  }
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "assistant", "content": "What can I assist you with?\\n"}, {"role": "user", "content": "\\nwhtat\'s on my calender from 9 to 10pm\\n\\n"}, {"role": "assistant", "content": "I\'m sorry, but I am an AI language model and I don\'t have access to your personal calendar. As a result, I\'m unable to provide you with information about events on your specific calendar.\\n"}, {"role": "user", "content": "\\nuse the functions you are given\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=577 request_id=f22daa240b4d53859198f9eb834dfdf3 response_code=200
+DEBUG:root:type object 'datetime.datetime' has no attribute 'datetime'
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"content": "\\n", "role": "system"}, {"content": "\\nwhtat\'s on my calender from 9 to 10pm\\n", "role": "user"}]}' message='Post details'
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=1345 request_id=84ce3d2455280aa3029d2555bb888864 response_code=200
+DEBUG:root:{
+  "id": "chatcmpl-7tcZKhX67Q1TkROwFuJ1X1qErs1Sp",
+  "object": "chat.completion",
+  "created": 1693490654,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I'm sorry, but I don't have access to your personal calendar. You would need to check your own calendar to see what is scheduled from 9 to 10 pm."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 29,
+    "completion_tokens": 36,
+    "total_tokens": 65
+  }
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\nwhat can you do for me?\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=4497 request_id=028b7f1f38c716363337180bbdb984f6 response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "I can help you with various tasks such as:\n\n1. Running Python code: You can provide me with Python code, and I will execute it for you.\n2. Creating Google Calendar events: I can create events in your Google Calendar with the provided event details.\n3. Checking for conflicting events: Before creating a Google Calendar event, I can check for any existing events that may overlap with the desired time.\n4. Extracting text from websites: You can provide me with a website URL, and I can extract the text content from that site.\n5. Getting the current date and time: I can provide you with the current date and time.\n\nPlease let me know what specific task you would like assistance with."
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\n"}, {"role": "user", "content": "\\nwhat can you do\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=5092 request_id=fd8d7f986d403d7a68382d47289baf96 response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "I can do the following tasks:\n\n1. Run Python code: Execute custom Python code using the `run_python_code` function.\n2. Create Google Calendar events: Create events in your Google Calendar using the `create_google_calendar_event` function.\n3. Check for event conflicts: Check if there are any conflicts with existing events in your Google Calendar when creating an event.\n4. Get existing event information: Retrieve information about existing events in your Google Calendar within a specific time range using the `get_existing_event_info` function.\n5. Extract text from websites: Extract the text content from a website using the `extract_text_from_website` function.\n6. Get the current date and time: Get the current date and time using the `get_datetime` function.\n\nLet me know if you need help with any of these tasks!"
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\nTime: 2023-08-31 22:27:48.826394"}, {"role": "user", "content": "\\nWhat time is it now?\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=538 request_id=e7a0b8693b53664eeccf1effe4ae0607 response_code=200
+DEBUG:root:type object 'datetime.datetime' has no attribute 'datetime'
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\nTime: 2023-08-31 22:28:48.087791"}, {"role": "user", "content": "\\nwhat can you do?\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=1476 request_id=f792e5c2c5aea8f25882ce4d79c48d1b response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "I can perform various tasks such as running Python code, creating Google Calendar events, extracting text from websites, and getting the current date and time. Is there anything specific you would like me to do?"
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\nTime: 2023-08-31 22:29:37.685798"}, {"role": "user", "content": "\\nwhat can you do?\\n\\n"}, {"role": "assistant", "content": "I can perform various tasks such as running Python code, creating Google Calendar events, extracting text from websites, and getting the current date and time. Is there anything specific you would like me to do?\\n"}, {"role": "user", "content": "\\nwhat time is it now?\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=609 request_id=075c6942583b15cbc4b0e067644c034d response_code=200
+DEBUG:root:type object 'datetime.datetime' has no attribute 'datetime'
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\nTime: 2023-08-31 22:30:14.732143"}, {"role": "user", "content": "\\nwhat is is the time now?\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=547 request_id=749208d777e4939ecd707aa2387ca012 response_code=200
+DEBUG:root:type object 'datetime.datetime' has no attribute 'datetime'
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\nTime: 2023-08-31 22:35:59.564994"}, {"role": "user", "content": "\\nwhat can you do?\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=5680 request_id=e5497843b1a928f854a535f375321bcc response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "I can perform various tasks. Here are some examples of what I can do:\n\n1. Run Python code: I can execute Python code using the `run_python_code` function.\n2. Create Google Calendar events: I can create events on your Google Calendar using the `create_google_calendar_event` function.\n3. Check for event conflicts: I can check if there are any conflicts with existing events on your Google Calendar when creating a new event.\n4. Get existing event information: I can retrieve information about existing events on your Google Calendar using the `get_existing_event_info` function.\n5. Extract text from a website: I can extract the text content from a website using the `extract_text_from_website` function.\n6. Get the current date and time: I can provide the current date and time using the `get_datetime` function.\n\nPlease let me know if there's anything specific you would like me to do."
+}
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\nTime: 2023-08-31 22:36:14.228125"}, {"role": "user", "content": "\\nwhat can you do?\\n\\n"}, {"role": "assistant", "content": "I can perform various tasks. Here are some examples of what I can do:\\n\\n1. Run Python code: I can execute Python code using the `run_python_code` function.\\n2. Create Google Calendar events: I can create events on your Google Calendar using the `create_google_calendar_event` function.\\n3. Check for event conflicts: I can check if there are any conflicts with existing events on your Google Calendar when creating a new event.\\n4. Get existing event information: I can retrieve information about existing events on your Google Calendar using the `get_existing_event_info` function.\\n5. Extract text from a website: I can extract the text content from a website using the `extract_text_from_website` function.\\n6. Get the current date and time: I can provide the current date and time using the `get_datetime` function.\\n\\nPlease let me know if there\'s anything specific you would like me to do.\\n"}, {"role": "user", "content": "\\nget the current date and time please\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=416 request_id=a01693b6bc39b9eb5c4a1864750adfc3 response_code=200
+DEBUG:root:type object 'datetime.datetime' has no attribute 'datetime'
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\nTime: 2023-08-31 22:38:04.767429"}, {"role": "user", "content": "\\nget the currenttime\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=483 request_id=bee22492795fa70a5a16c5630605bcab response_code=200
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\nTime: 2023-08-31 22:38:04.767429"}, {"role": "user", "content": "\\nget the currenttime\\n"}, {"role": "function", "name": "get_datetime", "content": "Invalid JSON format or error in code"}]}' message='Post details'
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\nTime: 2023-08-31 22:40:12.201830"}, {"role": "user", "content": "\\nwhat is the current time?\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=473 request_id=083932664fbdb6c7b11ec4bcd1674496 response_code=200
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:root:function calls with explanation is being used
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\nTime: 2023-08-31 22:41:01.015476"}, {"role": "user", "content": "\\nwhat is the time now\\n"}], "max_tokens": 500, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "run_python_code", "description": "runs python code with exec function", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}, {"name": "create_google_calendar_event", "description": "Create a google calendar event", "parameters": {"type": "object", "properties": {"name": {"type": "string", "description": "Name of event"}, "start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}, "check_conflict": {"type": "boolean", "description": "To check conflict with other events. True to check conflict."}}, "required": ["name", "start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "get_existing_event_info", "description": "get events in time range  from google calendar", "parameters": {"type": "object", "properties": {"start_time": {"type": "string", "description": "start time in RFC3339 format"}, "end_time": {"type": "string", "description": "end time in RFC3339 format"}}, "required": ["start_time", "end_time"]}, "return_type": {"type": "str"}}, {"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "get_datetime", "description": "Get current datetime", "parameters": {"type": "object", "properties": {}}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=525 request_id=9f9c72f0ab31284eb32c579836e26a86 response_code=200
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "system", "content": "\\nTime: 2023-08-31 22:41:01.015476"}, {"role": "user", "content": "\\nwhat is the time now\\n"}, {"role": "function", "name": "get_datetime", "content": "2023-08-31 22:41:02.508116"}]}' message='Post details'
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=576 request_id=1ad5892772fd54631040712313283300 response_code=200
+DEBUG:root:{
+  "id": "chatcmpl-7td8yMJmqqVaLBjemmJ4T5hwQSKqb",
+  "object": "chat.completion",
+  "created": 1693492864,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The current time is 22:41."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 57,
+    "completion_tokens": 9,
+    "total_tokens": 66
+  }
+}

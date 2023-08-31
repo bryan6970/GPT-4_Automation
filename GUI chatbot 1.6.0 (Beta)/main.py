@@ -1,12 +1,17 @@
+import datetime
 from tkinter import scrolledtext
 from PIL import ImageTk, Image
 import threading
 import logging
 import Bot
+import json
 import tkinter as tk
 from tkinter import ttk
-import json
 from tkinter.font import Font
+import pprint
+
+# import CodeText
+
 
 # Configure logging level
 logging.basicConfig(filename="logs.log", level=logging.DEBUG)
@@ -16,9 +21,29 @@ PATH_TO_IMAGE: str = r"../Images/GPT.png"
 with open("hyperparameters.json", "r") as file:
     hyperparameters = json.load(file)
 
-print(hyperparameters)
+pprint.pprint(hyperparameters)
 
 spliter = "g1404018thaaou"
+
+
+def commands(command) -> None:
+    if command.lower() == "$chat_history" or command.lower() == "$chathistory":
+        # Format it into the right format. Using .split function to separate messages
+        chat_history = chat_area.get("1.0", tk.END).strip().replace("Bot:", spliter + "Bot:").replace("System:",
+                                                                                                      spliter + "System:").replace(
+            "You:", spliter + "You:")
+
+        chat_history = chat_history.split(spliter)
+        display_message(f"Chat history: {chat_history}")
+
+    if command.lower() == "$hyperparams" or command.lower() == "$hyperparameters":
+        display_message(str(hyperparameters))
+        pprint.pprint(hyperparameters)
+
+    else:
+        display_message(f"{command} not found")
+
+    input_text.delete("1.0", tk.END)  # Clear the input text
 
 
 def bot_response(loading_message: tk.Text, chat_history) -> None:
@@ -59,6 +84,7 @@ def open_hyperparameters_window() -> None:
         selected_model: str = model_combobox.get()
         chat_selection: str = chat_selection_combobox.get()
         use_python: str = use_python_combobox.get()
+        include_time: str = include_time_combobox.get()
         max_tokens: int = int(max_tokens_entry.get())
         messages_in_memory: int = int(messages_in_memory_entry.get())
         temperature: float = float(temperature_entry.get())
@@ -71,6 +97,7 @@ def open_hyperparameters_window() -> None:
             "model": selected_model,
             "chat_selection": chat_selection,
             "use_python": use_python,
+            "include_time": include_time,
             "max_tokens": max_tokens,
             "messages_in_memory": messages_in_memory,
             "temperature": temperature,
@@ -82,6 +109,8 @@ def open_hyperparameters_window() -> None:
 
         with open("hyperparameters.json", "w") as f:
             json.dump(hyperparameters, f)
+
+        Bot.load_hyperparams()
 
         if by_user:
             on_closing(saved=True)
@@ -127,7 +156,7 @@ def open_hyperparameters_window() -> None:
 
     # Create a frame to hold the hyperparameters
     frame = ttk.Frame(root_, padding=20)
-    frame.pack()
+    frame.grid()
 
     # Model selection
     model_label = ttk.Label(frame, font=roboto_font_, text="Model:")
@@ -154,51 +183,59 @@ def open_hyperparameters_window() -> None:
     use_python_combobox.current(use_python_options.index(hyperparameters["use_python"]))
     use_python_combobox.grid(row=2, column=1, padx=(10, 0), sticky="w")
 
+    # Include time
+    include_time_label = ttk.Label(frame, font=roboto_font_, text="Include Time?:")
+    include_time_label.grid(row=3, column=0, sticky="w")
+    include_time_options = ["Yes", "No"]
+    include_time_combobox = ttk.Combobox(frame, font=roboto_font_, values=include_time_options, state="readonly")
+    include_time_combobox.current(include_time_options.index(hyperparameters["include_time"]))
+    include_time_combobox.grid(row=3, column=1, padx=(10, 0), sticky="w")
+
     # Maximum tokens
     max_tokens_label = ttk.Label(frame, font=roboto_font_, text="Max response Tokens:")
-    max_tokens_label.grid(row=3, column=0, sticky="w")
+    max_tokens_label.grid(row=4, column=0, sticky="w")
     max_tokens_entry = ttk.Entry(frame, font=roboto_font_, )
     max_tokens_entry.insert(0, hyperparameters["max_tokens"])
-    max_tokens_entry.grid(row=3, column=1, padx=(10, 0), sticky="w")
+    max_tokens_entry.grid(row=4, column=1, padx=(10, 0), sticky="w")
 
     # Messages in memory
     messages_in_memory_label = ttk.Label(frame, font=roboto_font_, text="Messages in memory:")
-    messages_in_memory_label.grid(row=4, column=0, sticky="w")
+    messages_in_memory_label.grid(row=5, column=0, sticky="w")
     messages_in_memory_entry = ttk.Entry(frame, font=roboto_font_)
     messages_in_memory_entry.insert(0, hyperparameters["messages_in_memory"])
-    messages_in_memory_entry.grid(row=4, column=1, padx=(10, 0), sticky="w")
+    messages_in_memory_entry.grid(row=5, column=1, padx=(10, 0), sticky="w")
 
     # Temperature
     temperature_label = ttk.Label(frame, font=roboto_font_, text="Temperature:")
-    temperature_label.grid(row=5, column=0, sticky="w")
+    temperature_label.grid(row=6, column=0, sticky="w")
     temperature_entry = ttk.Entry(frame, font=roboto_font_)
     temperature_entry.insert(0, hyperparameters["temperature"])
-    temperature_entry.grid(row=5, column=1, padx=(10, 0), sticky="w")
+    temperature_entry.grid(row=6, column=1, padx=(10, 0), sticky="w")
 
     # Pre text
     pre_text_label = ttk.Label(frame, font=roboto_font_, text="Pre-text:")
-    pre_text_label.grid(row=6, column=0, sticky="w")
+    pre_text_label.grid(row=7, column=0, sticky="w")
     pre_text_text: tk.Text = tk.Text(frame, font=roboto_font_, height=1)
     pre_text_text.insert("1.0", hyperparameters["pre_text"][:-1])
-    pre_text_text.grid(row=6, column=1, padx=(10, 0), sticky="news")
+    pre_text_text.grid(row=7, column=1, padx=(10, 0), sticky="news")
 
     # Post text
     post_text_label = ttk.Label(frame, font=roboto_font_, text="Post-text:")
-    post_text_label.grid(row=7, column=0, sticky="w")
+    post_text_label.grid(row=8, column=0, sticky="w")
     post_text_text: tk.Text = tk.Text(frame, font=roboto_font_, height=1)
     post_text_text.insert("1.0", hyperparameters["post_text"][:-1])
-    post_text_text.grid(row=7, column=1, padx=(10, 0), sticky="news")
+    post_text_text.grid(row=8, column=1, padx=(10, 0), sticky="news")
 
     # System message
     system_message_label = ttk.Label(frame, font=roboto_font_, text="System message:")
-    system_message_label.grid(row=8, column=0, sticky="w")
+    system_message_label.grid(row=9, column=0, sticky="w")
     system_message_text: tk.Text = tk.Text(frame, font=roboto_font_, height=1)
     system_message_text.insert("1.0", hyperparameters["system_message"][:-1])
-    system_message_text.grid(row=8, column=1, padx=(10, 0), sticky="news")
+    system_message_text.grid(row=9, column=1, padx=(10, 0), sticky="news")
 
     # Save button
     save_button = ttk.Button(frame, text="Save", command=save_hyperparameters)
-    save_button.grid(row=9, column=0, columnspan=2, pady=(20, 0))
+    save_button.grid(row=10, column=0, columnspan=2, pady=(20, 0))
 
     # Configure row and column weight to make text boxes expand
     frame.grid_rowconfigure(11, weight=1)
@@ -216,7 +253,12 @@ def send_message(event: tk.Event = None) -> None:
         return None
 
     message: str = input_text.get("1.0", tk.END).strip()
-    if message:
+    if not message:
+        return None
+
+    if message.startswith("$"):
+        commands(message)
+    else:
         # Display the user message in the chat area
         display_message(f"You: {message}")
 
@@ -227,8 +269,12 @@ def send_message(event: tk.Event = None) -> None:
 
         chat_history = chat_history.split(spliter)
 
-        chat_history_ = [{"role": "system",
-                          "content": hyperparameters["system_message"]}]
+        if hyperparameters["include_time"].lower() =="yes":
+            chat_history_ = [{"role": "system","content": hyperparameters["system_message"] + "Time: " + str(datetime.datetime.now())}]
+
+        else:
+            chat_history_ = [{"role": "system",
+                              "content": hyperparameters["system_message"]}]
 
         for message in chat_history:
             if message[:3] == "Bot":
@@ -238,7 +284,6 @@ def send_message(event: tk.Event = None) -> None:
                                       "content": hyperparameters["pre_text"] + message[5:] + hyperparameters[
                                           "post_text"]})
 
-        print(chat_history_)
 
         # Display "Loading..." message
         loading_message = display_message("Bot: Loading...")
@@ -257,8 +302,27 @@ def unset_border_color(event: tk.Event) -> None:
     input_text.config(highlightbackground="#1C1C1C")
 
 
+def superscript(text):
+    raise NotImplementedError
+    result = []
+    i = 0
+    while i < len(text):
+        if text[i] == '^' and i + 1 < len(text) and text[i + 1] != ' ':
+            superscripted = ''
+            i += 1  # Skip the '^' character
+            while i < len(text) and text[i] != ' ':
+                superscripted += text[i]
+                i += 1
+            result.append(f'<sup>{superscripted}</sup>')
+        else:
+            result.append(text[i])
+            i += 1
+    return ''.join(result)
+
+
 def display_message(message: str) -> tk.Text:
     chat_area.configure(state='normal')  # Enable editing
+
     chat_area.insert(tk.END, message + "\n")
     chat_area.see(tk.END)  # Auto scroll to the latest message
     chat_area.configure(state='disabled')  # Disable editing
@@ -284,13 +348,19 @@ def delete_word(event):
         input_text.delete(cursor_position, "insert-1c wordend")
 
 
+
 # Create the main window
 root: tk.Tk = tk.Tk()
 root.title("Chat App")
 root.configure(background="#1C1C1C")
 
+# Change the DPI scaling factor
+style = tk.ttk.Style()
+style.configure(".", dpi=144)  # You can adjust the DPI value as needed
+
 arial_font = Font(family="Arial", size=8)
 segoe_UI_font = Font(family="Segoe UI", size=10)
+code_font = Font(family="Monospace", size=10)
 
 # Set the window logo
 logo_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open(PATH_TO_IMAGE))
@@ -340,10 +410,6 @@ input_text.bind("<Key>", lambda event: input_text.configure(
 # Change the color of the text indicator to white
 input_text.configure(insertbackground="#FFFFFF", highlightthickness=0)
 input_text.grid(row=0, column=0, sticky="ew")
-
-# Create a send button
-send_button: tk.Button = tk.Button(input_frame, font=arial_font, text="Send", command=send_message)
-send_button.grid(row=0, column=2, padx=(5, 0), sticky="ew")
 
 # Configure column weight to make it scale with window size
 input_frame.grid_columnconfigure(0, weight=1)
