@@ -1,1 +1,0 @@
-{"model": "gpt-3.5-turbo", "chat_selection": "function calls with explanation", "use_python": "Yes", "include_time": "Yes", "max_tokens": 500, "messages_in_memory": 4, "temperature": 1.0, "pre_text": "\n", "post_text": "\n", "system_message": "\n", "saved": true}
