@@ -5,6 +5,7 @@ import json
 import logging
 import pprint
 import sys
+import tkinter.messagebox
 
 import gcsa
 import gcsa.google_calendar as gc
@@ -407,16 +408,22 @@ def run_convo(messages, model, max_tokens, temperature):
 
     model_engine = model
 
-    response = openai.ChatCompletion.create(
-        model=model_engine,
-        messages=_get_last_few_msgs(messages),
-        max_tokens=max_tokens,
-        n=1,
-        stop=None,
-        temperature=temperature,
-        functions=functions,
-        function_call="auto"
-    )
+    try:
+
+        response = openai.ChatCompletion.create(
+            model=model_engine,
+            messages=_get_last_few_msgs(messages),
+            max_tokens=max_tokens,
+            n=1,
+            stop=None,
+            temperature=temperature,
+            functions=functions,
+            function_call="auto"
+        )
+
+    except openai.error.AuthenticationError as e:
+        tkinter.messagebox.showerror("Error", e)
+        sys.exit()
 
     response_message = response["choices"][0]["message"]
 
