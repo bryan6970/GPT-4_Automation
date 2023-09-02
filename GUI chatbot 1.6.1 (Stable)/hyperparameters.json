@@ -1,0 +1,1 @@
+{"model": "gpt-3.5-turbo", "use_python": "Yes", "include_time": "Yes", "max_tokens": 2000, "messages_in_memory": 1, "temperature": 1.0, "system_message": "\n", "openai_api_key": "", "path_to_OAuth_credentials": "", "OAuth_credentials_token_save_location": "", "saved": true}
