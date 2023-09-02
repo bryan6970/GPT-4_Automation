@@ -1,4 +1,6 @@
 import datetime
+import functools
+import io
 import json
 import logging
 import pprint
@@ -35,17 +37,40 @@ def _call_func(function_name, function_to_call, function_args, response_message)
 
 if True:
 
+    def _log_call(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            caller_name = func.__name__
+            print(f"Func {caller_name} called in {__name__}")
+            return func(*args, **kwargs)
+
+        return wrapper
+
+
+    @_log_call
     def python(code):
         global ERROR
         try:
+
+            # Redirect the standard output to a StringIO object
+            output = io.StringIO()
+            sys.stdout = output
+
+            # Execute the code using exec()
             exec(code)
-            return "Code ran successfully"
+
+            # Restore the standard output
+            sys.stdout = sys.__stdout__
+
+            # Get the output from the StringIO object
+            return output.getvalue()
         except Exception as e:
             logging.debug(e)
             ERROR = e
             return e
 
 
+    @_log_call
     def extract_text_from_website(url):
         global ERROR
         try:
@@ -77,11 +102,13 @@ if True:
             return e
 
 
+    @_log_call
     def get_datetime():
         time_ = str(datetime.datetime.now())
         return time_
 
 
+    @_log_call
     def _string_to_date(input_string):
         try:
             # Parse the input string using dateutil.parser
@@ -94,6 +121,7 @@ if True:
             return str(e)
 
 
+    @_log_call
     def init_gc(creds_path, token_path):
         global gc
         gc = gcsa.google_calendar.GoogleCalendar(credentials_path=creds_path,
@@ -101,26 +129,31 @@ if True:
         return gc
 
 
+    @_log_call
     def _include_id(events):
         return [str(event) + " <ID: " + event.id + ">" for event in events]
 
 
+    @_log_call
     def get_gcalendar_events(necessary_events):
         if necessary_events > 50:
             necessary_events = 50
         return str(_include_id(gc.get_events(order_by="startTime", single_events=True))[:necessary_events])
 
 
+    @_log_call
     def search_gcalendar_events(search_key, necessary_events):
         if necessary_events > 50:
             necessary_events = 50
         return str(_include_id(gc.get_events(query=search_key))[:necessary_events])
 
 
+    @_log_call
     def get_gcalendar_events_byID(ID):
         return str(gc.get_event(ID))
 
 
+    @_log_call
     def create_event(event_summary, start_time, end_time, all_day=False):
         start, end = _string_to_date(start_time), _string_to_date(end_time)
 
@@ -138,6 +171,7 @@ if True:
         return "Event created successfully. ID: " + event.id
 
 
+    @_log_call
     def create_events(event_summaries, start_times, end_times, all_day: list):
         if len(event_summaries) == len(start_times) == len(end_times) == len(all_day):
             start_times = [_string_to_date(time) for time in start_times]
@@ -254,25 +288,25 @@ gcalendar_funcs = [{
             "type": "object",
             "properties": {
                 "event_summaries": {
-                    "type": "list",
+                    "type": "array",
                     "description": "Event names",
                     "items":
                         {"type": "string"}
                 },
                 "start_time": {
-                    "type": "list",
+                    "type": "array",
                     "description": "Time each event starts in datetime format",
                     "items":
                         {"type": "string"}
                 },
                 "end_time": {
-                    "type": "list",
+                    "type": "array",
                     "description": "Time that each event ends in datetime format",
                     "items":
                         {"type": "string"}
                 },
                 "all_day": {
-                    "type": "list",
+                    "type": "array",
                     "description": "If the event is an all day type in gcalendar",
                     "items": {
                         "type": "boolean"
@@ -293,7 +327,7 @@ gcalendar_availablefuncs = {"get_gcalendar_events": get_gcalendar_events,
 
 python_function = {
     "name": "python",
-    "description": "runs python code with exec function",
+    "description": "runs python code with exec function. Returns whatever is printed",
     "parameters": {
         "type": "object",
         "properties": {
@@ -333,6 +367,7 @@ available_functions = {
 }
 
 
+@_log_call
 def load_hyperparams():
     global hyperparameters, functions, available_functions
     with open("hyperparameters.json", "r") as f:
@@ -343,7 +378,7 @@ def load_hyperparams():
     try:
         gc = init_gc(hyperparameters["path_to_OAuth_credentials"],
                      hyperparameters["OAuth_credentials_token_save_location"])
-    except:
+    except Exception:
         gc = None
 
     if gc:
@@ -358,14 +393,23 @@ def load_hyperparams():
         available_functions.update(python_availablefunc)
 
 
-def run_convo(chat_history, model, max_tokens, temperature):
+def _get_last_few_msgs(message):
+    message_ = message[-hyperparameters["messages_in_memory"]:]
+
+    if not message_:
+        return message
+    else:
+        return message_
+
+
+def run_convo(messages, model, max_tokens, temperature):
     global functions
 
     model_engine = model
 
     response = openai.ChatCompletion.create(
         model=model_engine,
-        messages=chat_history,
+        messages=_get_last_few_msgs(messages),
         max_tokens=max_tokens,
         n=1,
         stop=None,
@@ -387,33 +431,20 @@ def run_convo(chat_history, model, max_tokens, temperature):
             function_to_call = available_functions[function_name]
             function_args = json.loads(response_message["function_call"]["arguments"])
 
+            print(f"AI called function {function_name}")
+
             # Call the function that the AI wants to call
             function_response = _call_func(function_name, function_to_call, function_args, response_message)
 
             # if function response was a message to be returned to chat, return it
-            if function_response == "Code ran successfully":
-                return function_response
 
             # Step 4: send the info on the function call and function response to GPT
-            # chat_history.append(response_message)  # extend conversation with assistant's reply
-            chat_history.append(
-                {
-                    "role": "function",
-                    "name": function_name,
-                    "content": function_response,
-                }
-            )  # extend conversation with function response
-
-            main.append_func_response(function_name, function_response)
-
-            pprint.pprint(chat_history)
+            messages.append(main.append_func_response(function_name, function_response))
 
             second_response = openai.ChatCompletion.create(
                 model=model,
-                messages=chat_history,
+                messages=_get_last_few_msgs(messages),
             )  # get a new response from GPT where it can see the function response
-
-            logging.debug(second_response)
 
             return second_response["choices"][0]["message"].get("content")
 
@@ -422,6 +453,7 @@ def run_convo(chat_history, model, max_tokens, temperature):
             return f"Error:\n {e}"
 
     else:
+        pprint.pprint(_get_last_few_msgs(messages))
         logging.debug(response_message)
         if ERROR:
             return response_message.get("content")
