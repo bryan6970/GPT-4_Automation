@@ -1,0 +1,39 @@
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "user", "content": "aue\\n Time is 2023-09-02 15:47"}], "max_tokens": 2000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 401 496
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=None request_id=365ff15ddb6fc8eb111d3af64d1ef9e7 response_code=401
+INFO:openai:error_code=None error_message="You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys." error_param=None error_type=invalid_request_error message='OpenAI API error received' stream_error=False
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "user", "content": "eauau\\n Time is 2023-09-02 15:51"}], "max_tokens": 2000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 401 496
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=None request_id=611d18f642847fe6fafa221c997f9145 response_code=401
+INFO:openai:error_code=None error_message="You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys." error_param=None error_type=invalid_request_error message='OpenAI API error received' stream_error=False
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "user", "content": "dx\\n Time is 2023-09-02 15:53"}], "max_tokens": 2000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 401 496
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=None request_id=30d280850714effbed46ef202df79fa6 response_code=401
+INFO:openai:error_code=None error_message="You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys." error_param=None error_type=invalid_request_error message='OpenAI API error received' stream_error=False
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
