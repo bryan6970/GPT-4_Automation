@@ -37,3 +37,25 @@ DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
 DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
 DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
 DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338
+DEBUG:openai:message='Request to OpenAI API' method=post path=https://api.openai.com/v1/chat/completions
+DEBUG:openai:api_version=None data='{"model": "gpt-3.5-turbo", "messages": [{"role": "user", "content": "what color is the sun\\n Time is 2023-09-02 20:09"}], "max_tokens": 2000, "n": 1, "stop": null, "temperature": 1.0, "functions": [{"name": "extract_text_from_website", "description": "Get text content from site", "parameters": {"type": "object", "properties": {"url": {"type": "string", "description": "Site\'s full URL (with https)"}}, "required": ["url"]}, "return_type": {"type": "str"}}, {"name": "python", "description": "runs python code with exec function. Returns whatever is printed", "parameters": {"type": "object", "properties": {"code": {"type": "string", "description": "Uses exec() to run python code"}}, "required": ["code"]}, "return_type": {"type": "null"}}], "function_call": "auto"}' message='Post details'
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.openai.com:443
+DEBUG:urllib3.connectionpool:https://api.openai.com:443 "POST /v1/chat/completions HTTP/1.1" 200 None
+DEBUG:openai:message='OpenAI API response' path=https://api.openai.com/v1/chat/completions processing_ms=1665 request_id=3a6a7f49e5b68d77db5ab496b0a6abab response_code=200
+DEBUG:root:{
+  "role": "assistant",
+  "content": "The color of the sun appears to be yellow. However, it can sometimes appear reddish or orange during sunrise and sunset due to the Earth's atmosphere scattering shorter wavelengths of light."
+}
+DEBUG:PIL.PngImagePlugin:STREAM b'IHDR' 16 13
+DEBUG:PIL.PngImagePlugin:STREAM b'PLTE' 41 126
+DEBUG:PIL.PngImagePlugin:STREAM b'IDAT' 179 3338

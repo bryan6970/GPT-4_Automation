@@ -129,7 +129,7 @@ def open_hyperparameters_window() -> None:
 
         hyperparameters["saved"] = False
 
-        root_.destroy()
+        window.destroy()
 
     def set_appropriate_max_token(event: tk.Event) -> None:
         # Delete old tokens
@@ -149,104 +149,119 @@ def open_hyperparameters_window() -> None:
         else:
             max_tokens_entry.insert(0, hyperparameters["max_tokens"])
 
-    # Create the hyperparameters window
-    root_ = tk.Tk()
-    root_.title("Hyperparameters")
-    root_.configure(background="#1C1C1C")
+    if True:
+        # Create the hyperparameters window
+        window = tk.Toplevel(root)
+        window.title("Hyperparameters")
+        window.configure(background="#1C1C1C")
 
-    roboto_font_ = Font(family="Roboto", size=10)
+        roboto_font_ = Font(family="Roboto", size=10)
 
-    # Create a frame to hold the hyperparameters
-    frame = ttk.Frame(root_, padding=20)
-    frame.grid()
+        # Create a custom style for the widgets
+        # Configure the style for labels, buttons, and entries
+        _style_ = ttk.Style()
 
-    # Model selection
-    model_label = ttk.Label(frame, font=roboto_font_, text="Model:")
-    model_label.grid(row=0, column=0, sticky="w")
-    models = ["gpt-3.5-turbo", "gpt-3.5-turbo-16k", "gpt-4", "gpt-4-32k"]
-    model_combobox = ttk.Combobox(frame, font=roboto_font_, values=models, state="readonly")
-    model_combobox.current(models.index(hyperparameters["model"]))
-    model_combobox.bind("<<ComboboxSelected>>", set_appropriate_max_token)
-    model_combobox.grid(row=0, column=1, padx=(10, 0), sticky="w")
+        _style_.configure("TLabel", background="#1C1C1C", foreground="white")
 
-    # Use python
-    use_python_label = ttk.Label(frame, font=roboto_font_, text="Use python?:")
-    use_python_label.grid(row=1, column=0, sticky="w")
-    use_python_options = ["Yes", "No"]
-    use_python_combobox = ttk.Combobox(frame, font=roboto_font_, values=use_python_options, state="readonly")
-    use_python_combobox.current(use_python_options.index(hyperparameters["use_python"]))
-    use_python_combobox.grid(row=1, column=1, padx=(10, 0), sticky="w")
+        # Model selection
+        model_label = ttk.Label(window, font=roboto_font_, text="Model:")
+        model_label.grid(row=0, column=0, sticky="w")
+        models = ["gpt-3.5-turbo", "gpt-3.5-turbo-16k", "gpt-4", "gpt-4-32k"]
+        model_combobox = ttk.Combobox(window, font=roboto_font_, values=models, state="readonly")
+        model_combobox.current(models.index(hyperparameters["model"]))
+        model_combobox.bind("<<ComboboxSelected>>", set_appropriate_max_token)
+        model_combobox.grid(row=0, column=1, padx=(10, 0), sticky="w")
 
-    # Include time
-    include_time_label = ttk.Label(frame, font=roboto_font_, text="Include Time?:")
-    include_time_label.grid(row=2, column=0, sticky="w")
-    include_time_options = ["Yes", "No"]
-    include_time_combobox = ttk.Combobox(frame, font=roboto_font_, values=include_time_options, state="readonly")
-    include_time_combobox.current(include_time_options.index(hyperparameters["include_time"]))
-    include_time_combobox.grid(row=2, column=1, padx=(10, 0), sticky="w")
+        # Use python
+        use_python_label = ttk.Label(window, font=roboto_font_, text="Use python?:")
+        use_python_label.grid(row=1, column=0, sticky="w")
+        use_python_options = ["Yes", "No"]
+        use_python_combobox = ttk.Combobox(window, font=roboto_font_, values=use_python_options, state="readonly")
+        use_python_combobox.current(use_python_options.index(hyperparameters["use_python"]))
+        use_python_combobox.grid(row=1, column=1, padx=(10, 0), sticky="w")
 
-    # Maximum tokens
-    max_tokens_label = ttk.Label(frame, font=roboto_font_, text="Max response Tokens:")
-    max_tokens_label.grid(row=3, column=0, sticky="w")
-    max_tokens_entry = ttk.Entry(frame, font=roboto_font_, )
-    max_tokens_entry.insert(0, hyperparameters["max_tokens"])
-    max_tokens_entry.grid(row=3, column=1, padx=(10, 0), sticky="w")
+        # Include time
+        include_time_label = ttk.Label(window, font=roboto_font_, text="Include Time?:")
+        include_time_label.grid(row=2, column=0, sticky="w")
+        include_time_options = ["Yes", "No"]
+        include_time_combobox = ttk.Combobox(window, font=roboto_font_, values=include_time_options, state="readonly")
+        include_time_combobox.current(include_time_options.index(hyperparameters["include_time"]))
+        include_time_combobox.grid(row=2, column=1, padx=(10, 0), sticky="w")
 
-    # Messages in memory
-    messages_in_memory_label = ttk.Label(frame, font=roboto_font_, text="Messages in memory:")
-    messages_in_memory_label.grid(row=4, column=0, sticky="w")
-    messages_in_memory_entry = ttk.Entry(frame, font=roboto_font_)
-    messages_in_memory_entry.insert(0, hyperparameters["messages_in_memory"])
-    messages_in_memory_entry.grid(row=4, column=1, padx=(10, 0), sticky="w")
+        # Maximum tokens
+        max_tokens_label = ttk.Label(window, font=roboto_font_, text="Max response Tokens:")
+        max_tokens_label.grid(row=3, column=0, sticky="w")
+        max_tokens_entry = tk.Entry(window, font=roboto_font_, fg="White", bg="black", insertbackground="white")
+        max_tokens_entry.insert(0, hyperparameters["max_tokens"])
+        max_tokens_entry.grid(row=3, column=1, padx=(10, 0), sticky="w")
 
-    # Temperature
-    temperature_label = ttk.Label(frame, font=roboto_font_, text="Temperature:")
-    temperature_label.grid(row=5, column=0, sticky="w")
-    temperature_entry = ttk.Entry(frame, font=roboto_font_)
-    temperature_entry.insert(0, hyperparameters["temperature"])
-    temperature_entry.grid(row=5, column=1, padx=(10, 0), sticky="w")
+        # Messages in memory
+        messages_in_memory_label = ttk.Label(window, font=roboto_font_, text="Messages in memory:")
+        messages_in_memory_label.grid(row=4, column=0, sticky="w")
+        messages_in_memory_entry = tk.Entry(window, font=roboto_font_, fg="White", bg="black",insertbackground="white")
+        messages_in_memory_entry.insert(0, hyperparameters["messages_in_memory"])
+        messages_in_memory_entry.grid(row=4, column=1, padx=(10, 0), sticky="w")
 
-    # System message
-    system_message_label = ttk.Label(frame, font=roboto_font_, text="System message:")
-    system_message_label.grid(row=6, column=0, sticky="w")
-    system_message_text: tk.Text = tk.Text(frame, font=roboto_font_, height=1)
-    system_message_text.insert("1.0", hyperparameters["system_message"][:-1])
-    system_message_text.grid(row=6, column=1, padx=(10, 0), sticky="news")
+        # Temperature
+        temperature_label = ttk.Label(window, font=roboto_font_, text="Temperature:")
+        temperature_label.grid(row=5, column=0, sticky="w")
+        temperature_entry = tk.Entry(window, font=roboto_font_, fg="White", bg="black",insertbackground="white")
+        temperature_entry.insert(0, hyperparameters["temperature"])
+        temperature_entry.grid(row=5, column=1, padx=(10, 0), sticky="w")
 
-    # OpenAI api key
-    openai_api_key_label = ttk.Label(frame, font=roboto_font_, text="OpenAI API key")
-    openai_api_key_label.grid(row=9, column=0, sticky="w")
-    openai_api_key_entry = tk.Entry(frame, font=roboto_font_)
-    openai_api_key_entry.insert(0, hyperparameters["openai_api_key"])
-    openai_api_key_entry.grid(row=9, column=1, padx=(10, 0), sticky="news")
+        # System message
+        system_message_label = ttk.Label(window, font=roboto_font_, text="System message:")
+        system_message_label.grid(row=6, column=0, sticky="w")
+        system_message_text: tk.Text = tk.Text(window, font=roboto_font_, height=1, fg="White", bg="black",insertbackground="white")
+        system_message_text.insert("1.0", hyperparameters["system_message"][:-1])
+        system_message_text.grid(row=6, column=1, padx=(10, 0), sticky="news")
 
-    # Path to OAuth credentials
-    path_to_OAuth_credentials_label = ttk.Label(frame, font=roboto_font_, text="Path to OAuth credentials:")
-    path_to_OAuth_credentials_label.grid(row=10, column=0, sticky="w")
-    path_to_OAuth_credentials_entry: tk.Entry = tk.Entry(frame, font=roboto_font_)
-    path_to_OAuth_credentials_entry.insert(0, hyperparameters["path_to_OAuth_credentials"])
-    path_to_OAuth_credentials_entry.grid(row=10, column=1, padx=(10, 0), sticky="news")
+        # OpenAI api key
+        openai_api_key_label = ttk.Label(window, font=roboto_font_, text="OpenAI API key")
+        openai_api_key_label.grid(row=9, column=0, sticky="w")
+        openai_api_key_entry = tk.Entry(window, font=roboto_font_, fg="White", bg="black",insertbackground="white")
+        openai_api_key_entry.insert(0, hyperparameters["openai_api_key"])
+        openai_api_key_entry.grid(row=9, column=1, padx=(10, 0), sticky="news")
 
-    # OAuth credentials token save location
-    OAuth_credentials_token_save_location_label = ttk.Label(frame, font=roboto_font_,
-                                                            text="OAuth credentials token save location:")
-    OAuth_credentials_token_save_location_label.grid(row=11, column=0, sticky="w")
-    OAuth_credentials_token_save_location_entry: tk.Entry = tk.Entry(frame, font=roboto_font_)
-    OAuth_credentials_token_save_location_entry.insert(0, hyperparameters["OAuth_credentials_token_save_location"])
-    OAuth_credentials_token_save_location_entry.grid(row=11, column=1, padx=(10, 0), sticky="news")
+        # Path to OAuth credentials
+        path_to_OAuth_credentials_label = ttk.Label(window, font=roboto_font_, text="Path to OAuth credentials:")
+        path_to_OAuth_credentials_label.grid(row=10, column=0, sticky="w")
+        path_to_OAuth_credentials_entry: tk.Entry = tk.Entry(window, font=roboto_font_, fg="White", bg="black",insertbackground="white")
+        path_to_OAuth_credentials_entry.insert(0, hyperparameters["path_to_OAuth_credentials"])
+        path_to_OAuth_credentials_entry.grid(row=10, column=1, padx=(10, 0), sticky="news")
 
-    # Save button
-    save_button = ttk.Button(frame, text="Save", command=save_hyperparameters)
-    save_button.grid(row=12, column=0, columnspan=2, pady=(20, 0))
+        # OAuth credentials token save location
+        OAuth_credentials_token_save_location_label = ttk.Label(window, font=roboto_font_,
+                                                                text="OAuth credentials token save location:")
+        OAuth_credentials_token_save_location_label.grid(row=11, column=0, sticky="w")
+        OAuth_credentials_token_save_location_entry: tk.Entry = tk.Entry(window, font=roboto_font_, fg="White",
+                                                                         bg="black",insertbackground="white")
+        OAuth_credentials_token_save_location_entry.insert(0, hyperparameters["OAuth_credentials_token_save_location"])
+        OAuth_credentials_token_save_location_entry.grid(row=11, column=1, padx=(10, 0), sticky="news")
 
-    # Configure row and column weight to make text boxes expand
-    frame.grid_rowconfigure(11, weight=1)
-    frame.grid_columnconfigure(1, weight=1)
+        # Save button
+        save_button = tk.Button(window, text="Save", command=save_hyperparameters, fg="White", bg="black")
+        save_button.grid(row=12, column=0, columnspan=2, pady=(20, 0))
 
-    # Protocol when the window is closed
-    root_.protocol("WM_DELETE_WINDOW", on_closing)
+        # Configure row and column weight to make text boxes expand
+        window.grid_rowconfigure(11, weight=1)
+        window.grid_columnconfigure(1, weight=1)
 
-    root_.mainloop()
+        # Protocol when the window is closed
+        window.protocol("WM_DELETE_WINDOW", on_closing)
+
+        window.mainloop()
+
+    if True:
+        _root_ = tk.Toplevel(root)
+        style = ttk.Style()
+
+        btn = ttk.Button(_root_, text="Sample")
+
+        style.map('TButton', background=[('active', 'black')])
+        btn.grid()
+
+        _root_.mainloop()
 
 
 def send_message(event: tk.Event = None) -> None:

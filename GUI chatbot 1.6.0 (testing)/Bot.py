@@ -328,7 +328,8 @@ gcalendar_availablefuncs = {"get_gcalendar_events": get_gcalendar_events,
 
 python_function = {
     "name": "python",
-    "description": "runs python code with exec function. Returns whatever is printed",
+    "description": "runs python code with exec function. Use this for any arithmetic calculations you need to do. "
+                   "Returns whatever is printed",
     "parameters": {
         "type": "object",
         "properties": {
