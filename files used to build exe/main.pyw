@@ -1,27 +1,36 @@
 import datetime
-from tkinter import scrolledtext
-from PIL import ImageTk, Image
-import threading
-import logging
-import Bot
+import functools
+import io
 import json
+import logging
+import pprint
+import sys
+import threading
 import tkinter as tk
+import tkinter.messagebox
+from tkinter import scrolledtext
 from tkinter import ttk
 from tkinter.font import Font
-import pprint
+
+import gcsa
+import gcsa.google_calendar as gc
+import openai
+import requests
+from PIL import ImageTk, Image
+from bs4 import BeautifulSoup
+from dateutil import parser
+from gcsa.event import Event
 
 messages = []
-
-# Configure logging level
-logging.basicConfig(filename="logs.log", level=logging.DEBUG)
+logs = []
 
 PATH_TO_IMAGE: str = r"../Images/GPT.png"
 
 try:
-    with open("hyperparameters.json", "r") as file:
+    with open("../venv/hyperparameters.json", "r") as file:
         hyperparameters = json.load(file)
 except FileNotFoundError:
-    with open("hyperparameters.json", "w") as f:
+    with open("../venv/hyperparameters.json", "w") as f:
 
         hyperparameters = {
             "model": "gpt-3.5-turbo",
@@ -43,18 +52,488 @@ pprint.pprint(hyperparameters)
 spliter = "g1404018thaaou"
 
 
+class Bot:
+    def __init__(self):
+        self.ERROR = False
+        self.gcalendar_funcs = [{
+            "name": "get_gcalendar_events",
+            "description": "gets most recent gcalendar events. Returns list of events.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "necessary_events": {
+                        "type": "integer",
+                        "description": "events needed"
+                    }
+                },
+                "required:": ["necessary_events"],
+            },
+            "return_type": {"type": "str"}
+        },
+            {
+                "name": "search_gcalendar_events",
+                "description": "search for an event in gcalendar with a string. IDs not allowed. Returns list of events.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "search_key": {
+                            "type": "string",
+                            "description": "Search key"
+                        },
+                        "necessary_events": {
+                            "type": "integer",
+                            "description": "events needed"
+                        }
+                    },
+                    "required:": ["search_key"],
+                },
+                "return_type": {"type": "str"}
+            },
+            {
+                "name": "get_gcalendar_events_byID",
+                "description": "search for an event in gcalendar with ID. Returns event.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "ID": {
+                            "type": "string",
+                            "description": "Event ID"
+                        }
+                    },
+                    "required:": ["ID"],
+                },
+                "return_type": {"type": "str"}
+            },
+            {
+                "name": "create_event",
+                "description": "Create a gcalendar event. Returns event id",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "event_summary": {
+                            "type": "string",
+                            "description": "Event name",
+                        },
+                        "start_time": {
+                            "type": "string",
+                            "description": "Time that event starts in datetime format",
+                        },
+                        "end_time": {
+                            "type": "string",
+                            "description": "Time that event ends in datetime format",
+                        },
+                        "all_day": {
+                            "type": "boolean",
+                            "description": "If the event is an all day type in gcalendar",
+                        },
+                    },
+                    "required": ["event_summary", "start_time", "end_time"],
+                },
+                "return_type": {"type": "str"}
+            },
+            {
+                "name": "create_events",
+                "description": "Create multiple gcalendar events. Returns event ids",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "event_summaries": {
+                            "type": "array",
+                            "description": "Event names",
+                            "items":
+                                {"type": "string"}
+                        },
+                        "start_time": {
+                            "type": "array",
+                            "description": "Time each event starts in datetime format",
+                            "items":
+                                {"type": "string"}
+                        },
+                        "end_time": {
+                            "type": "array",
+                            "description": "Time that each event ends in datetime format",
+                            "items":
+                                {"type": "string"}
+                        },
+                        "all_day": {
+                            "type": "array",
+                            "description": "If the event is an all day type in gcalendar",
+                            "items": {
+                                "type": "boolean"
+                            }
+                        },
+                    },
+                    "required": ["event_summary", "start_time", "end_time", "all_day"],
+                },
+                "return_type": {"type": "str"}
+            }
+        ]
+
+        self.gcalendar_availablefuncs = {"get_gcalendar_events": self.get_gcalendar_events,
+                                         "search_gcalendar_events": self.search_gcalendar_events,
+                                         "get_gcalendar_events_byID": self.get_gcalendar_events_byID,
+                                         "create_event": self.create_event
+                                         }
+
+        self.python_function = {
+            "name": "python",
+            "description": "runs python code with exec function. Use this for any arithmetic calculations you need to do. "
+                           "Returns whatever is printed",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "description": "Uses exec() to run python code",
+                    },
+                },
+                "required": ["code"],
+            },
+            "return_type": {"type": "null"},
+        }
+
+        self.python_availablefunc = {"python": self.python}
+
+        self.functions = [
+
+            {
+                "name": "extract_text_from_website",
+                "description": "Get text content from site",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "url": {
+                            "type": "string",
+                            "description": "Site's full URL (with https)",
+                        },
+                    },
+                    "required": ["url"],
+                },
+                "return_type": {"type": "str"}
+            }]
+
+        self.available_functions = {
+            "extract_text_from_website": self.extract_text_from_website
+
+        }
+        self.load_hyperparams()
+
+    @staticmethod
+    def _call_func(function_name, function_to_call, function_args, response_message):
+        if function_name == "run_python_code":
+            return f"Success! The code provided was  {response_message.get('function_call').get('arguments')}"
+
+        elif function_args == 0:
+            function_response = function_to_call()
+
+        # elif function_args == 1:
+        #     function_response = function_to_call()
+
+        else:
+            function_response = function_to_call(**function_args)
+
+        return function_response
+
+    if True:
+
+        @staticmethod
+        def _log_call(func):
+            @functools.wraps(func)
+            def wrapper(self,*args, **kwargs):
+                caller_name = func.__name__
+                print(f"Func {caller_name} called in {type(self).__name__}")
+                return func(self, *args, **kwargs)
+
+            return wrapper
+
+        @staticmethod
+        @_log_call
+        def python(code):
+            global ERROR
+            try:
+
+                # Redirect the standard output to a StringIO object
+                output = io.StringIO()
+                sys.stdout = output
+
+                # Execute the code using exec()
+                exec(code)
+
+                # Restore the standard output
+                sys.stdout = sys.__stdout__
+
+                # Get the output from the StringIO object
+                return output.getvalue()
+            except Exception as e:
+                logging.debug(e)
+                ERROR = e
+                return e
+
+        @staticmethod
+        @_log_call
+        def extract_text_from_website(url):
+            global ERROR
+            try:
+                # Send a GET request to the URL
+                response = requests.get(url)
+
+                # Check if the request was successful
+                if response.status_code == 200:
+                    # Parse the HTML content using Beautiful Soup
+                    soup = BeautifulSoup(response.content, "html.parser")
+
+                    # Find all the text elements in the HTML
+                    text_elements = soup.find_all(text=True)
+
+                    # Filter out script and style tags
+                    filtered_text = [text for text in text_elements if text.parent.name not in ['script', 'style']]
+
+                    # Join the filtered text elements into a single string
+                    extracted_text = " ".join(filtered_text)
+                    logging.debug(extracted_text)
+                    return extracted_text
+
+                else:
+                    logging.debug(f"Error: Failed to retrieve content from {url}")
+                    return f"Error: Failed to retrieve content from {url}"
+            except Exception as e:
+                logging.debug(e)
+                ERROR = e
+                return e
+
+        @staticmethod
+        @_log_call
+        def get_datetime():
+            time_ = str(datetime.datetime.now())
+            return time_
+
+        @staticmethod
+        @_log_call
+        def _string_to_date(input_string):
+            try:
+                # Parse the input string using dateutil.parser
+                datetime_object = parser.parse(input_string)
+
+                return datetime_object
+            except ValueError as e:
+                # Handle parsing errors gracefully
+                print(f"Error with time format {input_string}", file=sys.stderr)
+                return str(e)
+
+        @_log_call
+        def init_gc(self,creds_path, token_path):
+            global gc
+            gc = gcsa.google_calendar.GoogleCalendar(credentials_path=creds_path,
+                                                     token_path=token_path)
+            return gc
+
+        @staticmethod
+        @_log_call
+        def _include_id(events):
+            return [str(event) + " <ID: " + event.id + ">" for event in events]
+
+        @_log_call
+        def get_gcalendar_events(self, necessary_events):
+            if necessary_events > 50:
+                necessary_events = 50
+            return str(self._include_id(gc.get_events(order_by="startTime", single_events=True))[:necessary_events])
+
+        @_log_call
+        def search_gcalendar_events(self, search_key, necessary_events):
+            if necessary_events > 50:
+                necessary_events = 50
+            return str(self._include_id(gc.get_events(query=search_key))[:necessary_events])
+
+        @staticmethod
+        @_log_call
+        def get_gcalendar_events_byID(ID):
+            return str(gc.get_event(ID))
+
+        @_log_call
+        def create_event(self, event_summary, start_time, end_time, all_day=False):
+            start, end = self._string_to_date(start_time), self._string_to_date(end_time)
+
+            if all_day:
+                event = Event(event_summary,
+                              start=start.date(),
+                              end=end_time.date())
+            else:
+                event = Event(event_summary,
+                              start=start,
+                              end=end)
+
+            event = gc.add_event(event)
+
+            return "Event created successfully. ID: " + event.id
+
+        @_log_call
+        def create_events(self, event_summaries, start_times, end_times, all_day: list):
+            if len(event_summaries) == len(start_times) == len(end_times) == len(all_day):
+                start_times = [self._string_to_date(time) for time in start_times]
+                end_times = [self._string_to_date(time for time in end_times)]
+
+                event_ids = []
+                error_events = []
+
+                for i in range(len(event_summaries)):
+                    try:
+                        if all_day[i]:
+                            event = Event(event_summaries[i],
+                                          start=start_times[i].date(),
+                                          end=end_times[i].date())
+                        else:
+                            event = Event(event_summaries[i],
+                                          start=start_times[i],
+                                          end=end_times[i])
+
+                        event_ids.append(f"Event Summary: {event_summaries[i]}\nEvent ID: {gc.add_event(event).id}")
+                    except Exception as e:
+                        error_events.append(f"Error with {event_summaries[i]}.")
+                        print("DEBUG: " + e.__str__())
+
+                if not error_events:
+
+                    return "Events created. Info:\n " + event_ids.__str__()
+                else:
+                    return "Events created. Info:\n " + event_ids.__str__() + "Events with errors: " + error_events.__str__()
+
+            else:
+                return "All parameters must be the same length"
+
+    @_log_call
+    def load_hyperparams(self):
+        global hyperparameters, functions, available_functions
+        with open("../venv/hyperparameters.json", "r") as f:
+            hyperparameters = json.load(f)
+
+        openai.api_key = hyperparameters["openai_api_key"]
+
+        try:
+            gc = self.init_gc(hyperparameters["path_to_OAuth_credentials"],
+                              hyperparameters["OAuth_credentials_token_save_location"])
+        except Exception:
+            gc = None
+
+        if gc:
+            for func in self.gcalendar_funcs:
+                self.functions.append(func)
+
+            self.available_functions.update(self.gcalendar_availablefuncs)
+
+        if hyperparameters["use_python"].lower() == "yes":
+            self.functions.append(self.python_function)
+
+            self.available_functions.update(self.python_availablefunc)
+
+    @staticmethod
+    def _get_last_few_msgs(message):
+        message_ = message[-hyperparameters["messages_in_memory"]:]
+
+        if not message_:
+            return message
+        else:
+            return message_
+
+    def run_convo(self, model, max_tokens, temperature):
+
+        model_engine = model
+
+        try:
+
+            response = openai.ChatCompletion.create(
+                model=model_engine,
+                messages=self._get_last_few_msgs(messages),
+                max_tokens=max_tokens,
+                n=1,
+                stop=None,
+                temperature=temperature,
+                functions=self.functions,
+                function_call="auto"
+            )
+
+        except openai.error.AuthenticationError as e:
+            append_log("Authentication Error", e)
+            print(e.user_message)
+            tkinter.messagebox.showerror("Error", e.user_message)
+            return None
+
+        response_message = response["choices"][0]["message"]
+
+        # Step 2: check if GPT wanted to call a function
+        if response_message.get("function_call"):
+            try:
+                # Step 3: call the function
+                # Note: the JSON response may not always be valid; be sure to handle errors
+                # only one function in this example, but you can have multiple
+
+                function_name = response_message["function_call"]["name"]
+                function_to_call = available_functions[function_name]
+                function_args = json.loads(response_message["function_call"]["arguments"])
+
+                print(f"AI called function {function_name}")
+
+                # Call the function that the AI wants to call
+                function_response = self._call_func(function_name, function_to_call, function_args, response_message)
+
+                # if function response was a message to be returned to chat, return it
+
+                # Step 4: send the info on the function call and function response to GPT
+                append_func_response(function_name, function_response)
+
+                second_response = openai.ChatCompletion.create(
+                    model=model,
+                    messages=self._get_last_few_msgs(messages),
+                )  # get a new response from GPT where it can see the function response
+
+                return second_response["choices"][0]["message"].get("content")
+
+            except Exception as e:
+
+                return f"Error:\n {e}"
+
+        else:
+            pprint.pprint(self._get_last_few_msgs(messages))
+            logging.debug(response_message)
+            if self.ERROR:
+                return response_message.get("content")
+            return response_message.get("content")
+
+
+Bot = Bot()
+
+
 def append_func_response(func_name, response):
     messages.append({"role": "function", "name": func_name, "content": response})
     return {"role": "function", "name": func_name, "content": response}
+
+
+def append_log(log_name, details):
+    logs.append({log_name, details})
+
+
+def append_logs(name, details):
+    logs.append({name: details})
+    pprint.pprint(logs)
+    print_logs()
+
+
+def print_logs():
+    print("logs\n")
+    print(logs)
 
 
 def commands(command) -> None:
     if command.lower() == "$chat_history" or command.lower() == "$chathistory":
 
         pprint.pprint(messages)
+        display_message(pprint.pformat(messages.__str__()))
 
     elif command.lower() == "$hyperparams" or command.lower() == "$hyperparameters":
         pprint.pprint(hyperparameters)
+
+    elif command.lower() == "$logs":
+        print(logs)
+        display_message(pprint.pformat(logs))
 
     else:
         display_message(f"{command} is not a command")
@@ -64,17 +543,16 @@ def commands(command) -> None:
 
 def bot_response(loading_message: tk.Text, chat_history) -> None:
     # Get bot response
-    bot_reply = Bot.run_convo(messages, hyperparameters["model"],
+    bot_reply = Bot.run_convo(hyperparameters["model"],
                               hyperparameters["max_tokens"],
                               hyperparameters["temperature"])
-
-    messages.append({"role": "assistant", 'content': bot_reply})
-
     # Remove the "Loading..." message
     remove_message(loading_message)
+    if bot_reply:
+        messages.append({"role": "assistant", 'content': bot_reply})
 
-    # Display the bot response in the chat area
-    display_message(f"\nBot: {bot_reply}")
+        # Display the bot response in the chat area
+        display_message(f"\nBot: {bot_reply}")
 
 
 def open_hyperparameters_window() -> None:
@@ -109,7 +587,7 @@ def open_hyperparameters_window() -> None:
             "saved": True
         }
 
-        with open("hyperparameters.json", "w") as f:
+        with open("../venv/hyperparameters.json", "w") as f:
             json.dump(hyperparameters, f)
 
         Bot.load_hyperparams()
@@ -129,7 +607,7 @@ def open_hyperparameters_window() -> None:
 
         hyperparameters["saved"] = False
 
-        root_.destroy()
+        window.destroy()
 
     def set_appropriate_max_token(event: tk.Event) -> None:
         # Delete old tokens
@@ -149,104 +627,121 @@ def open_hyperparameters_window() -> None:
         else:
             max_tokens_entry.insert(0, hyperparameters["max_tokens"])
 
-    # Create the hyperparameters window
-    root_ = tk.Tk()
-    root_.title("Hyperparameters")
-    root_.configure(background="#1C1C1C")
+    if True:
+        # Create the hyperparameters window
+        window = tk.Toplevel(root)
+        window.title("Hyperparameters")
+        window.configure(background="#1C1C1C")
 
-    roboto_font_ = Font(family="Roboto", size=10)
+        roboto_font_ = Font(family="Roboto", size=10)
 
-    # Create a frame to hold the hyperparameters
-    frame = ttk.Frame(root_, padding=20)
-    frame.grid()
+        # Create a custom style for the widgets
+        # Configure the style for labels, buttons, and entries
+        _style_ = ttk.Style()
 
-    # Model selection
-    model_label = ttk.Label(frame, font=roboto_font_, text="Model:")
-    model_label.grid(row=0, column=0, sticky="w")
-    models = ["gpt-3.5-turbo", "gpt-3.5-turbo-16k", "gpt-4", "gpt-4-32k"]
-    model_combobox = ttk.Combobox(frame, font=roboto_font_, values=models, state="readonly")
-    model_combobox.current(models.index(hyperparameters["model"]))
-    model_combobox.bind("<<ComboboxSelected>>", set_appropriate_max_token)
-    model_combobox.grid(row=0, column=1, padx=(10, 0), sticky="w")
+        _style_.configure("TLabel", background="#1C1C1C", foreground="white")
 
-    # Use python
-    use_python_label = ttk.Label(frame, font=roboto_font_, text="Use python?:")
-    use_python_label.grid(row=1, column=0, sticky="w")
-    use_python_options = ["Yes", "No"]
-    use_python_combobox = ttk.Combobox(frame, font=roboto_font_, values=use_python_options, state="readonly")
-    use_python_combobox.current(use_python_options.index(hyperparameters["use_python"]))
-    use_python_combobox.grid(row=1, column=1, padx=(10, 0), sticky="w")
+        # Model selection
+        model_label = ttk.Label(window, font=roboto_font_, text="Model:")
+        model_label.grid(row=0, column=0, sticky="w")
+        models = ["gpt-3.5-turbo", "gpt-3.5-turbo-16k", "gpt-4", "gpt-4-32k"]
+        model_combobox = ttk.Combobox(window, font=roboto_font_, values=models, state="readonly")
+        model_combobox.current(models.index(hyperparameters["model"]))
+        model_combobox.bind("<<ComboboxSelected>>", set_appropriate_max_token)
+        model_combobox.grid(row=0, column=1, padx=(10, 0), sticky="w")
 
-    # Include time
-    include_time_label = ttk.Label(frame, font=roboto_font_, text="Include Time?:")
-    include_time_label.grid(row=2, column=0, sticky="w")
-    include_time_options = ["Yes", "No"]
-    include_time_combobox = ttk.Combobox(frame, font=roboto_font_, values=include_time_options, state="readonly")
-    include_time_combobox.current(include_time_options.index(hyperparameters["include_time"]))
-    include_time_combobox.grid(row=2, column=1, padx=(10, 0), sticky="w")
+        # Use python
+        use_python_label = ttk.Label(window, font=roboto_font_, text="Use python?:")
+        use_python_label.grid(row=1, column=0, sticky="w")
+        use_python_options = ["Yes", "No"]
+        use_python_combobox = ttk.Combobox(window, font=roboto_font_, values=use_python_options, state="readonly")
+        use_python_combobox.current(use_python_options.index(hyperparameters["use_python"]))
+        use_python_combobox.grid(row=1, column=1, padx=(10, 0), sticky="w")
 
-    # Maximum tokens
-    max_tokens_label = ttk.Label(frame, font=roboto_font_, text="Max response Tokens:")
-    max_tokens_label.grid(row=3, column=0, sticky="w")
-    max_tokens_entry = ttk.Entry(frame, font=roboto_font_, )
-    max_tokens_entry.insert(0, hyperparameters["max_tokens"])
-    max_tokens_entry.grid(row=3, column=1, padx=(10, 0), sticky="w")
+        # Include time
+        include_time_label = ttk.Label(window, font=roboto_font_, text="Include Time?:")
+        include_time_label.grid(row=2, column=0, sticky="w")
+        include_time_options = ["Yes", "No"]
+        include_time_combobox = ttk.Combobox(window, font=roboto_font_, values=include_time_options, state="readonly")
+        include_time_combobox.current(include_time_options.index(hyperparameters["include_time"]))
+        include_time_combobox.grid(row=2, column=1, padx=(10, 0), sticky="w")
 
-    # Messages in memory
-    messages_in_memory_label = ttk.Label(frame, font=roboto_font_, text="Messages in memory:")
-    messages_in_memory_label.grid(row=4, column=0, sticky="w")
-    messages_in_memory_entry = ttk.Entry(frame, font=roboto_font_)
-    messages_in_memory_entry.insert(0, hyperparameters["messages_in_memory"])
-    messages_in_memory_entry.grid(row=4, column=1, padx=(10, 0), sticky="w")
+        # Maximum tokens
+        max_tokens_label = ttk.Label(window, font=roboto_font_, text="Max response Tokens:")
+        max_tokens_label.grid(row=3, column=0, sticky="w")
+        max_tokens_entry = tk.Entry(window, font=roboto_font_, fg="White", bg="black", insertbackground="white")
+        max_tokens_entry.insert(0, hyperparameters["max_tokens"])
+        max_tokens_entry.grid(row=3, column=1, padx=(10, 0), sticky="w")
 
-    # Temperature
-    temperature_label = ttk.Label(frame, font=roboto_font_, text="Temperature:")
-    temperature_label.grid(row=5, column=0, sticky="w")
-    temperature_entry = ttk.Entry(frame, font=roboto_font_)
-    temperature_entry.insert(0, hyperparameters["temperature"])
-    temperature_entry.grid(row=5, column=1, padx=(10, 0), sticky="w")
+        # Messages in memory
+        messages_in_memory_label = ttk.Label(window, font=roboto_font_, text="Messages in memory:")
+        messages_in_memory_label.grid(row=4, column=0, sticky="w")
+        messages_in_memory_entry = tk.Entry(window, font=roboto_font_, fg="White", bg="black", insertbackground="white")
+        messages_in_memory_entry.insert(0, hyperparameters["messages_in_memory"])
+        messages_in_memory_entry.grid(row=4, column=1, padx=(10, 0), sticky="w")
 
-    # System message
-    system_message_label = ttk.Label(frame, font=roboto_font_, text="System message:")
-    system_message_label.grid(row=6, column=0, sticky="w")
-    system_message_text: tk.Text = tk.Text(frame, font=roboto_font_, height=1)
-    system_message_text.insert("1.0", hyperparameters["system_message"][:-1])
-    system_message_text.grid(row=6, column=1, padx=(10, 0), sticky="news")
+        # Temperature
+        temperature_label = ttk.Label(window, font=roboto_font_, text="Temperature:")
+        temperature_label.grid(row=5, column=0, sticky="w")
+        temperature_entry = tk.Entry(window, font=roboto_font_, fg="White", bg="black", insertbackground="white")
+        temperature_entry.insert(0, hyperparameters["temperature"])
+        temperature_entry.grid(row=5, column=1, padx=(10, 0), sticky="w")
 
-    # OpenAI api key
-    openai_api_key_label = ttk.Label(frame, font=roboto_font_, text="OpenAI API key")
-    openai_api_key_label.grid(row=9, column=0, sticky="w")
-    openai_api_key_entry = tk.Entry(frame, font=roboto_font_)
-    openai_api_key_entry.insert(0, hyperparameters["openai_api_key"])
-    openai_api_key_entry.grid(row=9, column=1, padx=(10, 0), sticky="news")
+        # System message
+        system_message_label = ttk.Label(window, font=roboto_font_, text="System message:")
+        system_message_label.grid(row=6, column=0, sticky="w")
+        system_message_text: tk.Text = tk.Text(window, font=roboto_font_, height=1, fg="White", bg="black",
+                                               insertbackground="white")
+        system_message_text.insert("1.0", hyperparameters["system_message"][:-1])
+        system_message_text.grid(row=6, column=1, padx=(10, 0), sticky="news")
 
-    # Path to OAuth credentials
-    path_to_OAuth_credentials_label = ttk.Label(frame, font=roboto_font_, text="Path to OAuth credentials:")
-    path_to_OAuth_credentials_label.grid(row=10, column=0, sticky="w")
-    path_to_OAuth_credentials_entry: tk.Entry = tk.Entry(frame, font=roboto_font_)
-    path_to_OAuth_credentials_entry.insert(0, hyperparameters["path_to_OAuth_credentials"])
-    path_to_OAuth_credentials_entry.grid(row=10, column=1, padx=(10, 0), sticky="news")
+        # OpenAI api key
+        openai_api_key_label = ttk.Label(window, font=roboto_font_, text="OpenAI API key")
+        openai_api_key_label.grid(row=9, column=0, sticky="w")
+        openai_api_key_entry = tk.Entry(window, font=roboto_font_, fg="White", bg="black", insertbackground="white")
+        openai_api_key_entry.insert(0, hyperparameters["openai_api_key"])
+        openai_api_key_entry.grid(row=9, column=1, padx=(10, 0), sticky="news")
 
-    # OAuth credentials token save location
-    OAuth_credentials_token_save_location_label = ttk.Label(frame, font=roboto_font_,
-                                                            text="OAuth credentials token save location:")
-    OAuth_credentials_token_save_location_label.grid(row=11, column=0, sticky="w")
-    OAuth_credentials_token_save_location_entry: tk.Entry = tk.Entry(frame, font=roboto_font_)
-    OAuth_credentials_token_save_location_entry.insert(0, hyperparameters["OAuth_credentials_token_save_location"])
-    OAuth_credentials_token_save_location_entry.grid(row=11, column=1, padx=(10, 0), sticky="news")
+        # Path to OAuth credentials
+        path_to_OAuth_credentials_label = ttk.Label(window, font=roboto_font_, text="Path to OAuth credentials:")
+        path_to_OAuth_credentials_label.grid(row=10, column=0, sticky="w")
+        path_to_OAuth_credentials_entry: tk.Entry = tk.Entry(window, font=roboto_font_, fg="White", bg="black",
+                                                             insertbackground="white")
+        path_to_OAuth_credentials_entry.insert(0, hyperparameters["path_to_OAuth_credentials"])
+        path_to_OAuth_credentials_entry.grid(row=10, column=1, padx=(10, 0), sticky="news")
 
-    # Save button
-    save_button = ttk.Button(frame, text="Save", command=save_hyperparameters)
-    save_button.grid(row=12, column=0, columnspan=2, pady=(20, 0))
+        # OAuth credentials token save location
+        OAuth_credentials_token_save_location_label = ttk.Label(window, font=roboto_font_,
+                                                                text="OAuth credentials token save location:")
+        OAuth_credentials_token_save_location_label.grid(row=11, column=0, sticky="w")
+        OAuth_credentials_token_save_location_entry: tk.Entry = tk.Entry(window, font=roboto_font_, fg="White",
+                                                                         bg="black", insertbackground="white")
+        OAuth_credentials_token_save_location_entry.insert(0, hyperparameters["OAuth_credentials_token_save_location"])
+        OAuth_credentials_token_save_location_entry.grid(row=11, column=1, padx=(10, 0), sticky="news")
 
-    # Configure row and column weight to make text boxes expand
-    frame.grid_rowconfigure(11, weight=1)
-    frame.grid_columnconfigure(1, weight=1)
+        # Save button
+        save_button = tk.Button(window, text="Save", command=save_hyperparameters, fg="White", bg="black")
+        save_button.grid(row=12, column=0, columnspan=2, pady=(20, 0))
 
-    # Protocol when the window is closed
-    root_.protocol("WM_DELETE_WINDOW", on_closing)
+        # Configure row and column weight to make text boxes expand
+        window.grid_rowconfigure(11, weight=1)
+        window.grid_columnconfigure(1, weight=1)
 
-    root_.mainloop()
+        # Protocol when the window is closed
+        window.protocol("WM_DELETE_WINDOW", on_closing)
+
+        window.mainloop()
+
+    if True:
+        _root_ = tk.Toplevel(root)
+        style = ttk.Style()
+
+        btn = ttk.Button(_root_, text="Sample")
+
+        style.map('TButton', background=[('active', 'black')])
+        btn.grid()
+
+        _root_.mainloop()
 
 
 def send_message(event: tk.Event = None) -> None:
