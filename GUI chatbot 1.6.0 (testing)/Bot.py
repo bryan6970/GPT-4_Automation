@@ -372,7 +372,7 @@ available_functions = {
 @_log_call
 def load_hyperparams():
     global hyperparameters, functions, available_functions
-    with open("hyperparameters.json", "r") as f:
+    with open("../venv/hyperparameters.json", "r") as f:
         hyperparameters = json.load(f)
 
     openai.api_key = hyperparameters["openai_api_key"]

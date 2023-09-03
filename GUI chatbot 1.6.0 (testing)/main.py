@@ -18,10 +18,10 @@ logging.basicConfig(filename="logs.log", level=logging.DEBUG)
 PATH_TO_IMAGE: str = r"../Images/GPT.png"
 
 try:
-    with open("hyperparameters.json", "r") as file:
+    with open("../venv/hyperparameters.json", "r") as file:
         hyperparameters = json.load(file)
 except FileNotFoundError:
-    with open("hyperparameters.json", "w") as f:
+    with open("../venv/hyperparameters.json", "w") as f:
 
         hyperparameters = {
             "model": "gpt-3.5-turbo",
@@ -109,7 +109,7 @@ def open_hyperparameters_window() -> None:
             "saved": True
         }
 
-        with open("hyperparameters.json", "w") as f:
+        with open("../venv/hyperparameters.json", "w") as f:
             json.dump(hyperparameters, f)
 
         Bot.load_hyperparams()
