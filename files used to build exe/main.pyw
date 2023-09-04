@@ -8,12 +8,15 @@ import sys
 import threading
 import tkinter as tk
 import tkinter.messagebox
+import traceback
+import warnings
 from tkinter import scrolledtext
 from tkinter import ttk
 from tkinter.font import Font
 
 import gcsa
 import gcsa.google_calendar as gc
+import googleapiclient.errors
 import openai
 import requests
 from PIL import ImageTk, Image
@@ -23,6 +26,8 @@ from gcsa.event import Event
 
 messages = []
 logs = []
+
+chat_area_widget : scrolledtext.ScrolledText = None
 
 PATH_TO_IMAGE: str = r"../Images/GPT.png"
 
@@ -49,12 +54,73 @@ except FileNotFoundError:
 
 pprint.pprint(hyperparameters)
 
-spliter = "g1404018thaaou"
+
+class Skip:
+    """Used for functions to return to omit second api call"""
+
+    def __init__(self, info=None, user_info=None):
+        if info and user_info is None:
+            warnings.warn("info and user info are both None in Skip class")
+
+        if user_info is None:
+            user_info = info
+
+        self.info = info
+        self.user_info = user_info
+
+    def __str__(self):
+        return "Skip class"
 
 
 class Bot:
     def __init__(self):
         self.ERROR = False
+
+        # Don't find this necessary.
+        self.create_events = {
+            "name": "create_events",
+            "description": "Create multiple gcalendar events. Returns event ids",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "event_summaries": {
+                        "type": "array",
+                        "description": "Event names",
+                        "items":
+                            {"type": "string"}
+                    },
+                    "descriptions": {
+                        "type": "array",
+                        "description": "descriptions of each event. Provide an array with empty strings if there is "
+                                       "no suitable description.",
+                        "items":
+                            {"type": "string"}
+                    },
+                    "start_times": {
+                        "type": "array",
+                        "description": "Time each event starts in datetime format",
+                        "items":
+                            {"type": "string"}
+                    },
+                    "end_times": {
+                        "type": "array",
+                        "description": "Time that each event ends in datetime format",
+                        "items":
+                            {"type": "string"}
+                    },
+                    "all_day": {
+                        "type": "array",
+                        "description": "If the event is an all day type in gcalendar",
+                        "items": {
+                            "type": "boolean"
+                        }
+                    },
+                },
+                "required": ["event_summary", "descriptions", "start_time", "end_time", "all_day"],
+            },
+            "return_type": {"type": "str"}
+        }
+
         self.gcalendar_funcs = [{
             "name": "get_gcalendar_events",
             "description": "gets most recent gcalendar events. Returns list of events.",
@@ -106,13 +172,18 @@ class Bot:
             },
             {
                 "name": "create_event",
-                "description": "Create a gcalendar event. Returns event id",
+                "description": "Create a gcalendar event. Use this to schedule a meeting. Returns event id",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "event_summary": {
                             "type": "string",
                             "description": "Event name",
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "description of event. Leave as an empty string if no clear description "
+                                           "is given",
                         },
                         "start_time": {
                             "type": "string",
@@ -122,48 +193,52 @@ class Bot:
                             "type": "string",
                             "description": "Time that event ends in datetime format",
                         },
+
                         "all_day": {
                             "type": "boolean",
                             "description": "If the event is an all day type in gcalendar",
                         },
                     },
-                    "required": ["event_summary", "start_time", "end_time"],
+                    "required": ["event_summary", "description", "start_time", "end_time"],
+                },
+                "return_type": {"type": "str"}
+            },
+
+            {
+                "name": "delete_event",
+                "description": "Deletes event. Returns success or failure reason",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "event_id": {
+                            "type": "string",
+                            "description": "Event id",
+                        },
+                    },
+                    "required": ["event_id"],
                 },
                 "return_type": {"type": "str"}
             },
             {
-                "name": "create_events",
-                "description": "Create multiple gcalendar events. Returns event ids",
+                "name": "change_event_time",
+                "description": "Changes event time",
                 "parameters": {
                     "type": "object",
                     "properties": {
-                        "event_summaries": {
-                            "type": "array",
-                            "description": "Event names",
-                            "items":
-                                {"type": "string"}
+                        "event_id": {
+                            "type": "string",
+                            "description": "Event id",
                         },
                         "start_time": {
-                            "type": "array",
-                            "description": "Time each event starts in datetime format",
-                            "items":
-                                {"type": "string"}
+                            "type": "string",
+                            "description": "start time of event in datetime formate",
                         },
                         "end_time": {
-                            "type": "array",
-                            "description": "Time that each event ends in datetime format",
-                            "items":
-                                {"type": "string"}
-                        },
-                        "all_day": {
-                            "type": "array",
-                            "description": "If the event is an all day type in gcalendar",
-                            "items": {
-                                "type": "boolean"
-                            }
+                            "type": "string",
+                            "description": "end time of event in datetime format",
                         },
                     },
-                    "required": ["event_summary", "start_time", "end_time", "all_day"],
+                    "required": ["event_id", "start_time", "end_time"],
                 },
                 "return_type": {"type": "str"}
             }
@@ -172,7 +247,8 @@ class Bot:
         self.gcalendar_availablefuncs = {"get_gcalendar_events": self.get_gcalendar_events,
                                          "search_gcalendar_events": self.search_gcalendar_events,
                                          "get_gcalendar_events_byID": self.get_gcalendar_events_byID,
-                                         "create_event": self.create_event
+                                         "create_event": self.create_event,
+                                         "create_events": self.create_events
                                          }
 
         self.python_function = {
@@ -216,40 +292,48 @@ class Bot:
             "extract_text_from_website": self.extract_text_from_website
 
         }
+
+        # raise Exception("Delete line below this")
+        # self.gc = gcsa.google_calendar.GoogleCalendar()
+
         self.load_hyperparams()
 
     @staticmethod
-    def _call_func(function_name, function_to_call, function_args, response_message):
-        if function_name == "run_python_code":
-            return f"Success! The code provided was  {response_message.get('function_call').get('arguments')}"
+    def _call_func(function_to_call, function_args):
+        try:
+            if function_args == 0:
+                function_response = function_to_call()
 
-        elif function_args == 0:
-            function_response = function_to_call()
+            # elif function_args == 1:
+            #     function_response = function_to_call()
 
-        # elif function_args == 1:
-        #     function_response = function_to_call()
+            else:
+                function_response = function_to_call(**function_args)
 
-        else:
-            function_response = function_to_call(**function_args)
-
-        return function_response
+            append_log(function_to_call.__name__ + " args:", function_args)
+            append_log(function_to_call.__name__, function_response.__str__)
+            return function_response
+        except Exception as e:
+            append_log("Error with calling func", traceback.format_exc())
+            return Skip("Error with calling func. Traceback : {traceback.format_exc()}",
+                        f"Error with calling Func {function_to_call.__name__}.")
 
     if True:
 
         @staticmethod
         def _log_call(func):
             @functools.wraps(func)
-            def wrapper(self,*args, **kwargs):
+            def wrapper(self, *args, **kwargs):
                 caller_name = func.__name__
+                logs.append(f"Func {caller_name} called in {type(self).__name__}")
+
                 print(f"Func {caller_name} called in {type(self).__name__}")
                 return func(self, *args, **kwargs)
 
             return wrapper
 
-        @staticmethod
         @_log_call
-        def python(code):
-            global ERROR
+        def python(self, code):
             try:
 
                 # Redirect the standard output to a StringIO object
@@ -265,14 +349,11 @@ class Bot:
                 # Get the output from the StringIO object
                 return output.getvalue()
             except Exception as e:
-                logging.debug(e)
-                ERROR = e
-                return e
+                return Skip(f"Error is python string: {e}", "Error with AI generated code")
 
-        @staticmethod
         @_log_call
-        def extract_text_from_website(url):
-            global ERROR
+        def extract_text_from_website(self, url):
+
             try:
                 # Send a GET request to the URL
                 response = requests.get(url)
@@ -295,21 +376,13 @@ class Bot:
 
                 else:
                     logging.debug(f"Error: Failed to retrieve content from {url}")
-                    return f"Error: Failed to retrieve content from {url}"
+                    return Skip(f"Error: Failed to retrieve content from {url}")
             except Exception as e:
                 logging.debug(e)
-                ERROR = e
+
                 return e
 
-        @staticmethod
-        @_log_call
-        def get_datetime():
-            time_ = str(datetime.datetime.now())
-            return time_
-
-        @staticmethod
-        @_log_call
-        def _string_to_date(input_string):
+        def _string_to_date(self, input_string):
             try:
                 # Parse the input string using dateutil.parser
                 datetime_object = parser.parse(input_string)
@@ -321,72 +394,101 @@ class Bot:
                 return str(e)
 
         @_log_call
-        def init_gc(self,creds_path, token_path):
-            global gc
-            gc = gcsa.google_calendar.GoogleCalendar(credentials_path=creds_path,
-                                                     token_path=token_path)
-            return gc
+        def init_gc(self, creds_path, token_path):
+            self.gc = gcsa.google_calendar.GoogleCalendar(credentials_path=creds_path,
+                                                          token_path=token_path)
+            return self.gc
 
-        @staticmethod
-        @_log_call
-        def _include_id(events):
-            return [str(event) + " <ID: " + event.id + ">" for event in events]
+        def _parse(self, events):
+            return [f"Event: {event.summary}. ID: {event.id}. Start time: {event.start}. End time: {event.end}" for
+                    event in events]
 
         @_log_call
         def get_gcalendar_events(self, necessary_events):
             if necessary_events > 50:
                 necessary_events = 50
-            return str(self._include_id(gc.get_events(order_by="startTime", single_events=True))[:necessary_events])
+            return str(self._parse(gc.get_events(order_by="startTime", single_events=True))[:necessary_events])
 
         @_log_call
-        def search_gcalendar_events(self, search_key, necessary_events):
+        def search_gcalendar_events(self, search_key, necessary_events=None):
+            if necessary_events is None:
+                append_log("Parameter not filled", "necessary_events parameter not filled")
+                return str(self._parse(self.gc.get_events(query=search_key))[
+                           :10]) + "\n Precaution: necessary_events parameter was not filled. Search still worked"
+
             if necessary_events > 50:
                 necessary_events = 50
-            return str(self._include_id(gc.get_events(query=search_key))[:necessary_events])
 
-        @staticmethod
-        @_log_call
-        def get_gcalendar_events_byID(ID):
-            return str(gc.get_event(ID))
+            return str(self._parse(self.gc.get_events(query=search_key))[:necessary_events])
 
         @_log_call
-        def create_event(self, event_summary, start_time, end_time, all_day=False):
+        def get_gcalendar_events_byID(self, ID):
+            return str(self.gc.get_event(ID))
+
+        @_log_call
+        def create_event(self, event_summary, description, start_time, end_time, all_day=False, default_reminders=True):
+            # ChatGPT has no access to default reminders parameter
+
             start, end = self._string_to_date(start_time), self._string_to_date(end_time)
 
             if all_day:
-                event = Event(event_summary,
-                              start=start.date(),
-                              end=end_time.date())
+                start = start.date()
+                end = end.date()
+
+            event = Event(event_summary, description=description, default_reminders=default_reminders,
+                          start=start,
+                          end=end)
+
+            event = self.gc.add_event(event)
+
+            if event.start.date() == event.end.date():
+
+                return Skip(
+                    f"Event {event.summary} created. Starts at {event.start.strftime('%-d %b, %-I%p, on %A')},"
+                    f" ends at {event.end.strftime('%-d %b, %-I%p, on %A')}. Event ID is {event.id}",
+
+                    f"System: {event.summary} scheduled from {event.start.strftime('%-d %b, %-I%p, on %A')} "
+                    f"to {event.end.strftime('%-d %b, %-I%p, on %A')}")
             else:
-                event = Event(event_summary,
-                              start=start,
-                              end=end)
+                return Skip(
+                    f"Event {event.summary} created. Starts at {event.start.strftime('%-d %b, %-I%p, on %A')},"
+                    f" ends at {event.end.strftime('%-d %b, %-I%p, on %A')}. Event ID is {event.id}",
 
-            event = gc.add_event(event)
-
-            return "Event created successfully. ID: " + event.id
+                    f"System: {event.summary} scheduled on {event.start.strftime('%-d %b, %A')} from"
+                    f" {event.start.strftime('%-I%p')} to {event.end.strftime('%-I%p')}")
 
         @_log_call
-        def create_events(self, event_summaries, start_times, end_times, all_day: list):
-            if len(event_summaries) == len(start_times) == len(end_times) == len(all_day):
-                start_times = [self._string_to_date(time) for time in start_times]
-                end_times = [self._string_to_date(time for time in end_times)]
+        def create_events(self, event_summaries, descriptions, start_times, end_times, all_day: list,
+                          default_reminders=True):
+            # ChatGPT has no access to default reminders parameter
+            raise NotImplementedError
+
+            if len(event_summaries) == len(start_times) == len(end_times) == len(all_day) == len(descriptions):
+                start_times_ = []
+                end_times_ = []
+                for start_time, end_time in zip(start_times, end_times):
+                    start_times_.append(self._string_to_date(start_time))
+                    end_times_.append(self._string_to_date(end_time))
 
                 event_ids = []
                 error_events = []
 
                 for i in range(len(event_summaries)):
                     try:
-                        if all_day[i]:
-                            event = Event(event_summaries[i],
-                                          start=start_times[i].date(),
-                                          end=end_times[i].date())
+                        if all_day:
+                            start = start_times_[i].date()
+                            end = end_times_[i].date()
                         else:
-                            event = Event(event_summaries[i],
-                                          start=start_times[i],
-                                          end=end_times[i])
+                            start = start_times_[i]
+                            end = end_times_[i]
 
-                        event_ids.append(f"Event Summary: {event_summaries[i]}\nEvent ID: {gc.add_event(event).id}")
+                        event = Event(event_summaries[i], description=descriptions[i],
+                                      default_reminders=default_reminders,
+                                      start=start,
+                                      end=end)
+
+                        event_ids.append(
+                            f"Event: {event_summaries[i]}\nEvent ID: {self.gc.add_event(event).id}")
                     except Exception as e:
                         error_events.append(f"Error with {event_summaries[i]}.")
                         print("DEBUG: " + e.__str__())
@@ -400,21 +502,41 @@ class Bot:
             else:
                 return "All parameters must be the same length"
 
+        @_log_call
+        def delete_event(self, event_id):
+            try:
+                event = self.gc.get_event(event_id)
+                event_summary = event.summary
+
+                self.gc.delete_event(event_id)
+                return Skip("Event was deleted", f"Event {event_summary}  was deleted")
+            except googleapiclient.errors.HttpError as e:
+                append_log("Error contacting G calendar", e)
+                return Skip(f"Error: {e.reason}", "Error contacting G calendar")
+
+        @_log_call
+        def change_event_time(self, event_id, start_time, end_time):
+            event = self.gc.get_event(event_id=event_id)
+            event.start = self._string_to_date(start_time)
+            event.end = self._string_to_date(end_time)
+            self.gc.update_event(event=event)
+
+            return Skip(f"Event {event.summary} moved to start at {start_time} and end at {end_time}")
+
     @_log_call
     def load_hyperparams(self):
-        global hyperparameters, functions, available_functions
         with open("../venv/hyperparameters.json", "r") as f:
             hyperparameters = json.load(f)
 
         openai.api_key = hyperparameters["openai_api_key"]
 
         try:
-            gc = self.init_gc(hyperparameters["path_to_OAuth_credentials"],
-                              hyperparameters["OAuth_credentials_token_save_location"])
+            self.gc = self.init_gc(hyperparameters["path_to_OAuth_credentials"],
+                                   hyperparameters["OAuth_credentials_token_save_location"])
         except Exception:
-            gc = None
+            self.gc = None
 
-        if gc:
+        if self.gc:
             for func in self.gcalendar_funcs:
                 self.functions.append(func)
 
@@ -425,8 +547,7 @@ class Bot:
 
             self.available_functions.update(self.python_availablefunc)
 
-    @staticmethod
-    def _get_last_few_msgs(message):
+    def _get_last_few_msgs(self, message):
         message_ = message[-hyperparameters["messages_in_memory"]:]
 
         if not message_:
@@ -467,15 +588,19 @@ class Bot:
                 # only one function in this example, but you can have multiple
 
                 function_name = response_message["function_call"]["name"]
-                function_to_call = available_functions[function_name]
+                function_to_call = self.available_functions[function_name]
                 function_args = json.loads(response_message["function_call"]["arguments"])
 
-                print(f"AI called function {function_name}")
+                print(f"AI called function {function_name}", file=sys.stderr)
 
                 # Call the function that the AI wants to call
-                function_response = self._call_func(function_name, function_to_call, function_args, response_message)
+                function_response = self._call_func(function_to_call, function_args)
 
                 # if function response was a message to be returned to chat, return it
+                if isinstance(function_response, Skip):
+                    append_info_message(function_response.info)
+                    display_message(function_response.user_info)
+                    return function_response
 
                 # Step 4: send the info on the function call and function response to GPT
                 append_func_response(function_name, function_response)
@@ -488,6 +613,7 @@ class Bot:
                 return second_response["choices"][0]["message"].get("content")
 
             except Exception as e:
+                append_log("Error in function calling", e)
 
                 return f"Error:\n {e}"
 
@@ -508,32 +634,33 @@ def append_func_response(func_name, response):
 
 
 def append_log(log_name, details):
-    logs.append({log_name, details})
+    logs.append({log_name: details})
 
 
-def append_logs(name, details):
-    logs.append({name: details})
-    pprint.pprint(logs)
-    print_logs()
-
-
-def print_logs():
-    print("logs\n")
-    print(logs)
+def append_info_message(content):
+    messages.append({"role": "information", "content": content})
 
 
 def commands(command) -> None:
+    global messages
     if command.lower() == "$chat_history" or command.lower() == "$chathistory":
 
         pprint.pprint(messages)
-        display_message(pprint.pformat(messages.__str__()))
+        display_message(pprint.pformat(messages))
 
     elif command.lower() == "$hyperparams" or command.lower() == "$hyperparameters":
         pprint.pprint(hyperparameters)
 
     elif command.lower() == "$logs":
-        print(logs)
+        pprint.pprint(logs)
         display_message(pprint.pformat(logs))
+
+    elif command.lower() == "$clear":
+        messages = []
+        chat_area.configure(state='normal')  # Enable editing
+        chat_area.delete("1.0", tk.END)
+        chat_area.see(tk.END)  # Auto scroll to the latest message
+        chat_area.configure(state='disabled')  # Disable editing
 
     else:
         display_message(f"{command} is not a command")
@@ -541,18 +668,20 @@ def commands(command) -> None:
     input_text.delete("1.0", tk.END)  # Clear the input text
 
 
-def bot_response(loading_message: tk.Text, chat_history) -> None:
+def bot_response() -> None:
     # Get bot response
     bot_reply = Bot.run_convo(hyperparameters["model"],
                               hyperparameters["max_tokens"],
                               hyperparameters["temperature"])
     # Remove the "Loading..." message
-    remove_message(loading_message)
-    if bot_reply:
+    remove_chat_message()
+    if not isinstance(bot_reply, Skip):
         messages.append({"role": "assistant", 'content': bot_reply})
 
         # Display the bot response in the chat area
         display_message(f"\nBot: {bot_reply}")
+    else:
+        display_message(f"\n{bot_reply.user_info}")
 
 
 def open_hyperparameters_window() -> None:
@@ -710,7 +839,7 @@ def open_hyperparameters_window() -> None:
         path_to_OAuth_credentials_entry.insert(0, hyperparameters["path_to_OAuth_credentials"])
         path_to_OAuth_credentials_entry.grid(row=10, column=1, padx=(10, 0), sticky="news")
 
-        # OAuth credentials token save location
+        # OAuth's credentials token save location
         OAuth_credentials_token_save_location_label = ttk.Label(window, font=roboto_font_,
                                                                 text="OAuth credentials token save location:")
         OAuth_credentials_token_save_location_label.grid(row=11, column=0, sticky="w")
@@ -745,7 +874,7 @@ def open_hyperparameters_window() -> None:
 
 
 def send_message(event: tk.Event = None) -> None:
-    # 8 is when the the enter key is being pressed
+    # 8 is when the enter key is being pressed
     if event.state != 8:
         return None
 
@@ -762,7 +891,7 @@ def send_message(event: tk.Event = None) -> None:
         if hyperparameters["include_time"].lower() == "yes":
 
             messages.append({'role': 'user',
-                             'content': message + f"\n Time is {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}"})
+                             'content': message + f"\n Time is {datetime.datetime.now().strftime('%A,%Y-%m-%d %H:%M')}"})
         else:
             messages.append({'role': 'user',
                              'content': message})
@@ -771,7 +900,7 @@ def send_message(event: tk.Event = None) -> None:
         loading_message = display_message("Bot: Loading...")
 
         # Get bot response in a separate thread
-        threading.Thread(target=bot_response, args=(loading_message, messages)).start()
+        threading.Thread(target=bot_response, args=([loading_message])).start()
 
         input_text.delete("1.0", tk.END)  # Clear the input text
 
@@ -812,10 +941,11 @@ def display_message(message: str) -> tk.Text:
     return chat_area
 
 
-def remove_message(text_widget: tk.Text) -> None:
-    text_widget.configure(state='normal')  # Enable editing
-    text_widget.delete('end-3l', 'end')  # Delete the third-to-last line
-    text_widget.configure(state='disabled')  # Disable editing
+def remove_chat_message() -> None:
+
+    chat_area_widget.configure(state='normal')  # Enable editing
+    chat_area_widget.delete('end-3l', 'end')  # Delete the third-to-last line
+    chat_area_widget.configure(state='disabled')  # Disable editing
 
 
 def delete_word(event):
