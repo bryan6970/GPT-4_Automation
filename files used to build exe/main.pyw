@@ -2,7 +2,6 @@ import datetime
 import functools
 import io
 import json
-import logging
 import pprint
 import sys
 import threading
@@ -27,7 +26,7 @@ from gcsa.event import Event
 messages = []
 logs = []
 
-chat_area_widget : scrolledtext.ScrolledText = None
+chat_area_widget: scrolledtext.ScrolledText = None
 
 PATH_TO_IMAGE: str = r"../Images/GPT.png"
 
@@ -371,14 +370,12 @@ class Bot:
 
                     # Join the filtered text elements into a single string
                     extracted_text = " ".join(filtered_text)
-                    logging.debug(extracted_text)
+
                     return extracted_text
 
                 else:
-                    logging.debug(f"Error: Failed to retrieve content from {url}")
                     return Skip(f"Error: Failed to retrieve content from {url}")
             except Exception as e:
-                logging.debug(e)
 
                 return e
 
@@ -619,7 +616,6 @@ class Bot:
 
         else:
             pprint.pprint(self._get_last_few_msgs(messages))
-            logging.debug(response_message)
             if self.ERROR:
                 return response_message.get("content")
             return response_message.get("content")
@@ -942,7 +938,6 @@ def display_message(message: str) -> tk.Text:
 
 
 def remove_chat_message() -> None:
-
     chat_area_widget.configure(state='normal')  # Enable editing
     chat_area_widget.delete('end-3l', 'end')  # Delete the third-to-last line
     chat_area_widget.configure(state='disabled')  # Disable editing
