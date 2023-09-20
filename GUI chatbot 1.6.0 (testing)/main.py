@@ -324,7 +324,7 @@ class Bot:
                 caller_name = func.__name__
                 logs.append(f"Func {caller_name} called in {type(self).__name__}")
 
-                print(f"Func {caller_name} called in {type(self).__name__}")
+                print(f"Func {caller_name} called in {type(self).__name__}. Args passed are {args}{kwargs}")
                 return func(self, *args, **kwargs)
 
             return wrapper
