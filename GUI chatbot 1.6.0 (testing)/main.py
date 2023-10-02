@@ -9,7 +9,7 @@ import tkinter as tk
 import tkinter.messagebox
 import traceback
 import warnings
-from tkinter import scrolledtext
+from tkinter import scrolledtext, messagebox
 from tkinter import ttk
 from tkinter.font import Font
 
@@ -22,6 +22,33 @@ from PIL import ImageTk, Image
 from bs4 import BeautifulSoup
 from dateutil import parser
 from gcsa.event import Event
+
+# ANSI escape codes for text color
+BLACK = "\033[0;30m"
+RED = "\033[0;31m"
+GREEN = "\033[0;32m"
+BROWN = "\033[0;33m"
+BLUE = "\033[0;34m"
+PURPLE = "\033[0;35m"
+CYAN = "\033[0;36m"
+LIGHT_GRAY = "\033[0;37m"
+DARK_GRAY = "\033[1;30m"
+LIGHT_RED = "\033[1;31m"
+LIGHT_GREEN = "\033[1;32m"
+YELLOW = "\033[1;33m"
+LIGHT_BLUE = "\033[1;34m"
+LIGHT_PURPLE = "\033[1;35m"
+LIGHT_CYAN = "\033[1;36m"
+LIGHT_WHITE = "\033[1;37m"
+BOLD = "\033[1m"
+FAINT = "\033[2m"
+ITALIC = "\033[3m"
+UNDERLINE = "\033[4m"
+BLINK = "\033[5m"
+NEGATIVE = "\033[7m"
+CROSSED = "\033[9m"
+RESET = '\033[0m'
+
 
 messages = []
 logs = []
@@ -49,8 +76,6 @@ except FileNotFoundError:
         }
         json.dump(hyperparameters, f)
 
-pprint.pprint(hyperparameters)
-
 
 class Skip:
     """Used for functions to return to omit second api call"""
@@ -69,8 +94,11 @@ class Skip:
         return "Skip class"
 
 
-class Bot:
+class ChatBot:
     def __init__(self):
+        self.gc = None
+        self.counter = 0
+        self.max_recursion = 3
         self.ERROR = False
 
         # Don't find this necessary.
@@ -305,6 +333,14 @@ class Bot:
             #     function_response = function_to_call()
 
             else:
+                args_str = "\n".join([f"{key}: {value}" for key, value in function_args.items()])
+
+                # Ask the user for confirmation
+                confirm = messagebox.askyesno("Confirmation",
+                                              f"Do you want to run {function_to_call.__name__} with  \n\n {args_str}?")
+
+                if not confirm:
+                    return Skip(f"User declined the running of {function_to_call.__name__}", f"You declined the running of {function_to_call.__name__}")
                 function_response = function_to_call(**function_args)
 
             append_log(function_to_call.__name__ + " args:", function_args)
@@ -312,8 +348,9 @@ class Bot:
             return function_response
         except Exception as e:
             append_log("Unknown error with calling func", traceback.format_exc())
-            return Skip(f"Unknown error with calling func.",
-                        f"Unknown error with calling func {function_to_call.__name__}. This is a code issue and not an AI issue.")
+            return Skip(f"Unknown error with calling func. Check your JSON format",
+                        f"Unknown error with calling func {function_to_call.__name__}. This is most likely"
+                        f" caused by the bot sending a wrong format to the function.")
 
     if True:
 
@@ -322,17 +359,42 @@ class Bot:
             @functools.wraps(func)
             def wrapper(self, *args, **kwargs):
                 caller_name = func.__name__
-                logs.append(f"Func {caller_name} called in {type(self).__name__}")
+                append_log("",f"Func {caller_name} called in {type(self).__name__}")
 
-                print(f"Func {caller_name} called in {type(self).__name__}")
+                print(f"{PURPLE}Func {caller_name} called in {type(self).__name__}{RESET}")
                 return func(self, *args, **kwargs)
 
             return wrapper
 
+
+
+        @staticmethod
+        def _string_to_date(input_string):
+            try:
+                # Parse the input string using dateutil.parser
+                datetime_object = parser.parse(input_string)
+
+                return datetime_object
+            except ValueError as e:
+                # Handle parsing errors gracefully
+                print(f"Error with time format {input_string}", file=sys.stderr)
+                return str(e)
+
+        @_log_call
+        def init_gc(self, creds_path, token_path):
+            self.gc = gcsa.google_calendar.GoogleCalendar(credentials_path=creds_path,
+                                                          token_path=token_path)
+            return self.gc
+
+        @staticmethod
+        def _parse(events):
+            return [f"Event: {event.summary}. ID: {event.id}. Start time: {event.start}. End time: {event.end}" for
+                    event in events]
+
         @_log_call
         def python(self, code):
-            try:
 
+            try:
                 # Redirect the standard output to a StringIO object
                 output = io.StringIO()
                 sys.stdout = output
@@ -344,7 +406,10 @@ class Bot:
                 sys.stdout = sys.__stdout__
 
                 # Get the output from the StringIO object
-                return output.getvalue()
+                if not output.getvalue():
+                    return Skip(info="Code ran successfully")
+                else:
+                    return output.getvalue()
             except Exception as e:
                 return Skip(f"Error is python string: {e}", "Error with AI generated code")
 
@@ -377,27 +442,6 @@ class Bot:
 
                 return e
 
-        def _string_to_date(self, input_string):
-            try:
-                # Parse the input string using dateutil.parser
-                datetime_object = parser.parse(input_string)
-
-                return datetime_object
-            except ValueError as e:
-                # Handle parsing errors gracefully
-                print(f"Error with time format {input_string}", file=sys.stderr)
-                return str(e)
-
-        @_log_call
-        def init_gc(self, creds_path, token_path):
-            self.gc = gcsa.google_calendar.GoogleCalendar(credentials_path=creds_path,
-                                                          token_path=token_path)
-            return self.gc
-
-        def _parse(self, events):
-            return [f"Event: {event.summary}. ID: {event.id}. Start time: {event.start}. End time: {event.end}" for
-                    event in events]
-
         @_log_call
         def get_gcalendar_events(self, necessary_events):
             if necessary_events > 50:
@@ -421,8 +465,11 @@ class Bot:
             return str(self.gc.get_event(ID))
 
         @_log_call
-        def create_event(self, event_summary, description, start_time, end_time, all_day=False, default_reminders=True):
+        def create_event(self, event_summary, description, start_time, end_time, all_day=False,
+                         default_reminders=True):
             # ChatGPT has no access to default reminders parameter
+
+
 
             start, end = self._string_to_date(start_time), self._string_to_date(end_time)
 
@@ -458,6 +505,7 @@ class Bot:
             # ChatGPT has no access to default reminders parameter
             raise NotImplementedError
 
+            # noinspection PyUnreachableCode
             if len(event_summaries) == len(start_times) == len(end_times) == len(all_day) == len(descriptions):
                 start_times_ = []
                 end_times_ = []
@@ -520,6 +568,8 @@ class Bot:
 
     @_log_call
     def load_hyperparams(self):
+        messages = []
+
         with open("../venv/hyperparameters.json", "r") as f:
             hyperparameters = json.load(f)
 
@@ -531,16 +581,25 @@ class Bot:
         except Exception:
             self.gc = None
 
-        if self.gc:
+        if isinstance(self.gc, gcsa.google_calendar.GoogleCalendar):
+            print(GREEN+"Gcalendar func loaded"+RESET)
             for func in self.gcalendar_funcs:
                 self.functions.append(func)
 
             self.available_functions.update(self.gcalendar_availablefuncs)
+        else:
+            messages.append("Gcalendar functions not loaded")
+            print(RED + "Gcalendar func not loaded" + RESET)
 
         if hyperparameters["use_python"].lower() == "yes":
             self.functions.append(self.python_function)
 
             self.available_functions.update(self.python_availablefunc)
+
+            print(GREEN+"Python function loaded"+RESET)
+        else:
+            messages.append(RED+"Python function not loaded"+RESET)
+            print(RED + "Python function not loaded" + RESET)
 
     def _get_last_few_msgs(self, message):
         message_ = message[-hyperparameters["messages_in_memory"]:]
@@ -582,9 +641,15 @@ class Bot:
                 # Note: the JSON response may not always be valid; be sure to handle errors
                 # only one function in this example, but you can have multiple
 
+                pprint.pprint(response_message)
+
                 function_name = response_message["function_call"]["name"]
                 function_to_call = self.available_functions[function_name]
-                function_args = json.loads(response_message["function_call"]["arguments"])
+
+                if function_name == Bot.python.__name__:
+                    function_args = {"code":response_message["function_call"]["arguments"]}
+                else:
+                    function_args = json.loads(response_message["function_call"]["arguments"])
 
                 print(f"AI called function {function_name}", file=sys.stderr)
 
@@ -594,7 +659,6 @@ class Bot:
                 # if function response was a message to be returned to chat, return it
                 if isinstance(function_response, Skip):
                     append_info_message(function_response.info)
-                    display_message(function_response.user_info)
                     return function_response
 
                 # Step 4: send the info on the function call and function response to GPT
@@ -609,8 +673,14 @@ class Bot:
 
             except Exception as e:
                 append_log("Error in function calling", e)
+                print(f"Error:\n {traceback.format_exc()}")
 
-                return f"Error:\n {e}"
+                self.counter += 1
+                if self.counter < self.max_recursion:
+                    return self.run_convo(model, max_tokens, temperature)
+                else:
+                    return Skip(
+                        user_info="An error occurred. This is most likely caused by the incorrect output from the bot.")
 
         else:
             pprint.pprint(self._get_last_few_msgs(messages))
@@ -619,7 +689,14 @@ class Bot:
             return response_message.get("content")
 
 
-Bot = Bot()
+def display_message(message: str) -> tk.Text:
+    chat_area.configure(state='normal')  # Enable editing
+
+    chat_area.insert(tk.END, message + "\n\n")
+    chat_area.see(tk.END)  # Auto scroll to the latest message
+    chat_area.configure(state='disabled')  # Disable editing
+
+    return chat_area
 
 
 def append_func_response(func_name, response):
@@ -632,7 +709,7 @@ def append_log(log_name, details):
 
 
 def append_info_message(content):
-    messages.append({"role": "information", "content": content})
+    messages.append({"role": "user", "content": "INFO: " + content})
 
 
 def commands(command) -> None:
@@ -640,14 +717,31 @@ def commands(command) -> None:
     if command.lower() == "$chat_history" or command.lower() == "$chathistory":
 
         pprint.pprint(messages)
-        display_message(pprint.pformat(messages))
 
     elif command.lower() == "$hyperparams" or command.lower() == "$hyperparameters":
         pprint.pprint(hyperparameters)
 
+    elif command.lower() == "$log":
+        print(list(logs[-1].values())[0])
+
     elif command.lower() == "$logs":
         pprint.pprint(logs)
-        display_message(pprint.pformat(logs))
+
+    elif command.lower()[:6] == "$print":
+        # Execute the code using exec()
+        try:
+            exec(f"print('{globals()[command[6:]]}')")
+
+            # Redirect the standard output to a StringIO object
+            output = io.StringIO()
+            sys.stdout = output
+
+            # Restore the standard output
+            sys.stdout = sys.__stdout__
+
+            print(output.getvalue())
+        except KeyError:
+            print(f"No such variable {RED}{command[6:]}{RESET}")
 
     elif command.lower() == "$clear":
         messages = []
@@ -885,7 +979,7 @@ def send_message(event: tk.Event = None) -> None:
         if hyperparameters["include_time"].lower() == "yes":
 
             messages.append({'role': 'user',
-                             'content': message + f"\n Time is {datetime.datetime.now().strftime('%A,%Y-%m-%d %H:%M')}"})
+                             'content': message + f"\n For your reference, the time now is {datetime.datetime.now().strftime('%A,%Y-%m-%d %H:%M')}"})
         else:
             messages.append({'role': 'user',
                              'content': message})
@@ -907,6 +1001,7 @@ def unset_border_color(event: tk.Event) -> None:
     input_text.config(highlightbackground="#1C1C1C")
 
 
+# noinspection PyUnreachableCode
 def superscript(text):
     raise NotImplementedError
     result = []
@@ -923,16 +1018,6 @@ def superscript(text):
             result.append(text[i])
             i += 1
     return ''.join(result)
-
-
-def display_message(message: str) -> tk.Text:
-    chat_area.configure(state='normal')  # Enable editing
-
-    chat_area.insert(tk.END, message + "\n\n")
-    chat_area.see(tk.END)  # Auto scroll to the latest message
-    chat_area.configure(state='disabled')  # Disable editing
-
-    return chat_area
 
 
 def remove_chat_message() -> None:
@@ -955,6 +1040,9 @@ def delete_word(event):
 
 if __name__ == '__main__':
     # Create the main window
+
+    Bot = ChatBot()
+
     root: tk.Tk = tk.Tk()
     root.title("Chat App")
     root.configure(background="#1C1C1C")

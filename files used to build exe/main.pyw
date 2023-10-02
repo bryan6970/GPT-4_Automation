@@ -26,8 +26,6 @@ from gcsa.event import Event
 messages = []
 logs = []
 
-chat_area_widget: scrolledtext.ScrolledText = None
-
 PATH_TO_IMAGE: str = r"../Images/GPT.png"
 
 try:
@@ -313,9 +311,9 @@ class Bot:
             append_log(function_to_call.__name__, function_response.__str__)
             return function_response
         except Exception as e:
-            append_log("Error with calling func", traceback.format_exc())
-            return Skip("Error with calling func. Traceback : {traceback.format_exc()}",
-                        f"Error with calling Func {function_to_call.__name__}.")
+            append_log("Unknown error with calling func", traceback.format_exc())
+            return Skip(f"Unknown error with calling func.",
+                        f"Unknown error with calling func {function_to_call.__name__}. This is a code issue and not an AI issue.")
 
     if True:
 
@@ -441,18 +439,18 @@ class Bot:
             if event.start.date() == event.end.date():
 
                 return Skip(
-                    f"Event {event.summary} created. Starts at {event.start.strftime('%-d %b, %-I%p, on %A')},"
-                    f" ends at {event.end.strftime('%-d %b, %-I%p, on %A')}. Event ID is {event.id}",
+                    f"Event {event.summary} created. Starts at {event.start.strftime('%d %b, %I:%M%p, on %A')},"
+                    f" ends at {event.end.strftime('%d %b, %I:%M%p, on %A')}. Event ID is {event.id}",
 
-                    f"System: {event.summary} scheduled from {event.start.strftime('%-d %b, %-I%p, on %A')} "
-                    f"to {event.end.strftime('%-d %b, %-I%p, on %A')}")
+                    f"System: {event.summary} scheduled from {event.start.strftime('%d %b, %I:%M%p, on %A')} "
+                    f"to {event.end.strftime('%d %b, %I:%M%p, on %A')}")
             else:
                 return Skip(
-                    f"Event {event.summary} created. Starts at {event.start.strftime('%-d %b, %-I%p, on %A')},"
-                    f" ends at {event.end.strftime('%-d %b, %-I%p, on %A')}. Event ID is {event.id}",
+                    f"Event {event.summary} created. Starts at {event.start.strftime('%d %b, %I:%M%p, on %A')},"
+                    f" ends at {event.end.strftime('%d %b, %I:%M%p, on %A')}. Event ID is {event.id}",
 
-                    f"System: {event.summary} scheduled on {event.start.strftime('%-d %b, %A')} from"
-                    f" {event.start.strftime('%-I%p')} to {event.end.strftime('%-I%p')}")
+                    f"System: {event.summary} scheduled on {event.start.strftime('%d %b, %I:%M%p, on %A')} from"
+                    f" {event.start.strftime('%I%p')} to {event.end.strftime('%I%p')}")
 
         @_log_call
         def create_events(self, event_summaries, descriptions, start_times, end_times, all_day: list,
@@ -896,7 +894,7 @@ def send_message(event: tk.Event = None) -> None:
         loading_message = display_message("Bot: Loading...")
 
         # Get bot response in a separate thread
-        threading.Thread(target=bot_response, args=([loading_message])).start()
+        threading.Thread(target=bot_response).start()
 
         input_text.delete("1.0", tk.END)  # Clear the input text
 
@@ -938,9 +936,9 @@ def display_message(message: str) -> tk.Text:
 
 
 def remove_chat_message() -> None:
-    chat_area_widget.configure(state='normal')  # Enable editing
-    chat_area_widget.delete('end-3l', 'end')  # Delete the third-to-last line
-    chat_area_widget.configure(state='disabled')  # Disable editing
+    chat_area.configure(state='normal')  # Enable editing
+    chat_area.delete('end-3l', 'end')  # Delete the third-to-last line
+    chat_area.configure(state='disabled')  # Disable editing
 
 
 def delete_word(event):

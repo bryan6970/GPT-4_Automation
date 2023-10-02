@@ -1,6 +1,8 @@
+import datetime
 import json
 import pprint
 import sys
+import time
 import tkinter.messagebox
 
 import gcsa.google_calendar
@@ -11,6 +13,4 @@ from gcsa.event import Event
 import functools
 
 
-
-
-tkinter.messagebox.showerror("Error", "test")
+print(datetime.datetime.now())
