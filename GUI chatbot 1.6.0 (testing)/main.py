@@ -12,6 +12,7 @@ import warnings
 from tkinter import scrolledtext, messagebox
 from tkinter import ttk
 from tkinter.font import Font
+from typing import List, Dict, Optional, Callable, Any, Union
 
 import gcsa
 import gcsa.google_calendar as gc
@@ -48,7 +49,6 @@ BLINK = "\033[5m"
 NEGATIVE = "\033[7m"
 CROSSED = "\033[9m"
 RESET = '\033[0m'
-
 
 messages = []
 logs = []
@@ -97,9 +97,9 @@ class Skip:
 class ChatBot:
     def __init__(self):
         self.gc = None
-        self.counter = 0
-        self.max_recursion = 3
-        self.ERROR = False
+        self.counter: int = 0
+        self.max_recursion: int = 3
+        self.ERROR: bool = False
 
         # Don't find this necessary.
         self.create_events = {
@@ -276,7 +276,7 @@ class ChatBot:
                                          "create_events": self.create_events
                                          }
 
-        self.python_function = {
+        self.python_function_dict = {
             "name": "python",
             "description": "runs python code with exec function. Use this for any arithmetic calculations you need to do. "
                            "Returns whatever is printed",
@@ -324,26 +324,32 @@ class ChatBot:
         self.load_hyperparams()
 
     @staticmethod
-    def _call_func(function_to_call, function_args):
+    def _call_func(function_to_call: Callable[..., Any], function_args: Dict[str, Any]) -> Any:
+        """
+        Calls a function with the provided arguments and asks for user confirmation.
+
+        :param function_to_call: The function to call.
+        :param function_args: The arguments to pass to the function.
+        :return: The response from the function or a Skip object in case of an error or user decline.
+        """
         try:
-            if function_args == 0:
+            if not function_args:
                 function_response = function_to_call()
-
-            # elif function_args == 1:
-            #     function_response = function_to_call()
-
             else:
                 args_str = "\n".join([f"{key}: {value}" for key, value in function_args.items()])
+                args_str = f"Function arguments:\n{args_str}"
 
-                # Ask the user for confirmation
-                confirm = messagebox.askyesno("Confirmation",
-                                              f"Do you want to run {function_to_call.__name__} with  \n\n {args_str}?")
+                confirm = messagebox.askyesno(
+                    "Confirmation",
+                    f"Do you want to run {function_to_call.__name__} with the following parameters?\n\n{args_str}"
+                )
 
                 if not confirm:
-                    return Skip(f"User declined the running of {function_to_call.__name__}", f"You declined the running of {function_to_call.__name__}")
+                    return Skip(f"User declined the running of {function_to_call.__name__}",
+                                f"You declined the running of {function_to_call.__name__}")
                 function_response = function_to_call(**function_args)
 
-            append_log(function_to_call.__name__ + " args:", function_args)
+            append_log(f"{function_to_call.__name__} args:", function_args)
             append_log(function_to_call.__name__, function_response.__str__)
             return function_response
         except Exception as e:
@@ -356,24 +362,33 @@ class ChatBot:
 
         @staticmethod
         def _log_call(func):
+            """
+            Logs function calls
+            :param func: Function object
+            :return: None
+            """
+
             @functools.wraps(func)
             def wrapper(self, *args, **kwargs):
                 caller_name = func.__name__
-                append_log("",f"Func {caller_name} called in {type(self).__name__}")
+                append_log("", f"Func {caller_name} called in {type(self).__name__}")
 
                 print(f"{PURPLE}Func {caller_name} called in {type(self).__name__}{RESET}")
                 return func(self, *args, **kwargs)
 
             return wrapper
 
-
-
         @staticmethod
-        def _string_to_date(input_string):
+        def _string_to_date(input_string: str) -> Union[datetime.datetime, str]:
+            """
+            Converts a string to a datetime object using dateutil.parser.
+
+            :param input_string: The string to convert to a datetime object.
+            :return: A datetime object if successful, or an error message as a string if parsing fails.
+            """
             try:
                 # Parse the input string using dateutil.parser
                 datetime_object = parser.parse(input_string)
-
                 return datetime_object
             except ValueError as e:
                 # Handle parsing errors gracefully
@@ -381,19 +396,36 @@ class ChatBot:
                 return str(e)
 
         @_log_call
-        def init_gc(self, creds_path, token_path):
-            self.gc = gcsa.google_calendar.GoogleCalendar(credentials_path=creds_path,
-                                                          token_path=token_path)
+        def init_gc(self, creds_path: str, token_path: str) -> gcsa.google_calendar.GoogleCalendar:
+            """
+            Initializes a Google Calendar instance with the provided credentials and token paths.
+
+            :param creds_path: Path to the Google Calendar credentials file.
+            :param token_path: Path to a Pickle file where details can be temporarily stored.
+            :return: An instance of GoogleCalendar (GCSA).
+            """
+            self.gc = gcsa.google_calendar.GoogleCalendar(credentials_path=creds_path, token_path=token_path)
             return self.gc
 
         @staticmethod
-        def _parse(events):
+        def _parse(events: List[Event]) -> List[str]:
+            """
+            Parses a list of Google Calendar events into a list of formatted strings.
+
+            :param events: A list of Google Calendar events.
+            :return: A list of formatted strings containing event information.
+            """
             return [f"Event: {event.summary}. ID: {event.id}. Start time: {event.start}. End time: {event.end}" for
                     event in events]
 
         @_log_call
-        def python(self, code):
+        def python(self, code: str) -> Union[str, Skip]:
+            """
+            Executes Python code and returns the output.
 
+            :param code: Python code to execute.
+            :return: The output of the executed code or a Skip object if an error occurs.
+            """
             try:
                 # Redirect the standard output to a StringIO object
                 output = io.StringIO()
@@ -411,11 +443,16 @@ class ChatBot:
                 else:
                     return output.getvalue()
             except Exception as e:
-                return Skip(f"Error is python string: {e}", "Error with AI generated code")
+                return Skip(f"Error in python string: {e}", "Error with AI generated code")
 
         @_log_call
-        def extract_text_from_website(self, url):
+        def extract_text_from_website(self, url: str) -> Union[str, Skip]:
+            """
+            Extracts text content from a website's URL.
 
+            :param url: The URL of the website to extract text from.
+            :return: The extracted text content or a Skip object if an error occurs.
+            """
             try:
                 # Send a GET request to the URL
                 response = requests.get(url)
@@ -435,21 +472,33 @@ class ChatBot:
                     extracted_text = " ".join(filtered_text)
 
                     return extracted_text
-
                 else:
                     return Skip(f"Error: Failed to retrieve content from {url}")
             except Exception as e:
-
-                return e
+                return Skip(f"Error extracting text from website: {e}", "Error extracting text from the website")
 
         @_log_call
-        def get_gcalendar_events(self, necessary_events):
+        def get_gcalendar_events(self, necessary_events: int) -> str:
+            """
+            Retrieves Google Calendar events and returns a formatted string with event information.
+
+            :param necessary_events: The number of necessary events to retrieve.
+            :return: A formatted string with event information.
+            """
             if necessary_events > 50:
                 necessary_events = 50
             return str(self._parse(gc.get_events(order_by="startTime", single_events=True))[:necessary_events])
 
         @_log_call
-        def search_gcalendar_events(self, search_key, necessary_events=None):
+        def search_gcalendar_events(self, search_key, necessary_events: Optional[int] = None):
+            """
+            Searches for Google Calendar events and returns a formatted string with event information.
+
+            :param search_key: The search keyword to filter events.
+            :param necessary_events: The number of necessary events to retrieve.
+                                    If None, retrieves the first 10 events.
+            :return: A formatted string with event information.
+            """
             if necessary_events is None:
                 append_log("Parameter not filled", "necessary_events parameter not filled")
                 return str(self._parse(self.gc.get_events(query=search_key))[
@@ -462,11 +511,30 @@ class ChatBot:
 
         @_log_call
         def get_gcalendar_events_byID(self, ID):
+            """
+             Retrieves a Google Calendar event by its ID and returns its information as a string.
+
+             :param ID: The ID of the Google Calendar event to retrieve.
+             :return: A formatted string with event information.
+             """
+
             return str(self.gc.get_event(ID))
 
         @_log_call
         def create_event(self, event_summary, description, start_time, end_time, all_day=False,
                          default_reminders=True):
+            """
+                Creates a Google Calendar event and returns information about the created event.
+
+                :param event_summary: The summary or title of the event.
+                :param description: The description of the event.
+                :param start_time: The start time of the event (formatted as a string).
+                :param end_time: The end time of the event (formatted as a string).
+                :param all_day: A flag indicating if the event is an all-day event (default is False).
+                :param default_reminders: A flag indicating if default reminders should be set for the event (default is True).
+                :return: A formatted string with information about the created event or a Skip object if an error occurs.
+                """
+
             # ChatGPT has no access to default reminders parameter
 
 
@@ -499,10 +567,23 @@ class ChatBot:
                     f"System: {event.summary} scheduled on {event.start.strftime('%d %b, %I:%M%p, on %A')} from"
                     f" {event.start.strftime('%I%p')} to {event.end.strftime('%I%p')}")
 
+
         @_log_call
         def create_events(self, event_summaries, descriptions, start_times, end_times, all_day: list,
                           default_reminders=True):
             # ChatGPT has no access to default reminders parameter
+            """
+                Creates multiple Google Calendar events and returns information about the created events.
+
+                :param event_summaries: A list of event summaries or titles.
+                :param descriptions: A list of event descriptions.
+                :param start_times: A list of start times for the events (formatted as strings).
+                :param end_times: A list of end times for the events (formatted as strings).
+                :param all_day: A list of flags indicating if each event is an all-day event.
+                :param default_reminders: A flag indicating if default reminders should be set for the events (default is True).
+                :return: A formatted string with information about the created events or a Skip object if an error occurs.
+                """
+
             raise NotImplementedError
 
             # noinspection PyUnreachableCode
@@ -547,6 +628,12 @@ class ChatBot:
 
         @_log_call
         def delete_event(self, event_id):
+            """
+               Deletes a Google Calendar event by its ID and returns a message about the deletion.
+
+               :param event_id: The ID of the Google Calendar event to delete.
+               :return: A message indicating the result of the event deletion or a Skip object if an error occurs.
+            """
             try:
                 event = self.gc.get_event(event_id)
                 event_summary = event.summary
@@ -559,6 +646,14 @@ class ChatBot:
 
         @_log_call
         def change_event_time(self, event_id, start_time, end_time):
+            """
+              Changes the start and end times of a Google Calendar event by its ID and returns a message about the change.
+
+              :param event_id: The ID of the Google Calendar event to modify.
+              :param start_time: The new start time for the event (formatted as a string).
+              :param end_time: The new end time for the event (formatted as a string).
+              :return: A message indicating the result of the event time change or a Skip object if an error occurs.
+              """
             event = self.gc.get_event(event_id=event_id)
             event.start = self._string_to_date(start_time)
             event.end = self._string_to_date(end_time)
@@ -567,7 +662,7 @@ class ChatBot:
             return Skip(f"Event {event.summary} moved to start at {start_time} and end at {end_time}")
 
     @_log_call
-    def load_hyperparams(self):
+    def load_hyperparams(self) -> None:
         messages = []
 
         with open("../venv/hyperparameters.json", "r") as f:
@@ -582,7 +677,7 @@ class ChatBot:
             self.gc = None
 
         if isinstance(self.gc, gcsa.google_calendar.GoogleCalendar):
-            print(GREEN+"Gcalendar func loaded"+RESET)
+            print(GREEN + "Gcalendar func loaded" + RESET)
             for func in self.gcalendar_funcs:
                 self.functions.append(func)
 
@@ -592,16 +687,17 @@ class ChatBot:
             print(RED + "Gcalendar func not loaded" + RESET)
 
         if hyperparameters["use_python"].lower() == "yes":
-            self.functions.append(self.python_function)
+            self.functions.append(self.python_function_dict)
 
             self.available_functions.update(self.python_availablefunc)
 
-            print(GREEN+"Python function loaded"+RESET)
+            print(GREEN + "Python function loaded" + RESET)
         else:
-            messages.append(RED+"Python function not loaded"+RESET)
+            messages.append(RED + "Python function not loaded" + RESET)
             print(RED + "Python function not loaded" + RESET)
 
-    def _get_last_few_msgs(self, message):
+    @staticmethod
+    def _get_last_few_msgs(message):
         message_ = message[-hyperparameters["messages_in_memory"]:]
 
         if not message_:
@@ -647,7 +743,7 @@ class ChatBot:
                 function_to_call = self.available_functions[function_name]
 
                 if function_name == Bot.python.__name__:
-                    function_args = {"code":response_message["function_call"]["arguments"]}
+                    function_args = {"code": response_message["function_call"]["arguments"]}
                 else:
                     function_args = json.loads(response_message["function_call"]["arguments"])
 
